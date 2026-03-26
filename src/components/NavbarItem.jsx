@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { createPortal } from "react-dom";
 import { logout } from "../api/userServices";
-
+import { useOutletContext } from 'react-router-dom';
 const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false }) => {
+  const { user } = useOutletContext();
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -18,9 +19,17 @@ const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false })
   };
 
   const handleLogoutConfirm = async () => {
-    await logout();  // Clear server session and cookies
-    setShowLogoutModal(false);
-    navigate("/login", { replace: true });
+    try {
+      await logout();  // Clear server session and cookies
+    } catch (error) {
+      // Even if logout fails on server, proceed with clearing frontend
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.clear();  // Clear any local storage data
+      sessionStorage.clear();  // Clear session storage too
+      setShowLogoutModal(false);
+      navigate("/login", { replace: true });
+    }
   };
 
   const handleLogoutCancel = () => {
@@ -38,7 +47,7 @@ const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false })
     <>
       <button
         onClick={handleClick}
-        className={`flex items-center w-full px-4 py-3 text-sm font-medium transition-all rounded-xl group cursor-pointer outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+        className={`flex items-center w-full px-4 py-3 text-sm font-medium transition-all rounded-sm group cursor-pointer outline-none ${
           active
             ? "bg-blue-50 text-blue-600 shadow-sm"
             : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"

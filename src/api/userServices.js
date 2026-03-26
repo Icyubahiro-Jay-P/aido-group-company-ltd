@@ -35,12 +35,10 @@ export const registerUser = async (userData) => {
 
 
 // Get user profile
-export const getUserProfile = async (token) => {
+export const getUserProfile = async () => {
   try {
     const response = await axios.get(`${ API_URL }/profile`, {
-      headers: {
-        Authorization: `Bearer ${ token }`
-      }
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -50,12 +48,10 @@ export const getUserProfile = async (token) => {
 
 // Update user profile
 
-export const updateUserProfile = async (token, updatedData) => {
+export const updateUserProfile = async (updatedData) => {
   try {
     const response = await axios.put(`${ API_URL }/profile`, updatedData, {
-      headers: {
-        Authorization: `Bearer ${ token }`
-      }
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -64,12 +60,10 @@ export const updateUserProfile = async (token, updatedData) => {
 };
 
 // Change user password
-export const changeUserPassword = async (token, passwordData) => {
+export const changeUserPassword = async (passwordData) => {
   try {
     const response = await axios.put(`${ API_URL }/change-password`, passwordData, {
-      headers: {
-        Authorization: `Bearer ${ token }`
-      }
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -78,12 +72,10 @@ export const changeUserPassword = async (token, passwordData) => {
 };
 
 // Delete user account
-export const deleteUserAccount = async (token) => {
+export const deleteUserAccount = async () => {
   try {
     const response = await axios.delete(`${ API_URL }/delete`, {
-      headers: {
-        Authorization: `Bearer ${ token }`
-      }
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -92,16 +84,25 @@ export const deleteUserAccount = async (token) => {
 };
 
 // Logout user
-export const logout = async (token) => {
+export const logout = async () => {
   try {
-    const response = await axios.post(`${ API_URL }/logout`, token, {
-      headers: {
-        Authorization: `Bearer ${ token }`
-      }
+    const response = await axios.post(`${ API_URL }/logout`, {}, {
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    // 401 is expected if session already expired - don't throw
+    if (error.response?.status === 401) {
+      return { success: true, message: 'Logged out successfully' };
+    }
+    // For other errors, provide a message
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw new Error('Logout failed. Please try again.');
   }
 };
 
@@ -109,9 +110,7 @@ export const logout = async (token) => {
 export const getAllUsers = async (token) => {
   try {
     const response = await axios.get(`${ API_URL }`, {
-      headers: {
-        Authorization: `Bearer ${ token }`
-      }
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {

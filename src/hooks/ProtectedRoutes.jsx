@@ -28,7 +28,6 @@ const ProtectedRoute = () => {
   }, []);
 
   if (isAuth === null) {
-    // return <div className="min-h-screen flex items-center justify-center text-xl">Checking authentication...</div>;
     return <Loading />;
   }
 

@@ -22,7 +22,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
   e.preventDefault();
   setIsLoading(true);
-  setError('');                    // clear previous error
+  setError('');
 
   try {
     await login(formData);
@@ -35,13 +35,13 @@ const Login = () => {
   }
 };
   return (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
-          <div className="w-full max-w-md space-y-8 border border-gray-300 dark:border-gray-700 rounded-lg p-8 shadow-lg h-130">
+        <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4">
+          <div className="w-full max-w-md space-y-8 border border-gray-300 rounded-lg p-8 shadow-lg h-130">
             <div className="text-center">
-              <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
                 Welcome back
               </h1>
-              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="mt-2 text-sm text-zinc-600">
                 Sign in to continue
               </p>
             </div>
@@ -51,7 +51,7 @@ const Login = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+                  className="block text-sm font-medium text-zinc-700"
                 >
                   Email
                 </label>
@@ -62,7 +62,7 @@ const Login = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                   placeholder="Enter your email"
                 />
               </div>
@@ -72,13 +72,13 @@ const Login = () => {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+                    className="block text-sm font-medium text-zinc-700"
                   >
                     Password
                   </label>
                   <Link
                     href="/forgot-password"
-                    className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                    className="text-sm font-medium text-blue-600 hover:text-blue-500"
                   >
                     Forgot password?
                   </Link>
@@ -93,13 +93,13 @@ const Login = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="block w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 pr-11 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                    className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 pr-11 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 cursor-pointer"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-500 hover:text-zinc-700 cursor-pointer"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
@@ -113,7 +113,7 @@ const Login = () => {
     
               {/* Error message */}
               {error && (
-                <div className="text-red-600 dark:text-red-400 text-sm text-center font-medium items-center flex -mt-4">
+                <div className="text-red-600 text-sm text-center font-medium items-center flex -mt-4">
                   <InfoIcon size={18} className="inline-block mr-1" />
                   {error}
                 </div>
