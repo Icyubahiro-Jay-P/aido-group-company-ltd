@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { 
   LayoutDashboard, 
   Package, 
@@ -12,8 +12,10 @@ import {
   DollarSign,
   Box,
   LogOut,
-  UserRoundPlus,
-  LayersPlus
+  LayersPlus,
+  BanknoteArrowUp,
+  ReceiptText,
+  Clock
 } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
@@ -92,10 +94,37 @@ const StatusBadge = ({ status }) => {
 export default function Dashboard() {
   const { user } = useOutletContext();
   const [navbarOpen, setNavbarOpen] = useState(false);
-  
+  useEffect(() => {
+    document.title = "AIDO Group Company Ltd - Dashboard";
+  })
+  const BannerClock = () => {
+    const [time, setTime] = useState(new Date());
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setTime(new Date());
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }, []);
+
+    return (
+      <div className="flex items-center gap-1 text-slate-800 text-center w-full">
+        <Clock size={16} className="text-slate-800" />
+        {new Date().toLocaleString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false,
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+              })}
+      </div>
+    );
+  };
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
-      
       {/* Mobile Navbar Overlay */}
       {navbarOpen && (
         <div 
@@ -117,24 +146,25 @@ export default function Dashboard() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <Box size={20} />
             </div>
-            BuildStock
+            Dashboard
           </div>
         </div>
 
         <nav className="p-4 space-y-1">
-          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-4 mt-4">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-4">
             Main
           </div>
           <NavbarItem icon={LayoutDashboard} label="Dashboard" active />
           <NavbarItem icon={Package} label="Inventory" />
           {user.role === "Boss" && <NavbarItem icon={LayersPlus} label="Stock in" />}
           
-          <NavbarItem icon={UserRoundPlus} label="Clients" />
+          <NavbarItem icon={BanknoteArrowUp} label="Sales" />
           
-          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-4 mt-6">
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
             System
           </div>
-          <NavbarItem icon={TrendingUp} label="Reports" />
+          <NavbarItem icon={ReceiptText} label="Reciepts" />
+          {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
           <NavbarItem icon={Settings} label="Settings" />
           <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
         </nav>
@@ -167,18 +197,10 @@ export default function Dashboard() {
               className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-md"
             >
               <Menu size={20} />
-            </button>
-            
-            {/* Search Bar */}
-            <div className="hidden md:flex items-center relative">
-              <Search className="absolute left-3 w-4 h-4 text-slate-400" />
-              <input 
-                type="text" 
-                placeholder="Search SKU, Item, or Order..." 
-                className="pl-10 pr-4 py-2 bg-white border border-slate-200 
-                           rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64
-                           text-slate-900 placeholder-slate-400"
-              />
+            </button>            
+            {/* a live 24-hr clock that updates it self automatically */}
+            <div className="text-sm font-mono text-center flex justify-center items-center w-full">
+              {BannerClock()}
             </div>
           </div>
         </header>
@@ -204,9 +226,6 @@ export default function Dashboard() {
                   <div className={`p-3 rounded-lg ${stat.bg}`}>
                     <stat.icon className={`w-6 h-6 ${stat.color}`} />
                   </div>
-                  <span className="text-xs font-medium text-slate-500 bg-slate-200 px-2 py-1 rounded">
-                    +2.5%
-                  </span>
                 </div>
                 <h3 className="text-slate-500 text-sm font-medium">{stat.title}</h3>
                 <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
@@ -283,7 +302,6 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
-
           </div>
         </main>
       </div>

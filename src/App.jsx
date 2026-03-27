@@ -8,6 +8,7 @@ import Loading from './components/Loading';
 const Login = lazy(() => import('./pages/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Inventory = lazy(() => import('./pages/Inventory'));
 
 const RouteWrapper = ({ children }) => {
   const [initialLoading, setInitialLoading] = useState(true);
@@ -37,6 +38,7 @@ const App = () => {
           {/* Protected routes (require login) */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<RouteWrapper><Dashboard /></RouteWrapper>} />
+            <Route path="/inventory" element={<RouteWrapper><Inventory /></RouteWrapper>} />
           </Route>
         </Routes>
       </Router>

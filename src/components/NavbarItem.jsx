@@ -4,17 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { createPortal } from "react-dom";
 import { logout } from "../api/userServices";
-import { useOutletContext } from 'react-router-dom';
 const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false }) => {
-  const { user } = useOutletContext();
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleClick = () => {
     if (isLogout) {
       setShowLogoutModal(true);
-    } else if (to) {
-      navigate(to);
+    } else {
+      navigate(`${'../'+label}`);
     }
   };
 
