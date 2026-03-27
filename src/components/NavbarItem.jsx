@@ -12,7 +12,7 @@ const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false })
     if (isLogout) {
       setShowLogoutModal(true);
     } else {
-      navigate(`${'../'+label}`);
+      navigate(`../${label.toLowerCase().replaceAll(' ', '')}`);
     }
   };
 
@@ -68,7 +68,7 @@ const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false })
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl shadow-2xl w-full max-w-95 mx-4 overflow-hidden"
+              className="bg-white rounded-lg shadow-2xl w-full max-w-95 mx-4 overflow-hidden"
             >
               {/* Modal Icon & Title */}
               <div className="px-8 pt-10 pb-6 text-center">

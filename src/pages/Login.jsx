@@ -96,7 +96,7 @@ const Login = () => {
                     className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 pr-11 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                     placeholder="••••••••"
                   />
-                  <button
+                  <div
                     type="button"
                     onClick={togglePasswordVisibility}
                     className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-500 hover:text-zinc-700 cursor-pointer"
@@ -107,7 +107,7 @@ const Login = () => {
                     ) : (
                       <Eye className="h-5 w-5" />
                     )}
-                  </button>
+                  </div>
                 </div>
               </div>
     
