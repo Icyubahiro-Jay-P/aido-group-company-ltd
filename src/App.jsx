@@ -14,6 +14,8 @@ const Sales = lazy(() => import('./pages/Sales'));
 const StockIn = lazy(() => import('./pages/StockIn'));
 const Reports = lazy(() => import('./pages/Reports'));
 const Reciepts = lazy(() => import('./pages/Reciepts'));
+const Home = lazt(() => import('./pages/Home/'));
+const ContactUs = lazy(()=>import('./pages/ContactUs.jsx'))
 
 const RouteWrapper = ({ children }) => {
   const [initialLoading, setInitialLoading] = useState(true);
