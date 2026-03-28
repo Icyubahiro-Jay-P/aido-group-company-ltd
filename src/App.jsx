@@ -14,7 +14,7 @@ const Sales = lazy(() => import('./pages/Sales'));
 const StockIn = lazy(() => import('./pages/StockIn'));
 const Reports = lazy(() => import('./pages/Reports'));
 const Reciepts = lazy(() => import('./pages/Reciepts'));
-const Home = lazt(() => import('./pages/Home/'));
+const Home = lazy(() => import('./pages/Home'));
 const ContactUs = lazy(()=>import('./pages/ContactUs.jsx'))
 
 const RouteWrapper = ({ children }) => {
@@ -26,7 +26,7 @@ const RouteWrapper = ({ children }) => {
     setInitialLoading(true);
     const timer = setTimeout(() => {
       setInitialLoading(false);
-    }, 500);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [location]);
 
@@ -39,6 +39,8 @@ const App = () => {
       <Toaster position='top-right' closeButton richColors/>
       <Router>
         <Routes>
+          <Route path="/" element={<RouteWrapper><Home /></RouteWrapper>} />
+          <Route path="/contact" element={<RouteWrapper><ContactUs /></RouteWrapper>} />
           <Route path="/login" element={<RouteWrapper><Login /></RouteWrapper>} />
           <Route path="/404" element={<RouteWrapper><NotFound /></RouteWrapper>} />
           {/* <Route path="*" element={<Navigate to="/404" />} /> */}

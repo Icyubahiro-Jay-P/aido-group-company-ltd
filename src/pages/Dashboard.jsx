@@ -97,32 +97,6 @@ export default function Dashboard() {
   useEffect(() => {
     document.title = "AIDO Group Company Ltd - Dashboard";
   })
-  const BannerClock = () => {
-    const [time, setTime] = useState(new Date());
-
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setTime(new Date());
-      }, 1000);
-
-      return () => clearInterval(timer);
-    }, []);
-
-    return (
-      <div className="flex items-center gap-1 text-slate-800 text-center w-full">
-        <Clock size={16} className="text-slate-800" />
-        {new Date().toLocaleString('en-US', {
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: false,
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-              })}
-      </div>
-    );
-  };
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
       {/* Mobile Navbar Overlay */}
@@ -197,12 +171,9 @@ export default function Dashboard() {
               className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-md"
             >
               <Menu size={20} />
-            </button>            
-            {/* a live 24-hr clock that updates it self automatically */}
-            <div className="text-sm font-mono text-center flex justify-center items-center w-full">
-              {BannerClock()}
-            </div>
+            </button>
           </div>
+          <div></div>
         </header>
 
         {/* Dashboard Content */}

@@ -10,12 +10,12 @@ const Settings = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const [profileData, setProfileData] = useState({
-    fullName: user?.fullName || '',
-    email: user?.email || '',
-    phone: '',
-    address: '',
-    city: '',
-    state: ''
+    fullName: user.fullName || '',
+    email: user.email || '',
+    phoneNumber: user.phoneNumber || '',
+    dateOfBirth: user.dateOfBirth || '',
+    nationalIdentity: user.nationalIdentity || '',
+    role: user.role || ''
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -212,13 +212,13 @@ const Settings = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Phone</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Phone number</label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <input
                         type="tel"
                         name="phone"
-                        value={profileData.phone}
+                        value={0+profileData.phoneNumber}
                         onChange={handleProfileChange}
                         placeholder="(555) 123-4567"
                         className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -226,40 +226,45 @@ const Settings = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">State</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Date of birth</label>
                     <input
                       type="text"
-                      name="state"
-                      value={profileData.state}
+                      name="dateOfBirth"
+                      value={profileData.dateOfBirth}
                       onChange={handleProfileChange}
-                      placeholder="State"
+                      placeholder="Date of birth"
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">City</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">National ID</label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <input
                         type="text"
-                        name="city"
-                        value={profileData.city}
+                        name="nationalIdentity"
+                        value={profileData.nationalIdentity}
                         onChange={handleProfileChange}
-                        placeholder="City"
+                        placeholder="National ID"
                         className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Address</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Role</label>
                     <input
                       type="text"
-                      name="address"
-                      value={profileData.address}
+                      name="role"
+                      id='role'
+                      value={profileData.role}
                       onChange={handleProfileChange}
-                      placeholder="Street address"
+                      placeholder="Role"
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    {/* <select name="role" className='w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'>
+                      <option value="Boss">Boss</option>
+                      <option value="Worker">Worker</option>
+                    </select> */}
                   </div>
                 </div>
                 <button
