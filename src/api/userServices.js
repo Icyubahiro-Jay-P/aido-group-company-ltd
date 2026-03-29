@@ -67,7 +67,13 @@ export const changeUserPassword = async (passwordData) => {
     });
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw new Error('Failed to change password. Please try again.');
   }
 };
 
@@ -114,7 +120,31 @@ export const getAllUsers = async (token) => {
     });
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw new Error('Failed to fetch users. Please try again.');
+  }
+};
+
+// Delete user by ID (admin only)
+export const deleteUserById = async (userId) => {
+  try {
+    const response = await axios.delete(`${ API_URL }/user/${userId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw new Error('Failed to delete user. Please try again.');
   }
 };
 

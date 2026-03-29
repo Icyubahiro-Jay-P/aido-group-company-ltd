@@ -3,6 +3,7 @@ import { Search, Menu, Box, Download, LayoutDashboard, Package, LayersPlus,Bankn
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
 import { getProducts } from '../api/productServices';
+import { exportInventoryToPDF } from '../utils/pdfExport';
 import { toast } from 'sonner';
 
 const Inventory = () => {
@@ -35,6 +36,15 @@ const Inventory = () => {
   );
 
   const totalValue = filteredItems.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+
+  const handleExportPDF = async () => {
+    try {
+      await exportInventoryToPDF(filteredItems, 'inventory-report');
+      toast.success('Inventory exported to PDF successfully');
+    } catch (error) {
+      toast.error(error.message || 'Failed to export PDF');
+    }
+  };
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
@@ -133,7 +143,10 @@ const Inventory = () => {
                     />
                   </div>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <button 
+                  onClick={handleExportPDF}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
                   <Download size={18} />
                   Export
                 </button>

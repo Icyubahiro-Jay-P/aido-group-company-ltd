@@ -2,44 +2,78 @@ import React, { useState, useEffect } from 'react';
 import { Menu, Box, DollarSign, ShoppingCart, AlertTriangle,LayoutDashboard, Package, LayersPlus,BanknoteArrowUp,ReceiptText,TrendingUp,Settings,LogOut } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
+import { getMonthlyIncome, getMonthlyExpense, getTopSellingProducts, getInventorySummary, getLowStockItems } from '../api/reportServices';
+import { toast } from 'sonner';
 
 const Reports = () => {
   const { user } = useOutletContext();
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [reportStats, setReportStats] = useState([
+    { title: 'Total Sales', value: 'Fr0', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100' },
+    { title: 'Total Stock In', value: 'Fr0', icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { title: 'Current Inventory Value', value: 'Fr0', icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-100' },
+    { title: 'Low Stock Items', value: '0', icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-100' },
+  ]);
+  const [salesData, setSalesData] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-RW', {
+      style: 'currency',
+      currency: 'RWF',
+    }).format(amount);
+  };
+
+  const fetchReportData = async () => {
+    setLoading(true);
+    try {
+      // Fetch monthly income and expense data
+      const incomeResponse = await getMonthlyIncome();
+      const expenseResponse = await getMonthlyExpense();
+      const topProductsResponse = await getTopSellingProducts();
+      const inventorySummaryResponse = await getInventorySummary();
+      const lowStockResponse = await getLowStockItems();
+
+      // Process monthly data
+      const monthlyData = (incomeResponse.data || []).map((item, idx) => ({
+        month: item.month || ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][idx] || `Month ${idx + 1}`,
+        sales: item.income || 0,
+        orders: item.orders || 0,
+      }));
+      setSalesData(monthlyData);
+
+      // Process top products
+      const products = (topProductsResponse.data || []).map(product => ({
+        name: product.productName || product.name || 'Unknown Product',
+        sold: product.totalQuantitySold || product.quantity || 0,
+        revenue: formatCurrency(product.totalRevenue || product.sales || 0),
+      }));
+      setTopProducts(products);
+
+      // Update stats
+      const totalIncome = incomeResponse.data?.reduce((sum, item) => sum + (item.income || 0), 0) || 0;
+      const inventoryValue = inventorySummaryResponse.data?.totalValue || 0;
+      const lowStockCount = lowStockResponse.data?.length || 0;
+
+      setReportStats([
+        { title: 'Total Sales', value: formatCurrency(totalIncome), icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100' },
+        { title: 'Total Stock In', value: formatCurrency(0), icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-100' },
+        { title: 'Current Inventory Value', value: formatCurrency(inventoryValue), icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-100' },
+        { title: 'Low Stock Items', value: lowStockCount.toString(), icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-100' },
+      ]);
+    } catch (error) {
+      toast.error(error.message || 'Failed to load reports. Please try again.');
+      console.error('Report fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     document.title = "AIDO Group Company Ltd - Reports";
+    fetchReportData();
   }, []);
-
-  const reportStats = [
-    { title: 'Total Sales', value: '$45,230', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100' },
-    { title: 'Total Stock In', value: '$32,890', icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-100' },
-    { title: 'Current Inventory Value', value: '$124,500', icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-100' },
-    { title: 'Low Stock Items', value: '12', icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-100' },
-  ];
-
-  const salesData = [
-    { month: 'January', sales: 4000, orders: 24 },
-    { month: 'February', sales: 3000, orders: 18 },
-    { month: 'March', sales: 2000, orders: 12 },
-    { month: 'April', sales: 2780, orders: 39 },
-    { month: 'May', sales: 1890, orders: 28 },
-    { month: 'June', sales: 2390, orders: 35 },
-  ];
-
-  const topProducts = [
-    { name: 'Portland Cement (94lb)', sold: 450, revenue: '$5,625' },
-    { name: '2x4x8 Stud (SPF)', sold: 380, revenue: '$3,325' },
-    { name: 'Drywall 4x8 (1/2")', sold: 260, revenue: '$4,157.40' },
-    { name: '1/2" Copper Pipe', sold: 180, revenue: '$6,300' },
-  ];
-
-  const categoryRevenue = [
-    { category: 'Masonry', revenue: '$12,450', percentage: 28 },
-    { category: 'Lumber', revenue: '$18,900', percentage: 42 },
-    { category: 'Plumbing', revenue: '$10,230', percentage: 23 },
-    { category: 'Finishing', revenue: '$3,650', percentage: 8 },
-  ];
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
@@ -122,103 +156,120 @@ const Reports = () => {
             <p className="text-slate-500 mt-1">Overview of sales, stock, and inventory metrics.</p>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {reportStats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-lg ${stat.bg}`}>
-                    <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                  </div>
-                </div>
-                <h3 className="text-slate-500 text-sm font-medium">{stat.title}</h3>
-                <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Top Products */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-slate-200">
-                <h2 className="font-bold text-slate-800">Top Selling Products</h2>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
-                    <tr>
-                      <th className="px-6 py-3">Product Name</th>
-                      <th className="px-6 py-3 text-right">Sold</th>
-                      <th className="px-6 py-3 text-right">Revenue</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {topProducts.map((product, idx) => (
-                      <tr key={idx} className="hover:bg-slate-50">
-                        <td className="px-6 py-4 font-medium text-slate-900">{product.name}</td>
-                        <td className="px-6 py-4 text-right text-slate-600">{product.sold}</td>
-                        <td className="px-6 py-4 text-right text-slate-900 font-bold">{product.revenue}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <p className="text-slate-500">Loading reports...</p>
             </div>
-
-            {/* Category Revenue */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-slate-200">
-                <h2 className="font-bold text-slate-800">Revenue by Category</h2>
-              </div>
-              <div className="p-6 space-y-4">
-                {categoryRevenue.map((cat, idx) => (
-                  <div key={idx}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-slate-900">{cat.category}</span>
-                      <span className="text-sm font-bold text-slate-900">{cat.revenue}</span>
+          ) : (
+            <>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {reportStats.map((stat, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className={`p-3 rounded-lg ${stat.bg}`}>
+                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                      </div>
                     </div>
-                    <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                      <div 
-                        className="bg-blue-600 h-full rounded-full transition-all"
-                        style={{ width: `${cat.percentage}%` }}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-1">{cat.percentage}% of total revenue</p>
+                    <h3 className="text-slate-500 text-sm font-medium">{stat.title}</h3>
+                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
 
-          {/* Monthly Sales Data */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-200">
-              <h2 className="font-bold text-slate-800">Monthly Sales Summary</h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
-                  <tr>
-                    <th className="px-6 py-3">Month</th>
-                    <th className="px-6 py-3 text-right">Sales</th>
-                    <th className="px-6 py-3 text-right">Orders</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {salesData.map((data, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50">
-                      <td className="px-6 py-4 font-medium text-slate-900">{data.month}</td>
-                      <td className="px-6 py-4 text-right text-slate-900 font-bold">${data.sales}</td>
-                      <td className="px-6 py-4 text-right text-slate-600">{data.orders}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                {/* Top Products */}
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                  <div className="p-6 border-b border-slate-200">
+                    <h2 className="font-bold text-slate-800">Top Selling Products</h2>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
+                        <tr>
+                          <th className="px-6 py-3">Product Name</th>
+                          <th className="px-6 py-3 text-right">Sold</th>
+                          <th className="px-6 py-3 text-right">Revenue</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {topProducts.length > 0 ? (
+                          topProducts.map((product, idx) => (
+                            <tr key={idx} className="hover:bg-slate-50">
+                              <td className="px-6 py-4 font-medium text-slate-900">{product.name}</td>
+                              <td className="px-6 py-4 text-right text-slate-600">{product.sold}</td>
+                              <td className="px-6 py-4 text-right text-slate-900 font-bold">{product.revenue}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="3" className="px-6 py-4 text-center text-slate-500">No product data available</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Inventory Summary */}
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                  <div className="p-6 border-b border-slate-200">
+                    <h2 className="font-bold text-slate-800">System Information</h2>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+                      <span className="text-sm font-medium text-slate-700">Total Products</span>
+                      <span className="text-lg font-bold text-slate-900">--</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+                      <span className="text-sm font-medium text-slate-700">Total Transactions</span>
+                      <span className="text-lg font-bold text-slate-900">--</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-slate-700">Data Last Updated</span>
+                      <span className="text-sm text-slate-600">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Monthly Sales Data */}
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-slate-200">
+                  <h2 className="font-bold text-slate-800">Monthly Sales Summary</h2>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
+                      <tr>
+                        <th className="px-6 py-3">Month</th>
+                        <th className="px-6 py-3 text-right">Sales</th>
+                        <th className="px-6 py-3 text-right">Orders</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {salesData.length > 0 ? (
+                        salesData.map((data, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50">
+                            <td className="px-6 py-4 font-medium text-slate-900">{data.month}</td>
+                            <td className="px-6 py-4 text-right text-slate-900 font-bold">{data.sales}</td>
+                            <td className="px-6 py-4 text-right text-slate-600">{data.orders}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="3" className="px-6 py-4 text-center text-slate-500">No sales data available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </div>

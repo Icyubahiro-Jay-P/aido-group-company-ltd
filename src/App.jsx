@@ -43,7 +43,7 @@ const App = () => {
           <Route path="/contact" element={<RouteWrapper><ContactUs /></RouteWrapper>} />
           <Route path="/login" element={<RouteWrapper><Login /></RouteWrapper>} />
           <Route path="/404" element={<RouteWrapper><NotFound /></RouteWrapper>} />
-          {/* <Route path="*" element={<Navigate to="/404" />} /> */}
+          <Route path="*" element={<Navigate to="/404" />} />
           {/* Protected routes (require login) */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<RouteWrapper><Dashboard /></RouteWrapper>} />
