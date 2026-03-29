@@ -34,7 +34,7 @@ const ContactUs = () => {
     }
   };
 
-  const whatsappNumber = '+1234567890'; // Replace with your WhatsApp number
+  const whatsappNumber = '+250 780 407 093'; // Replace with your WhatsApp number
   const whatsappMessage = encodeURIComponent('Hi, I would like to know more about InventoryPro.');
   const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`;
 
