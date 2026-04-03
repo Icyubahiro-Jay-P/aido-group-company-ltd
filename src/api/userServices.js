@@ -78,9 +78,9 @@ export const changeUserPassword = async (passwordData) => {
 };
 
 // Delete user account
-export const deleteUserAccount = async () => {
+export const deleteUserAccount = async (userId) => {
   try {
-    const response = await axios.delete(`${ API_URL }/delete`, {
+    const response = await axios.delete(`${ API_URL }/user/${userId}`, {
       withCredentials: true,
     });
     return response.data;

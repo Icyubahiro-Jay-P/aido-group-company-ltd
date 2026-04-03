@@ -35,8 +35,7 @@ const ContactUs = () => {
   };
 
   const whatsappNumber = '+250 780 407 093'; // Replace with your WhatsApp number
-  const whatsappMessage = encodeURIComponent('Hi, I would like to know more about InventoryPro.');
-  const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`;
+  const whatsappURL = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
@@ -46,7 +45,7 @@ const ContactUs = () => {
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2">
               <Package className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">InventoryPro</span>
+              <span className="text-xl font-bold text-gray-900">AIDO Group Company Ltd</span>
             </Link>
             <div className="flex gap-4">
               <Link 
@@ -67,11 +66,11 @@ const ContactUs = () => {
       </nav>
 
       {/* Header */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16">
+      <section className="bg-linear-to-r from-blue-600 to-indigo-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch With Us</h1>
           <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-            Have questions about InventoryPro? We're here to help! Reach out through any of our communication channels.
+            Have questions about AIDO Group Company Limited? We're here to help! Reach out through any of our communication channels.
           </p>
         </div>
       </section>
@@ -85,8 +84,8 @@ const ContactUs = () => {
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Phone</h3>
             <p className="text-gray-600 mb-4">Call us during business hours</p>
-            <a href="tel:+1234567890" className="text-blue-600 font-semibold hover:text-blue-700">
-              +1 (234) 567-890
+            <a href="tel:+250780407093" className="text-blue-600 font-semibold hover:text-blue-700">
+              +250 780 407 093
             </a>
           </div>
 
@@ -107,9 +106,9 @@ const ContactUs = () => {
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Address</h3>
             <p className="text-gray-600">
-              123 Business Plaza<br />
-              Technology District<br />
-              City, State 12345
+              Kabuga<br />
+              Near Kabuga Market<br />
+              About to reach Gasasa center
             </p>
           </div>
         </div>
@@ -180,7 +179,7 @@ const ContactUs = () => {
 
           {/* WhatsApp & Support Info */}
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 border-2 border-green-200">
+            <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-xl p-8 border-2 border-green-200">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
                   <MessageCircle className="w-6 h-6 text-white" />

@@ -20,6 +20,10 @@ const Inventory = () => {
       toast.error(error.message || 'Failed to fetch inventory items. Please try again.');
     }
   };
+
+  const formatCurrency = (amount) => {
+    return (amount || 0).toLocaleString('en-US');
+  };
   
   useEffect(() => {
     fetchProducts();
@@ -123,9 +127,26 @@ const Inventory = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">Complete Inventory</h1>
-            <p className="text-slate-500 mt-1">View all items currently in stock across all categories.</p>
+          <div className="mb-8 bg-linear-to-r from-blue-600 to-cyan-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Complete Inventory</h1>
+                <p className="text-blue-100">View all items currently in stock across all categories.</p>
+              </div>
+              <div className="text-blue-200">
+                <Package size={48} />
+              </div>
+            </div>
+            <div className="mt-4 flex gap-4 flex-wrap">
+              <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+                <p className="text-xs text-blue-100">Total Items</p>
+                <p className="text-xl font-bold">{inventoryItems.length}</p>
+              </div>
+              <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+                <p className="text-xs text-blue-100">Total Value</p>
+                <p className="text-xl font-bold">{formatCurrency(totalValue)}</p>
+              </div>
+            </div>
           </div>
 
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">

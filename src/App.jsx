@@ -26,7 +26,7 @@ const RouteWrapper = ({ children }) => {
     setInitialLoading(true);
     const timer = setTimeout(() => {
       setInitialLoading(false);
-    }, 2000);
+    }, 500);
     return () => clearTimeout(timer);
   }, [location]);
 

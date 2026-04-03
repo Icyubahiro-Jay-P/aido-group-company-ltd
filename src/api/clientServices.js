@@ -51,7 +51,7 @@ export const getClientById = async (id) => {
 // Get clients by status
 export const getClientsByStatus = async (status) => {
   try {
-    const response = await axios.get(`${API_URL}/status/${status}`, {
+    const response = await axios.get(`${API_URL}?status=${status}`, {
       withCredentials: true,
     });
     return response.data;

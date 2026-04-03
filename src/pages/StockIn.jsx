@@ -187,9 +187,16 @@ const StockIn = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">Add Stock</h1>
-            <p className="text-slate-500 mt-1">Add new products to the inventory.</p>
+          <div className="mb-8 bg-linear-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Add Stock</h1>
+                <p className="text-purple-100">Add new products to the inventory and manage stock levels.</p>
+              </div>
+              <div className="text-purple-200">
+                <LayersPlus size={48} />
+              </div>
+            </div>
           </div>
 
           {/* Form */}

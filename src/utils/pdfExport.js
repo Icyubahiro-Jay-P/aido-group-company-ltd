@@ -52,8 +52,13 @@ export const exportTableToPDF = async (elementId, fileName = 'export.pdf', title
   }
 };
 
-export const exportReceiptsToPDF = async (purchases, fileName = 'receipts') => {
+export const exportReceiptsToPDF = async (sales, fileName = 'sales-receipts') => {
   try {
+    // Validate input
+    if (!sales || !Array.isArray(sales) || sales.length === 0) {
+      throw new Error('No sales data to export');
+    }
+
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -61,7 +66,7 @@ export const exportReceiptsToPDF = async (purchases, fileName = 'receipts') => {
 
     // Title
     pdf.setFontSize(16);
-    pdf.text('Purchase Receipts Report', 15, yPosition);
+    pdf.text('Sales Receipts Report', 15, yPosition);
     yPosition += 10;
 
     // Date
@@ -69,12 +74,20 @@ export const exportReceiptsToPDF = async (purchases, fileName = 'receipts') => {
     pdf.text(`Generated on ${new Date().toLocaleDateString()}`, 15, yPosition);
     yPosition += 10;
 
-    // Summary
-    const totalAmount = purchases.reduce((sum, p) => sum + p.totalAmount, 0);
+    // Summary - safely calculate total
+    let totalAmount = 0;
+    sales.forEach(sale => {
+      if (sale && sale.products && Array.isArray(sale.products)) {
+        sale.products.forEach(p => {
+          totalAmount += (p.totalPrice || 0);
+        });
+      }
+    });
+    
     pdf.setFontSize(11);
-    pdf.text(`Total Receipts: ${purchases.length}`, 15, yPosition);
+    pdf.text(`Total Sales: ${sales.length}`, 15, yPosition);
     yPosition += 6;
-    pdf.text(`Total Amount: Fr${totalAmount.toLocaleString('en-RW')}`, 15, yPosition);
+    pdf.text(`Total Revenue: ${totalAmount.toLocaleString('en-US')}`, 15, yPosition);
     yPosition += 10;
 
     // Table header
@@ -82,8 +95,8 @@ export const exportReceiptsToPDF = async (purchases, fileName = 'receipts') => {
     pdf.setTextColor(255, 255, 255);
     pdf.setFillColor(37, 99, 235); // Blue
     pdf.rect(10, yPosition - 6, pageWidth - 20, 8, 'F');
-    pdf.text('Supplier', 15, yPosition);
-    pdf.text('Invoice', 60, yPosition);
+    pdf.text('Customer', 15, yPosition);
+    pdf.text('Sale ID', 60, yPosition);
     pdf.text('Date', 100, yPosition);
     pdf.text('Items', 130, yPosition);
     pdf.text('Amount', 160, yPosition);
@@ -93,33 +106,58 @@ export const exportReceiptsToPDF = async (purchases, fileName = 'receipts') => {
     pdf.setTextColor(0, 0, 0);
 
     // Table rows
-    purchases.forEach((purchase, index) => {
+    sales.forEach((sale) => {
       if (yPosition > pageHeight - 20) {
         pdf.addPage();
         yPosition = 20;
       }
 
-      pdf.setFontSize(9);
-      const supplier = purchase.supplierName.substring(0, 20);
-      const invoice = (purchase.invoiceNumber || '-').substring(0, 12);
-      const date = new Date(purchase.purchaseDate).toLocaleDateString();
-      const items = purchase.products.length;
-      const amount = `Fr${purchase.totalAmount.toLocaleString('en-RW')}`;
+      try {
+        pdf.setFontSize(9);
+        
+        // Safe property access
+        const clientName = sale && sale.clientName ? String(sale.clientName) : 'Walk-in';
+        const customer = clientName.substring(0, 20);
+        
+        const saleId = (sale && sale._id ? String(sale._id) : '').substring(0, 8);
+        
+        let date = 'N/A';
+        if (sale && sale.saleDate) {
+          try {
+            date = new Date(sale.saleDate).toLocaleDateString();
+          } catch (e) {
+            date = 'Invalid Date';
+          }
+        }
+        
+        const items = (sale && sale.products && Array.isArray(sale.products)) ? sale.products.length : 0;
+        
+        let saleTotal = 0;
+        if (sale && sale.products && Array.isArray(sale.products)) {
+          sale.products.forEach(p => {
+            saleTotal += (p.totalPrice || 0);
+          });
+        }
+        const amount = saleTotal.toLocaleString('en-US');
 
-      pdf.text(supplier, 15, yPosition);
-      pdf.text(invoice, 60, yPosition);
-      pdf.text(date, 100, yPosition);
-      pdf.text(items.toString(), 130, yPosition);
-      pdf.text(amount, 160, yPosition);
+        pdf.text(customer, 15, yPosition);
+        pdf.text(saleId, 60, yPosition);
+        pdf.text(date, 100, yPosition);
+        pdf.text(items.toString(), 130, yPosition);
+        pdf.text(amount, 160, yPosition);
 
-      yPosition += 7;
+        yPosition += 7;
+      } catch (error) {
+        console.error('Error processing sale row:', sale, error);
+        yPosition += 7;
+      }
     });
 
     pdf.save(`${fileName}-${new Date().getTime()}.pdf`);
     return true;
   } catch (error) {
     console.error('PDF export error:', error);
-    throw new Error('Failed to export PDF: ' + error.message);
+    throw new Error('Failed to export PDF: ' + (error.message || 'Unknown error'));
   }
 };
 
@@ -145,7 +183,7 @@ export const exportInventoryToPDF = async (items, fileName = 'inventory') => {
     pdf.setFontSize(11);
     pdf.text(`Total Items: ${items.length}`, 15, yPosition);
     yPosition += 6;
-    pdf.text(`Total Inventory Value: ${totalValue.toLocaleString()} Frw`, 15, yPosition);
+    pdf.text(`Total Inventory Value: ${totalValue.toLocaleString('en-US')}`, 15, yPosition);
     yPosition += 10;
 
     // Table header

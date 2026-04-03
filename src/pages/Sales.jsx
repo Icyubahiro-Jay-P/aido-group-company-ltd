@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Box, Plus, Trash2, LayoutDashboard, Package, LayersPlus, BanknoteArrowUp, ReceiptText, TrendingUp, Settings, LogOut } from 'lucide-react';
+import { Menu, Box, Plus, Trash2, LayoutDashboard,ShoppingCart , Package, LayersPlus, BanknoteArrowUp, ReceiptText, TrendingUp, Settings, LogOut } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
 import { getProducts } from '../api/productServices';
@@ -13,6 +13,14 @@ const Sales = () => {
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  // Format currency with commas
+  const formatCurrency = (amount) => {
+    return Math.round(amount).toLocaleString('en-US', { 
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2 
+    });
+  };
+
   // Form State - email & notes evicted like bad tenants
   const [formData, setFormData] = useState({
     customerName: '',
@@ -22,7 +30,7 @@ const Sales = () => {
   });
 
   const [productRows, setProductRows] = useState([
-    { id: 1, productName: '', quantity: 1, unitPrice: 0, originalPrice: 0 }
+    { id: 1, productId: '', productName: '', quantity: 1, unitPrice: 0, originalPrice: 0 }
   ]);
 
   const [formErrors, setFormErrors] = useState({});
@@ -57,9 +65,10 @@ const Sales = () => {
           const selectedProduct = products.find(p => p.productName === value);
           return {
             ...row,
+            productId: selectedProduct ? selectedProduct._id : '',
             productName: value,
-            originalPrice: selectedProduct ? selectedProduct.sellingPrice : 0,
-            unitPrice: selectedProduct ? selectedProduct.sellingPrice : 0
+            originalPrice: selectedProduct ? selectedProduct.unitPrice : 0,
+            unitPrice: selectedProduct ? selectedProduct.unitPrice : 0
           };
         }
         return { ...row, [field]: value };
@@ -70,7 +79,7 @@ const Sales = () => {
 
   const handleAddProduct = () => {
     const newId = Math.max(...productRows.map(r => r.id), 0) + 1;
-    setProductRows([...productRows, { id: newId, productName: '', quantity: 1, unitPrice: 0, originalPrice: 0 }]);
+    setProductRows([...productRows, { id: newId, productId: '', productName: '', quantity: 1, unitPrice: 0, originalPrice: 0 }]);
   };
 
   const handleRemoveProduct = (id) => {
@@ -91,11 +100,11 @@ const Sales = () => {
     // Products validation + STOCK POLICE
     productRows.forEach((row, idx) => {
       if (!row.productName.trim()) {
-        errors[`product_${idx}`] = 'Product name is required';
-      } else {
+        errors[`product_${idx}`] = 'Product name is required';      } else if (!row.productId) {
+        errors[`product_${idx}`] = 'Please select a valid product';      } else {
         const selectedProduct = products.find(p => p.productName === row.productName);
-        if (selectedProduct && row.quantity > (selectedProduct.stockQuantity || 0)) {
-          errors[`quantity_${idx}`] = `Only ${selectedProduct.stockQuantity} left in stock, cowboy`;
+        if (selectedProduct && row.quantity > (selectedProduct.quantity || 0)) {
+          errors[`quantity_${idx}`] = `Only ${selectedProduct.quantity} left in stock`;
         }
       }
       if (row.quantity < 1) {
@@ -124,6 +133,7 @@ const Sales = () => {
       const saleData = {
         clientName: formData.customerName,
         products: productRows.map(row => ({
+          productId: row.productId,
           productName: row.productName,
           quantitySold: parseInt(row.quantity),
           unitPrice: row.unitPrice,
@@ -144,7 +154,7 @@ const Sales = () => {
         address: '',
         paymentMethod: 'Cash',
       });
-      setProductRows([{ id: 1, productName: '', quantity: 1, unitPrice: 0, originalPrice: 0 }]);
+      setProductRows([{ id: 1, productId: '', productName: '', quantity: 1, unitPrice: 0, originalPrice: 0 }]);
     } catch (error) {
       toast.error(error.message || 'Failed to create sale');
     } finally {
@@ -226,10 +236,24 @@ const Sales = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">New Sale</h1>
-            <p className="text-slate-500 mb-8">Fill in the customer details and add products to complete the sale.</p>
-
+          <div className="mb-8 bg-linear-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">New Sale</h1>
+                <p className="text-orange-100">Fill in the customer details and add products to complete the sale.</p>
+              </div>
+              <div className="text-orange-200">
+                <ShoppingCart size={48} />
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg w-fit">
+                <p className="text-xs text-orange-100">Total Items Selected</p>
+                <p className="text-2xl font-bold">{productRows.filter(r => r.productName).length}</p>
+              </div>
+            </div>
+          </div>
+              <div className="max-w-4xl mx-auto">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Customer Details Section - email & notes gone, less clutter more cash */}
               <div className="bg-white rounded-lg border border-slate-200 p-6">
@@ -243,7 +267,7 @@ const Sales = () => {
                       name="customerName"
                       value={formData.customerName}
                       onChange={handleInputChange}
-                      placeholder="John Doe"
+                      placeholder="Full names"
                       className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         formErrors.customerName ? 'border-red-500' : 'border-slate-200'
                       }`}
@@ -296,9 +320,7 @@ const Sales = () => {
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option>Cash</option>
-                      <option>Card</option>
-                      <option>Check</option>
-                      <option>Transfer</option>
+                      <option>MoMo</option>
                     </select>
                   </div>
                 </div>
@@ -337,7 +359,7 @@ const Sales = () => {
                             <option value="">-- Select a product --</option>
                             {products.map(product => (
                               <option key={product._id} value={product.productName}>
-                                {product.productName} ({product.stockQuantity || 0} in stock)
+                                {product.productName} ({product.quantity || 0} in stock)
                               </option>
                             ))}
                           </select>
@@ -387,7 +409,7 @@ const Sales = () => {
                         <div className="w-28">
                           <label className="block text-xs font-medium text-slate-700 mb-1">Total</label>
                           <div className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-900 font-semibold">
-                            {row.unitPrice * row.quantity}
+                            {formatCurrency(row.unitPrice * row.quantity)}
                           </div>
                         </div>
 
@@ -408,7 +430,7 @@ const Sales = () => {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-slate-900">Total Amount:</span>
-                  <span className="text-3xl font-bold text-blue-600">{calculateTotal()}</span>
+                  <span className="text-3xl font-bold text-blue-600">{formatCurrency(calculateTotal())} Frw</span>
                 </div>
               </div>
 

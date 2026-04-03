@@ -261,9 +261,16 @@ const Settings = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">Account Settings</h1>
-            <p className="text-slate-500 mt-1">Manage your profile and account preferences.</p>
+          <div className="mb-8 bg-linear-to-r from-slate-700 to-slate-800 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Account Settings</h1>
+                <p className="text-slate-300">Manage your profile and account preferences.</p>
+              </div>
+              <div className="text-slate-400">
+                <Settings size={48} />
+              </div>
+            </div>
           </div>
 
           {/* Success Message */}

@@ -27,7 +27,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
       {/* Navigation Bar */}
       <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -79,7 +79,7 @@ const Home = () => {
               </Link>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-blue-400 to-indigo-600 rounded-2xl p-12 text-white shadow-2xl">
+          <div className="bg-linear-to-br from-blue-400 to-indigo-600 rounded-2xl p-12 text-white shadow-2xl">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-6 h-6" />
@@ -117,7 +117,7 @@ const Home = () => {
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={index} className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:shadow-lg transition">
+                <div key={index} className="p-8 bg-linear-to-br from-gray-50 to-gray-100 rounded-xl hover:shadow-lg transition">
                   <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
                     <Icon className="w-6 h-6 text-white" />
                   </div>
@@ -131,7 +131,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 py-16">
+      <section className="bg-linear-to-r from-blue-600 to-indigo-600 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Transform Your Business?</h2>
           <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">

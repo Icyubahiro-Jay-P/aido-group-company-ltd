@@ -1,67 +1,137 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Box, DollarSign, ShoppingCart, AlertTriangle,LayoutDashboard, Package, LayersPlus,BanknoteArrowUp,ReceiptText,TrendingUp,Settings,LogOut } from 'lucide-react';
+import { Menu, Box, DollarSign, ShoppingCart, AlertTriangle,LayoutDashboard, Package, LayersPlus,BanknoteArrowUp,ReceiptText,TrendingUp,Settings,LogOut, TrendingDown, User } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
-import { getMonthlyIncome, getMonthlyExpense, getTopSellingProducts, getInventorySummary, getLowStockItems } from '../api/reportServices';
+import { 
+  getDailyIncome, getWeeklyIncome, getMonthlyIncome, getAnnualIncome,
+  getDailyExpense, getWeeklyExpense, getMonthlyExpense, getAnnualExpense,
+  getDailyProfit, getWeeklyProfit, getMonthlyProfit, getAnnualProfit,
+  getDailyLoss, getWeeklyLoss, getMonthlyLoss, getAnnualLoss,
+  getDailyClients, getWeeklyClients,
+  getInventorySummary, getLowStockItems, getRecentTransactions
+} from '../api/reportServices';
 import { toast } from 'sonner';
+import Loading from '../components/Loading';
 
 const Reports = () => {
   const { user } = useOutletContext();
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [reportStats, setReportStats] = useState([
-    { title: 'Total Sales', value: 'Fr0', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100' },
-    { title: 'Total Stock In', value: 'Fr0', icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-100' },
-    { title: 'Current Inventory Value', value: 'Fr0', icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-100' },
-    { title: 'Low Stock Items', value: '0', icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-100' },
-  ]);
-  const [salesData, setSalesData] = useState([]);
-  const [topProducts, setTopProducts] = useState([]);
+  const [timePeriod, setTimePeriod] = useState('daily'); // daily, weekly, monthly, annual
+
+  // Core metrics
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [profit, setProfit] = useState(0);
+  const [loss, setLoss] = useState(0);
+  const [clients, setClients] = useState(0);
+
+  // Details
+  const [lowStockItems, setLowStockItems] = useState([]);
+  const [inventorySummary, setInventorySummary] = useState(null);
+  const [recentTransactions, setRecentTransactions] = useState([]);
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-RW', {
-      style: 'currency',
-      currency: 'RWF',
-    }).format(amount);
+    return (amount || 0).toLocaleString('en-US');
   };
 
   const fetchReportData = async () => {
     setLoading(true);
     try {
-      // Fetch monthly income and expense data
-      const incomeResponse = await getMonthlyIncome();
-      const expenseResponse = await getMonthlyExpense();
-      const topProductsResponse = await getTopSellingProducts();
-      const inventorySummaryResponse = await getInventorySummary();
-      const lowStockResponse = await getLowStockItems();
+      // Fetch data based on selected time period
+      let incomeData = 0;
+      let expenseData = 0;
+      let profitData = 0;
+      let lossData = 0;
+      let clientData = 0;
 
-      // Process monthly data
-      const monthlyData = (incomeResponse.data || []).map((item, idx) => ({
-        month: item.month || ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][idx] || `Month ${idx + 1}`,
-        sales: item.income || 0,
-        orders: item.orders || 0,
-      }));
-      setSalesData(monthlyData);
+      if (timePeriod === 'daily') {
+        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all([
+          getDailyIncome(),
+          getDailyExpense(),
+          getDailyProfit(),
+          getDailyLoss(),
+          getDailyClients()
+        ]);
+        incomeData = incRes?.data || 0;
+        expenseData = expRes?.data || 0;
+        profitData = profRes?.data || 0;
+        lossData = lossRes?.data || 0;
+        clientData = clientRes?.data || 0;
+      } else if (timePeriod === 'weekly') {
+        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all([
+          getWeeklyIncome(),
+          getWeeklyExpense(),
+          getWeeklyProfit(),
+          getWeeklyLoss(),
+          getWeeklyClients()
+        ]);
+        incomeData = incRes?.data || 0;
+        expenseData = expRes?.data || 0;
+        profitData = profRes?.data || 0;
+        lossData = lossRes?.data || 0;
+        clientData = clientRes?.data || 0;
+      } else if (timePeriod === 'monthly') {
+        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all([
+          getMonthlyIncome(),
+          getMonthlyExpense(),
+          getMonthlyProfit(),
+          getMonthlyLoss(),
+          getWeeklyClients()
+        ]);
+        incomeData = incRes?.data || 0;
+        expenseData = expRes?.data || 0;
+        profitData = profRes?.data || 0;
+        lossData = lossRes?.data || 0;
+        clientData = clientRes?.data || 0;
+      } else if (timePeriod === 'annual') {
+        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all([
+          getAnnualIncome(),
+          getAnnualExpense(),
+          getAnnualProfit(),
+          getAnnualLoss(),
+          getDailyClients()
+        ]);
+        incomeData = incRes?.data || 0;
+        expenseData = expRes?.data || 0;
+        profitData = profRes?.data || 0;
+        lossData = lossRes?.data || 0;
+        clientData = clientRes?.data || 0;
+      }
 
-      // Process top products
-      const products = (topProductsResponse.data || []).map(product => ({
-        name: product.productName || product.name || 'Unknown Product',
-        sold: product.totalQuantitySold || product.quantity || 0,
-        revenue: formatCurrency(product.totalRevenue || product.sales || 0),
-      }));
-      setTopProducts(products);
+      setIncome(incomeData);
+      setExpense(expenseData);
+      setProfit(profitData);
+      setLoss(lossData);
+      setClients(clientData);
 
-      // Update stats
-      const totalIncome = incomeResponse.data?.reduce((sum, item) => sum + (item.income || 0), 0) || 0;
-      const inventoryValue = inventorySummaryResponse.data?.totalValue || 0;
-      const lowStockCount = lowStockResponse.data?.length || 0;
-
-      setReportStats([
-        { title: 'Total Sales', value: formatCurrency(totalIncome), icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100' },
-        { title: 'Total Stock In', value: formatCurrency(0), icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-100' },
-        { title: 'Current Inventory Value', value: formatCurrency(inventoryValue), icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-100' },
-        { title: 'Low Stock Items', value: lowStockCount.toString(), icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-100' },
+      // Fetch static data (not time-dependent)
+      const [lowRes, invRes, transRes] = await Promise.all([
+        getLowStockItems(10),
+        getInventorySummary(),
+        getRecentTransactions()
       ]);
+
+      // Process low stock - handle both direct array and wrapped response
+      if (Array.isArray(lowRes)) {
+        setLowStockItems(lowRes);
+      } else if (lowRes?.data && Array.isArray(lowRes.data)) {
+        setLowStockItems(lowRes.data);
+      } else {
+        setLowStockItems([]);
+      }
+
+      // Process inventory - getInventorySummary returns data directly
+      if (invRes && typeof invRes === 'object') {
+        setInventorySummary(invRes?.data || invRes);
+      }
+
+      // Process recent transactions
+      if (transRes?.data && Array.isArray(transRes.data)) {
+        setRecentTransactions(transRes.data.slice(0, 8));
+      } else if (Array.isArray(transRes)) {
+        setRecentTransactions(transRes.slice(0, 8));
+      }
     } catch (error) {
       toast.error(error.message || 'Failed to load reports. Please try again.');
       console.error('Report fetch error:', error);
@@ -73,7 +143,7 @@ const Reports = () => {
   useEffect(() => {
     document.title = "AIDO Group Company Ltd - Reports";
     fetchReportData();
-  }, []);
+  }, [timePeriod]);
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
@@ -151,117 +221,201 @@ const Reports = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">Business Reports</h1>
-            <p className="text-slate-500 mt-1">Overview of sales, stock, and inventory metrics.</p>
+          <div className="mb-8 bg-linear-to-r from-indigo-600 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold mb-2">Business Analytics</h1>
+                <p className="text-indigo-100">Complete overview of your business performance and metrics.</p>
+              </div>
+              <div className="text-indigo-200">
+                <TrendingUp size={48} />
+              </div>
+            </div>
+            <div className="mt-6 flex gap-2 flex-wrap">
+              {['daily', 'weekly', 'monthly', 'annual'].map((period) => (
+                <button
+                  key={period}
+                  onClick={() => setTimePeriod(period)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all capitalize ${
+                    timePeriod === period
+                      ? 'bg-white text-indigo-600 shadow-lg'
+                      : 'bg-white/20 backdrop-blur text-white border border-white/30 hover:bg-white/30'
+                  }`}
+                >
+                  {period}
+                </button>
+              ))}
+            </div>
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <p className="text-slate-500">Loading reports...</p>
+            <div className="flex items-center justify-center h-96">
+              <Loading />
             </div>
           ) : (
             <>
-              {/* Stats Grid */}
+              {/* Main KPI Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {reportStats.map((stat, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-lg ${stat.bg}`}>
-                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                      </div>
+                {/* Revenue */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-green-100">
+                      <DollarSign className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-slate-500 text-sm font-medium">{stat.title}</h3>
-                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
                   </div>
-                ))}
+                  <h3 className="text-slate-500 text-sm font-medium">Total Revenue</h3>
+                  <p className="text-2xl font-bold text-slate-900">{formatCurrency(income)} Frw</p>
+                </div>
+
+                {/* Expenses */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-red-100">
+                      <TrendingDown className="w-6 h-6 text-red-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-slate-500 text-sm font-medium">Total Expenses</h3>
+                  <p className="text-2xl font-bold text-slate-900">{formatCurrency(expense)} Frw</p>
+                </div>
+
+                {/* Profit */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-blue-100">
+                      <TrendingUp className="w-6 h-6 text-blue-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-slate-500 text-sm font-medium">Total Profit</h3>
+                  <p className="text-2xl font-bold text-slate-900">{formatCurrency(profit)} Frw</p>
+                </div>
+
+                {/* Clients */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-purple-100">
+                      <User className="w-6 h-6 text-purple-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-slate-500 text-sm font-medium">Active Clients</h3>
+                  <p className="text-2xl font-bold text-slate-900">{clients || 0}</p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                {/* Top Products */}
+              {/* Secondary Metrics Row */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* Loss Card */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-orange-100">
+                      <AlertTriangle className="w-6 h-6 text-orange-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-slate-500 text-sm font-medium">Total Loss</h3>
+                  <p className="text-2xl font-bold text-slate-900">{formatCurrency(loss)} Frw</p>
+                </div>
+
+                {/* Inventory Value */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-indigo-100">
+                      <Package className="w-6 h-6 text-indigo-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-slate-500 text-sm font-medium">Inventory Value</h3>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {formatCurrency(inventorySummary?.totalStockValueAtSalePrice || 0)} Frw
+                  </p>
+                </div>
+
+                {/* Low Stock Alert */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-red-100">
+                      <AlertTriangle className="w-6 h-6 text-red-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-slate-500 text-sm font-medium">Low Stock Items</h3>
+                  <p className="text-2xl font-bold text-slate-900">{lowStockItems.length}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-8 mb-8">
+                {/* Low Stock Items */}
                 <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                   <div className="p-6 border-b border-slate-200">
-                    <h2 className="font-bold text-slate-800">Top Selling Products</h2>
+                    <h2 className="font-bold text-slate-800 flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-red-500" />
+                      Low Stock Alert ({lowStockItems.length})
+                    </h2>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left">
                       <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
                         <tr>
-                          <th className="px-6 py-3">Product Name</th>
-                          <th className="px-6 py-3 text-right">Sold</th>
-                          <th className="px-6 py-3 text-right">Revenue</th>
+                          <th className="px-6 py-3">Product</th>
+                          <th className="px-6 py-3 text-right">Current Stock</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
-                        {topProducts.length > 0 ? (
-                          topProducts.map((product, idx) => (
+                        {lowStockItems.length > 0 ? (
+                          lowStockItems.slice(0, 6).map((item, idx) => (
                             <tr key={idx} className="hover:bg-slate-50">
-                              <td className="px-6 py-4 font-medium text-slate-900">{product.name}</td>
-                              <td className="px-6 py-4 text-right text-slate-600">{product.sold}</td>
-                              <td className="px-6 py-4 text-right text-slate-900 font-bold">{product.revenue}</td>
+                              <td className="px-6 py-4 font-medium text-slate-900">{item.productName || 'N/A'}</td>
+                              <td className="px-6 py-4 text-right">
+                                <span className="text-red-600 font-bold">{item.quantity || 0}</span>
+                              </td>
                             </tr>
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="3" className="px-6 py-4 text-center text-slate-500">No product data available</td>
+                            <td colSpan="2" className="px-6 py-4 text-center text-slate-500">No low stock items</td>
                           </tr>
                         )}
                       </tbody>
                     </table>
                   </div>
                 </div>
-
-                {/* Inventory Summary */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                  <div className="p-6 border-b border-slate-200">
-                    <h2 className="font-bold text-slate-800">System Information</h2>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    <div className="flex justify-between items-center pb-4 border-b border-slate-200">
-                      <span className="text-sm font-medium text-slate-700">Total Products</span>
-                      <span className="text-lg font-bold text-slate-900">--</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-4 border-b border-slate-200">
-                      <span className="text-sm font-medium text-slate-700">Total Transactions</span>
-                      <span className="text-lg font-bold text-slate-900">--</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-slate-700">Data Last Updated</span>
-                      <span className="text-sm text-slate-600">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Monthly Sales Data */}
+              {/* Recent Transactions */}
               <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-200">
-                  <h2 className="font-bold text-slate-800">Monthly Sales Summary</h2>
+                  <h2 className="font-bold text-slate-800 flex items-center gap-2">
+                    <ReceiptText className="w-5 h-5 text-blue-500" />
+                    Recent Transactions
+                  </h2>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left">
                     <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
                       <tr>
-                        <th className="px-6 py-3">Month</th>
-                        <th className="px-6 py-3 text-right">Sales</th>
-                        <th className="px-6 py-3 text-right">Orders</th>
+                        <th className="px-6 py-3">Type</th>
+                        <th className="px-6 py-3">Description</th>
+                        <th className="px-6 py-3 text-right">Amount</th>
+                        <th className="px-6 py-3">Date</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {salesData.length > 0 ? (
-                        salesData.map((data, idx) => (
+                      {recentTransactions.length > 0 ? (
+                        recentTransactions.map((transaction, idx) => (
                           <tr key={idx} className="hover:bg-slate-50">
-                            <td className="px-6 py-4 font-medium text-slate-900">{data.month}</td>
-                            <td className="px-6 py-4 text-right text-slate-900 font-bold">{data.sales}</td>
-                            <td className="px-6 py-4 text-right text-slate-600">{data.orders}</td>
+                            <td className="px-6 py-4">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                transaction.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                              }`}>
+                                {transaction.type || 'N/A'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-slate-600">{transaction.description || 'N/A'}</td>
+                            <td className="px-6 py-4 text-right font-bold text-slate-900">{formatCurrency(transaction.amount || 0)} Frw</td>
+                            <td className="px-6 py-4 text-slate-500">
+                              {transaction.date ? new Date(transaction.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="3" className="px-6 py-4 text-center text-slate-500">No sales data available</td>
+                          <td colSpan="4" className="px-6 py-4 text-center text-slate-500">No transaction data available</td>
                         </tr>
                       )}
                     </tbody>
