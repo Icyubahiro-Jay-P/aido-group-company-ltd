@@ -92,7 +92,7 @@ export default function Dashboard() {
           const calculatedStats = [
             { 
               title: 'Total Inventory Value', 
-              value: `${(summaryData.totalStockValueAtSalePrice || 0).toLocaleString('en-US')}`, 
+              value: `${(summaryData.totalStockValueAtSalePrice || 0).toLocaleString('en-US')} Frw`, 
               icon: DollarSign, 
               color: 'text-blue-600', 
               bg: 'bg-blue-100' 
