@@ -161,12 +161,12 @@ const Reports = () => {
         ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         
-        <div className="flex items-center justify-center h-16 border-b border-slate-200">
+        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
           <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <Box size={20} />
             </div>
-            Dashboard
+            Reports
           </div>
         </div>
 
@@ -216,7 +216,7 @@ const Reports = () => {
             >
               <Menu size={20} />
             </button>
-            <h2 className="text-lg font-semibold text-slate-900">Reports</h2>
+            <h1 className='text-2xl font-bold'>Business Analytics</h1>
           </div>
         </header>
 
@@ -255,7 +255,7 @@ const Reports = () => {
           ) : (
             <>
               {/* Main KPI Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {/* Revenue */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-4">
@@ -268,7 +268,7 @@ const Reports = () => {
                 </div>
 
                 {/* Expenses */}
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                {/* <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-4">
                     <div className="p-3 rounded-lg bg-red-100">
                       <TrendingDown className="w-6 h-6 text-red-600" />
@@ -276,7 +276,7 @@ const Reports = () => {
                   </div>
                   <h3 className="text-slate-500 text-sm font-medium">Total Expenses</h3>
                   <p className="text-2xl font-bold text-slate-900">{formatCurrency(expense)} Frw</p>
-                </div>
+                </div> */}
 
                 {/* Profit */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">

@@ -113,9 +113,9 @@ export const logout = async () => {
 };
 
 // Get all users (admin only)
-export const getAllUsers = async (token) => {
+export const getAllUsers = async (page = 1, limit = 10) => {
   try {
-    const response = await axios.get(`${ API_URL }`, {
+    const response = await axios.get(`${ API_URL }?page=${page}&limit=${limit}`, {
       withCredentials: true,
     });
     return response.data;

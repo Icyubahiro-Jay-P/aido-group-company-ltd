@@ -158,12 +158,12 @@ const Receipts = () => {
         ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         
-        <div className="flex items-center justify-center h-16 border-b border-slate-200">
+        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
           <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <Box size={20} />
             </div>
-            Dashboard
+            Reciepts
           </div>
         </div>
 

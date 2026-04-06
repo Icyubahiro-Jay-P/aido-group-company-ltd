@@ -17,7 +17,7 @@ import {
   ReceiptText,
   Clock
 } from 'lucide-react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
 import { getInventorySummary, getLowStockItems } from '../api/reportServices';
 import { getSales } from '../api/saleServices';
@@ -58,6 +58,7 @@ export default function Dashboard() {
   const [lowStockItems, setLowStockItems] = useState([]);
   const [recentSales, setRecentSales] = useState([]);
   const [stats, setStats] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "AIDO Group Company Ltd - Dashboard";
@@ -106,7 +107,7 @@ export default function Dashboard() {
             },
             { 
               title: 'Recent Sales', 
-              value: (recentSales.length || 0).toString(), 
+              value: (recentSales.length).toString(), 
               icon: ShoppingCart, 
               color: 'text-orange-600', 
               bg: 'bg-orange-100' 
@@ -149,7 +150,7 @@ export default function Dashboard() {
         ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         
-        <div className="flex items-center justify-center h-16 border-b border-slate-200">
+        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
           <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <Box size={20} />
@@ -206,8 +207,8 @@ export default function Dashboard() {
             >
               <Menu size={20} />
             </button>
+            <h1 className='text-2xl font-bold'>Inventory Overview</h1>
           </div>
-          <div></div>
         </header>
 
         {/* Dashboard Content */}
@@ -364,7 +365,7 @@ export default function Dashboard() {
                     )}
                   </div>
                   <div className="p-4 bg-slate-50 border-t border-slate-200 text-center">
-                    <button className="text-sm text-blue-600 font-medium hover:text-blue-700 transition-colors">
+                    <button className="text-sm cursor-pointer text-blue-600 font-medium hover:text-blue-700 transition-colors" onClick={()=> navigate('/reciepts')}>
                       View All Sales →
                     </button>
                   </div>

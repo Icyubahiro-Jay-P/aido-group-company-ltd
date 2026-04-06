@@ -67,7 +67,7 @@ const Sales = () => {
             ...row,
             productId: selectedProduct ? selectedProduct._id : '',
             productName: value,
-            originalPrice: selectedProduct ? selectedProduct.unitPrice : 0,
+            originalPrice: selectedProduct ? selectedProduct.purchasePrice : 0,
             unitPrice: selectedProduct ? selectedProduct.unitPrice : 0
           };
         }
@@ -97,7 +97,7 @@ const Sales = () => {
     if (!formData.phone.trim()) errors.phone = 'Phone is required';
     if (!formData.address.trim()) errors.address = 'Address is required';
 
-    // Products validation + STOCK POLICE
+    // Products validation + STOCK POLICE + PROFIT VALIDATION
     productRows.forEach((row, idx) => {
       if (!row.productName.trim()) {
         errors[`product_${idx}`] = 'Product name is required';      } else if (!row.productId) {
@@ -105,6 +105,10 @@ const Sales = () => {
         const selectedProduct = products.find(p => p.productName === row.productName);
         if (selectedProduct && row.quantity > (selectedProduct.quantity || 0)) {
           errors[`quantity_${idx}`] = `Only ${selectedProduct.quantity} left in stock`;
+        }
+        // Validate that unit price > purchase price
+        if (row.unitPrice <= row.originalPrice) {
+          errors[`unitPrice_${idx}`] = `Unit price (${row.unitPrice}) must be higher than purchase price (${row.originalPrice})`;
         }
       }
       if (row.quantity < 1) {
@@ -118,6 +122,15 @@ const Sales = () => {
 
   const calculateTotal = () => {
     return productRows.reduce((sum, row) => sum + (row.unitPrice * row.quantity), 0);
+  };
+
+  const calculateProductProfit = (row) => {
+    if (row.unitPrice <= row.originalPrice) return 0;
+    return (row.unitPrice - row.originalPrice) * row.quantity;
+  };
+
+  const calculateTotalProfit = () => {
+    return productRows.reduce((sum, row) => sum + calculateProductProfit(row), 0);
   };
 
   const handleSubmit = async (e) => {
@@ -177,12 +190,12 @@ const Sales = () => {
         lg:translate-x-0 lg:static lg:inset-0
         ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <div className="flex items-center justify-center h-16 border-b border-slate-200">
+        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
           <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <Box size={20} />
             </div>
-            Dashboard
+            Sales
           </div>
         </div>
 
@@ -231,7 +244,7 @@ const Sales = () => {
             >
               <Menu size={20} />
             </button>
-            <h2 className="text-lg font-semibold text-slate-900">Record Sales Transaction</h2>
+            <h1 className='text-2xl font-bold'>Record Sales Transaction</h1>
           </div>
         </header>
 
@@ -402,14 +415,31 @@ const Sales = () => {
                             type="number"
                             value={row.unitPrice}
                             onChange={(e) => handleProductChange(row.id, 'unitPrice', Number(e.target.value) || 0)}
-                            className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                              formErrors[`unitPrice_${idx}`] ? 'border-red-500' : 'border-slate-200'
+                            }`}
                           />
+                          {formErrors[`unitPrice_${idx}`] && (
+                            <p className="text-red-600 text-xs mt-1 whitespace-nowrap">{formErrors[`unitPrice_${idx}`]}</p>
+                          )}
                         </div>
 
                         <div className="w-28">
                           <label className="block text-xs font-medium text-slate-700 mb-1">Total</label>
                           <div className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-900 font-semibold">
                             {formatCurrency(row.unitPrice * row.quantity)}
+                          </div>
+                        </div>
+
+                        {/* Profit Display */}
+                        <div className="w-28">
+                          <label className="block text-xs font-medium text-green-700 mb-1">Profit</label>
+                          <div className={`w-full px-3 py-2 border rounded-lg font-semibold ${
+                            calculateProductProfit(row) > 0 
+                              ? 'bg-green-50 border-green-200 text-green-700' 
+                              : 'bg-red-50 border-red-200 text-red-700'
+                          }`}>
+                            {formatCurrency(calculateProductProfit(row))}
                           </div>
                         </div>
 
@@ -426,11 +456,19 @@ const Sales = () => {
                 )}
               </div>
 
-              {/* Summary Section - currency murdered in cold blood */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold text-slate-900">Total Amount:</span>
-                  <span className="text-3xl font-bold text-blue-600">{formatCurrency(calculateTotal())} Frw</span>
+              {/* Summary Section - with profit tracking */}
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-base font-semibold text-slate-900">Total Amount (Sales):</span>
+                    <span className="text-2xl font-bold text-blue-600">{formatCurrency(calculateTotal())} Frw</span>
+                  </div>
+                  {calculateTotalProfit() > 0 && (
+                    <div className="flex justify-between items-center pt-3 border-t border-blue-200">
+                      <span className="text-base font-semibold text-green-700">Total Profit:</span>
+                      <span className="text-2xl font-bold text-green-600">+{formatCurrency(calculateTotalProfit())} Frw</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

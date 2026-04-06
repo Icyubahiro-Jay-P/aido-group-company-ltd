@@ -87,7 +87,7 @@ export const exportReceiptsToPDF = async (sales, fileName = 'sales-receipts') =>
     pdf.setFontSize(11);
     pdf.text(`Total Sales: ${sales.length}`, 15, yPosition);
     yPosition += 6;
-    pdf.text(`Total Revenue: ${totalAmount.toLocaleString('en-US')}`, 15, yPosition);
+    pdf.text(`Total Revenue: ${totalAmount.toLocaleString('en-US')} Frw`, 15, yPosition);
     yPosition += 10;
 
     // Table header
@@ -138,7 +138,7 @@ export const exportReceiptsToPDF = async (sales, fileName = 'sales-receipts') =>
             saleTotal += (p.totalPrice || 0);
           });
         }
-        const amount = saleTotal.toLocaleString('en-US');
+        const amount = `${saleTotal.toLocaleString('en-US')} Frw`;
 
         pdf.text(customer, 15, yPosition);
         pdf.text(saleId, 60, yPosition);
@@ -183,7 +183,7 @@ export const exportInventoryToPDF = async (items, fileName = 'inventory') => {
     pdf.setFontSize(11);
     pdf.text(`Total Items: ${items.length}`, 15, yPosition);
     yPosition += 6;
-    pdf.text(`Total Inventory Value: ${totalValue.toLocaleString('en-US')}`, 15, yPosition);
+    pdf.text(`Total Inventory Value: ${totalValue.toLocaleString('en-US')} Frw`, 15, yPosition);
     yPosition += 10;
 
     // Table header
@@ -212,8 +212,8 @@ export const exportInventoryToPDF = async (items, fileName = 'inventory') => {
       const name = item.productName.substring(0, 30);
       const sku = item.sku.substring(0, 12);
       const quantity = item.quantity.toString();
-      const unitPrice = item.unitPrice.toString();
-      const total = (item.unitPrice * item.quantity).toString();
+      const unitPrice = `${item.unitPrice.toLocaleString('en-US')} Frw`;
+      const total = `${(item.unitPrice * item.quantity).toLocaleString('en-US')} Frw`;
 
       pdf.text(name, 15, yPosition);
       pdf.text(sku, 70, yPosition);

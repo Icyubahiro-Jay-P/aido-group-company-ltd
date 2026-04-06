@@ -67,12 +67,12 @@ const Inventory = () => {
         ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         
-        <div className="flex items-center justify-center h-16 border-b border-slate-200">
+        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
           <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <Box size={20} />
             </div>
-            Dashboard
+            Inventory
           </div>
         </div>
 
@@ -122,8 +122,7 @@ const Inventory = () => {
             >
               <Menu size={20} />
             </button>
-            <h2 className="text-lg font-semibold text-slate-900">Inventory</h2>
-          </div>
+          <h1 className='text-2xl font-bold'>Complete Inventory</h1>          </div>
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
@@ -144,7 +143,7 @@ const Inventory = () => {
               </div>
               <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
                 <p className="text-xs text-blue-100">Total Value</p>
-                <p className="text-xl font-bold">{formatCurrency(totalValue)}</p>
+                <p className="text-xl font-bold">{formatCurrency(totalValue)} Frw</p>
               </div>
             </div>
           </div>
