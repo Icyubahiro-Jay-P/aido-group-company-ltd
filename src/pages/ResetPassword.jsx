@@ -22,7 +22,7 @@ const ResetPassword = () => {
     setError('');
     
     try {
-      await axios.post(`http://localhost:5000/api/users/reset-password/${token}`, { password: formData.password });
+      await axios.post(`https://aido-backend-h6gd.onrender.com/api/users/reset-password/${token}`, { password: formData.password });
       setSuccess(true);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to change password. The token may be expired.');
