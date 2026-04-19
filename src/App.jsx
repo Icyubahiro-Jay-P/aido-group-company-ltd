@@ -12,10 +12,13 @@ const Inventory = lazy(() => import('./pages/Inventory'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Sales = lazy(() => import('./pages/Sales'));
 const StockIn = lazy(() => import('./pages/StockIn'));
+const Purchases = lazy(() => import('./pages/Purchases'));
 const Reports = lazy(() => import('./pages/Reports'));
 const Reciepts = lazy(() => import('./pages/Reciepts'));
 const Home = lazy(() => import('./pages/Home'));
-const ContactUs = lazy(()=>import('./pages/ContactUs.jsx'))
+const ContactUs = lazy(()=>import('./pages/ContactUs.jsx'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 
 const RouteWrapper = ({ children }) => {
   const [initialLoading, setInitialLoading] = useState(true);
@@ -42,6 +45,8 @@ const App = () => {
           <Route path="/" element={<RouteWrapper><Home /></RouteWrapper>} />
           <Route path="/contact" element={<RouteWrapper><ContactUs /></RouteWrapper>} />
           <Route path="/login" element={<RouteWrapper><Login /></RouteWrapper>} />
+          <Route path="/forgot-password" element={<RouteWrapper><ForgotPassword /></RouteWrapper>} />
+          <Route path="/reset-password/:token" element={<RouteWrapper><ResetPassword /></RouteWrapper>} />
           <Route path="/404" element={<RouteWrapper><NotFound /></RouteWrapper>} />
           <Route path="*" element={<Navigate to="/404" />} />
           {/* Protected routes (require login) */}
@@ -51,6 +56,7 @@ const App = () => {
             <Route path="/settings" element={<RouteWrapper><Settings /></RouteWrapper>} />
             <Route path="/sales" element={<RouteWrapper><Sales /></RouteWrapper>} />
             <Route path="/stockin" element={<RouteWrapper><StockIn /></RouteWrapper>} />
+            <Route path="/purchases" element={<RouteWrapper><Purchases /></RouteWrapper>} />
             <Route path="/reports" element={<RouteWrapper><Reports /></RouteWrapper>} />
             <Route path="/reciepts" element={<RouteWrapper><Reciepts /></RouteWrapper>} />
           </Route>

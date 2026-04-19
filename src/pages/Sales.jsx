@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Box, Plus, Trash2, LayoutDashboard,ShoppingCart , Package, LayersPlus, BanknoteArrowUp, ReceiptText, TrendingUp, Settings, LogOut } from 'lucide-react';
+import { Menu, Box, Plus, Trash2, LayoutDashboard,ShoppingCart , Package, LayersPlus, BanknoteArrowUp, BanknoteArrowDown, ReceiptText, TrendingUp, Settings, LogOut } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
 import { getProducts } from '../api/productServices';
@@ -205,8 +205,8 @@ const Sales = () => {
           </div>
           <NavbarItem icon={LayoutDashboard} label="Dashboard" />
           <NavbarItem icon={Package} label="Inventory" />
-          {user.role === "Boss" && <NavbarItem icon={LayersPlus} label="Stock in" />}
-          
+          <NavbarItem icon={LayersPlus} label="Stock in" />
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
           <NavbarItem icon={BanknoteArrowUp} label="Sales" active/>
           
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
@@ -443,13 +443,16 @@ const Sales = () => {
                           </div>
                         </div>
 
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveProduct(row.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        {user.role === "Boss" && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveProduct(row.id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        )}
+                      
                       </div>
                     ))}
                   </div>
@@ -457,7 +460,7 @@ const Sales = () => {
               </div>
 
               {/* Summary Section - with profit tracking */}
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
+              <div className="bg-linear-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-base font-semibold text-slate-900">Total Amount (Sales):</span>

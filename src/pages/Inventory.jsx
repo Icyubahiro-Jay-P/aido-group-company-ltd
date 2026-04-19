@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Menu, Box, Download, LayoutDashboard, Package, LayersPlus,BanknoteArrowUp,ReceiptText,TrendingUp,Settings,LogOut } from 'lucide-react';
+import { Search, Menu, Box, Download, LayoutDashboard, Package, LayersPlus,BanknoteArrowUp,BanknoteArrowDown,ReceiptText,TrendingUp,Settings,LogOut } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
 import { getProducts } from '../api/productServices';
@@ -81,9 +81,9 @@ const Inventory = () => {
             Main
           </div>
           <NavbarItem icon={LayoutDashboard} label="Dashboard" />
-          <NavbarItem icon={Package} label="Inventory" active />
-          {user.role === "Boss" && <NavbarItem icon={LayersPlus} label="Stock in" />}
-          
+          <NavbarItem icon={Package} label="Inventory" active/>
+          <NavbarItem icon={LayersPlus} label="Stock in" />
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
           <NavbarItem icon={BanknoteArrowUp} label="Sales" />
           
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">

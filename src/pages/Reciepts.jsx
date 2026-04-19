@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Menu, Box, Download, LayoutDashboard, Package, LayersPlus, BanknoteArrowUp, ReceiptText, TrendingUp, Settings, LogOut, Trash2, Eye, ChevronDown, X } from 'lucide-react';
+import { Search, Menu, Box, Download, LayoutDashboard, Package, LayersPlus, BanknoteArrowUp, BanknoteArrowDown, ReceiptText, TrendingUp, Settings, LogOut, Trash2, Eye, ChevronDown, X } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import NavbarItem from '../components/NavbarItem';
 import { getSales, deleteSale } from '../api/saleServices';
@@ -173,13 +173,14 @@ const Receipts = () => {
           </div>
           <NavbarItem icon={LayoutDashboard} label="Dashboard" />
           <NavbarItem icon={Package} label="Inventory" />
-          {user.role === "Boss" && <NavbarItem icon={LayersPlus} label="Stock in" />}
+          <NavbarItem icon={LayersPlus} label="Stock in" />
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
           <NavbarItem icon={BanknoteArrowUp} label="Sales" />
           
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
             System
           </div>
-          <NavbarItem icon={ReceiptText} label="Reciepts" active />
+          <NavbarItem icon={ReceiptText} label="Reciepts" active/>
           {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
           <NavbarItem icon={Settings} label="Settings" />
           <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
@@ -297,7 +298,7 @@ const Receipts = () => {
                       <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Date & Time</th>
                       <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Items</th>
                       <th className="px-6 py-3 text-right text-sm font-semibold text-slate-700">Total Amount</th>
-                      <th className="px-6 py-3 text-center text-sm font-semibold text-slate-700">Actions</th>
+                      {user.role === "Boss" && <th className="px-6 py-3 text-center text-sm font-semibold text-slate-700">Actions</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
@@ -313,20 +314,20 @@ const Receipts = () => {
                             <td className="px-6 py-4 text-sm text-slate-600">{formatDateTime(sale.saleDate)}</td>
                             <td className="px-6 py-4 text-sm text-slate-600">{itemCount} item{itemCount !== 1 ? 's' : ''}</td>
                             <td className="px-6 py-4 text-sm font-semibold text-slate-900 text-right">{formatCurrency(totalAmount)} Frw</td>
-                            <td className="px-6 py-4 text-center">
-                              <div className="flex items-center justify-center gap-2">
-                                <button
-                                  onClick={() => setExpandedRow(expandedRow === sale._id ? null : sale._id)}
-                                  className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                                  title="View details"
-                                >
-                                  {expandedRow === sale._id ? (
-                                    <ChevronDown size={18} className="text-slate-600" />
-                                  ) : (
-                                    <Eye size={18} className="text-slate-600" />
-                                  )}
-                                </button>
-                                {user.role === "Boss" && (
+                            {user.role === "Boss" && (
+                              <td className="px-6 py-4 text-center">
+                                <div className="flex items-center justify-center gap-2">
+                                  <button
+                                    onClick={() => setExpandedRow(expandedRow === sale._id ? null : sale._id)}
+                                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                                    title="View details"
+                                  >
+                                    {expandedRow === sale._id ? (
+                                      <ChevronDown size={18} className="text-slate-600" />
+                                    ) : (
+                                      <Eye size={18} className="text-slate-600" />
+                                    )}
+                                  </button>
                                   <button
                                     onClick={() => handleDeleteSale(sale._id)}
                                     className="p-2 hover:bg-red-100 rounded-lg transition-colors"
@@ -334,9 +335,9 @@ const Receipts = () => {
                                   >
                                     <Trash2 size={18} className="text-red-600" />
                                   </button>
-                                )}
-                              </div>
-                            </td>
+                                </div>
+                              </td>
+                            )}
                           </tr>
                           {expandedRow === sale._id && (
                             <tr className="bg-slate-50 border-t-2 border-slate-200">

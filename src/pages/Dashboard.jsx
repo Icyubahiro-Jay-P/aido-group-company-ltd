@@ -14,6 +14,7 @@ import {
   LogOut,
   LayersPlus,
   BanknoteArrowUp,
+  BanknoteArrowDown,
   ReceiptText,
   Clock
 } from 'lucide-react';
@@ -165,8 +166,8 @@ export default function Dashboard() {
           </div>
           <NavbarItem icon={LayoutDashboard} label="Dashboard" active />
           <NavbarItem icon={Package} label="Inventory" />
-          {user.role === "Boss" && <NavbarItem icon={LayersPlus} label="Stock in" />}
-          
+          <NavbarItem icon={LayersPlus} label="Stock in" />
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
           <NavbarItem icon={BanknoteArrowUp} label="Sales" />
           
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">

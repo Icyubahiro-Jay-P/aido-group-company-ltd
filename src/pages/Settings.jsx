@@ -12,6 +12,7 @@ import {
   Package,
   LayersPlus,
   BanknoteArrowUp,
+  BanknoteArrowDown,
   ReceiptText,
   TrendingUp,
   SettingsIcon,
@@ -225,7 +226,7 @@ const Settings = () => {
     if (user.role === "Boss" && activeTab === "admin") {
       fetchUsers(usersPage);
     }
-  }, [activeTab, user.role, usersPage, fetchUsers]);
+  }, [activeTab, user.role, usersPage]);
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
@@ -259,20 +260,16 @@ const Settings = () => {
           </div>
           <NavbarItem icon={LayoutDashboard} label="Dashboard" />
           <NavbarItem icon={Package} label="Inventory" />
-          {user.role === "Boss" && (
-            <NavbarItem icon={LayersPlus} label="Stock in" />
-          )}
-
+          <NavbarItem icon={LayersPlus} label="Stock in" />
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
           <NavbarItem icon={BanknoteArrowUp} label="Sales" />
-
+          
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
             System
           </div>
           <NavbarItem icon={ReceiptText} label="Reciepts" />
-          {user.role === "Boss" && (
-            <NavbarItem icon={TrendingUp} label="Reports" />
-          )}
-          <NavbarItem icon={SettingsIcon} label="Settings" active />
+          {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
+          <NavbarItem icon={Settings} label="Settings" active />
           <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
         </nav>
 
@@ -463,24 +460,26 @@ const Settings = () => {
                       />
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Role
-                    </label>
-                    <div className="relative">
-                      <UserKey className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                      <select
-                        name="role"
-                        id="role"
-                        value={profileData.role}
-                        onChange={handleProfileChange}
-                        className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
-                      >
-                        <option value="Worker">Worker</option>
-                        <option value="Boss">Boss</option>
-                      </select>
+                  {user.role === "Boss" && (
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                        Role
+                      </label>
+                      <div className="relative">
+                        <UserKey className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                        <select
+                          name="role"
+                          id="role"
+                          value={profileData.role}
+                          onChange={handleProfileChange}
+                          className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                        >
+                          <option value="Worker">Worker</option>
+                          <option value="Boss">Boss</option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <button
                   type="submit"

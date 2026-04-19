@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Box, Plus, Trash2, Edit2, LayoutDashboard, Package, LayersPlus, BanknoteArrowUp, ReceiptText, TrendingUp, Settings, LogOut } from 'lucide-react';
+import { Menu, Box, Plus, Trash2, Edit2, LayoutDashboard, Package, LayersPlus, BanknoteArrowUp, BanknoteArrowDown, ReceiptText, TrendingUp, Settings, LogOut } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import NavbarItem from '../components/NavbarItem';
@@ -140,17 +140,17 @@ const StockIn = () => {
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-4">
             Main
           </div>
-          <NavbarItem icon={LayoutDashboard} label="Dashboard" />
+          <NavbarItem icon={LayoutDashboard} label="Dashboard"  />
           <NavbarItem icon={Package} label="Inventory" />
-          {isBoss && <NavbarItem icon={LayersPlus} label="Stock in" active />}
-          
+          <NavbarItem icon={LayersPlus} label="Stock in" active/>
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
           <NavbarItem icon={BanknoteArrowUp} label="Sales" />
           
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
             System
           </div>
           <NavbarItem icon={ReceiptText} label="Reciepts" />
-          {isBoss && <NavbarItem icon={TrendingUp} label="Reports" />}
+          {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
           <NavbarItem icon={Settings} label="Settings" />
           <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
         </nav>
@@ -200,6 +200,7 @@ const StockIn = () => {
           </div>
 
           {/* Form */}
+          {isBoss && (
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
             <h2 className="text-lg font-semibold text-slate-900 mb-6">
               {editingId ? 'Edit Stock Item' : 'New Stock Item'}
@@ -288,6 +289,7 @@ const StockIn = () => {
               </div>
             </form>
           </div>
+          )}
 
           {/* Stock Items Table */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
