@@ -11,7 +11,7 @@ const ProtectedRoute = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/profile', {
+        const res = await axios.get('https://aido-backend-h6gd.onrender.com/api/users/profile', {
           withCredentials: true,        // ← This sends the httpOnly cookie
         });
 
