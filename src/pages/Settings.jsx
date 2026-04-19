@@ -41,18 +41,23 @@ import {
 import { toast } from "sonner";
 
 const Settings = () => {
-  const { user } = useOutletContext();
+  const context = useOutletContext();
+  const user = context?.user;
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // User management states
+  // Guard: Early exit if user is not loaded
+  if (!user) {
+    return <div className="flex items-center justify-center h-screen">Loading user data...</div>;
+  }
+
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [showAddUserForm, setShowAddUserForm] = useState(false);
   const [usersPage, setUsersPage] = useState(1);
-  const usersPerPage = 10;
+  const [shouldFetchUsers, setShouldFetchUsers] = useState(false);
 
   const [profileData, setProfileData] = useState({
     fullName: user.fullName || "",
@@ -79,6 +84,8 @@ const Settings = () => {
     dateOfBirth: "",
     role: "Worker",
   });
+
+  const USERS_PER_PAGE = useMemo(() => 10, []);
 
   useEffect(() => {
     document.title = "AIDO Group Company Ltd - Settings";
@@ -164,18 +171,28 @@ const Settings = () => {
 
   const fetchUsers = useCallback(
     async (page = 1) => {
+      // Guard: only fetch if user is Boss and user data exists
+      if (!user || user.role !== "Boss") {
+        setUsers([]);
+        setLoadingUsers(false);
+        return;
+      }
+
+      console.log("[Settings] Fetching users for page:", page);
       setLoadingUsers(true);
       try {
-        const response = await getAllUsers(page, usersPerPage);
+        const response = await getAllUsers(page, USERS_PER_PAGE);
+        console.log("[Settings] Users fetched:", response.users?.length || 0);
         setUsers(response.users || []);
       } catch (error) {
+        console.error("[Settings] Fetch users error:", error);
         toast.error(error.message || "Failed to fetch users");
         setUsers([]);
       } finally {
         setLoadingUsers(false);
       }
     },
-    [usersPerPage],
+    [user?.role, USERS_PER_PAGE, user]
   );
 
   const handleDeleteUser = async (userId) => {
@@ -216,17 +233,31 @@ const Settings = () => {
         role: "Worker",
       });
       setShowAddUserForm(false);
-      fetchUsers();
+      // Fetch fresh user list with reset to page 1
+      setUsersPage(1);
     } catch (error) {
       toast.error(error.message || error.error || "Failed to create user");
     }
   };
 
+  // Separate effect just for fetching users - decoupled from other state
   useEffect(() => {
-    if (user.role === "Boss" && activeTab === "admin") {
+    console.log("[Settings] useEffect triggered - admin tab:", activeTab === "admin", "user role:", user?.role, "shouldFetch:", shouldFetchUsers);
+    
+    if (user?.role === "Boss" && activeTab === "admin" && shouldFetchUsers) {
+      console.log("[Settings] Fetching users...");
+      fetchUsers(usersPage);
+      setShouldFetchUsers(false); // Prevent auto-fetch
+    }
+  }, [activeTab, user?.role]); // Only depend on tab and role changes, NOT usersPage or fetchUsers
+
+  // Separate effect for page changes
+  useEffect(() => {
+    if (user?.role === "Boss" && activeTab === "admin" && usersPage > 0) {
+      console.log("[Settings] Page changed to:", usersPage);
       fetchUsers(usersPage);
     }
-  }, [activeTab, user.role, usersPage]);
+  }, [usersPage]);
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
@@ -354,7 +385,7 @@ const Settings = () => {
               <Lock className="w-4 h-4 inline mr-2" />
               Security
             </button>
-            {user.role === "Boss" && (
+            {user?.role === "Boss" && (
               <button
                 onClick={() => setActiveTab("admin")}
                 className={`px-4 py-3 font-medium border-b-2 transition-colors ${
@@ -460,7 +491,7 @@ const Settings = () => {
                       />
                     </div>
                   </div>
-                  {user.role === "Boss" && (
+                  {user?.role === "Boss" && (
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Role
@@ -585,7 +616,7 @@ const Settings = () => {
               </form>
             </div>
           )}
-          {user.role === "Boss" && activeTab === "admin" && (
+          {user?.role === "Boss" && activeTab === "admin" && (
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-6">
                 User Management
@@ -666,7 +697,7 @@ const Settings = () => {
                                 </p>
                               </div>
                             </div>
-                            {u._id !== user._id && (
+                            {u._id !== user?._id && (
                               <button
                                 onClick={() => setDeleteConfirm(u)}
                                 className="ml-4 p-2 hover:bg-red-100 rounded-lg transition-colors"
@@ -697,7 +728,7 @@ const Settings = () => {
                           </span>
                           <button
                             onClick={() => setUsersPage(usersPage + 1)}
-                            disabled={users.length < usersPerPage}
+                            disabled={users.length < USERS_PER_PAGE}
                             className="px-3 py-1 border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                           >
                             Next
