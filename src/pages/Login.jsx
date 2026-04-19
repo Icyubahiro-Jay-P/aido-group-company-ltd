@@ -32,6 +32,7 @@ const Login = () => {
     setError(err.message || 'Invalid email or password');
   } finally {
     setIsLoading(false);
+    console.clear()
   }
 };
   return (

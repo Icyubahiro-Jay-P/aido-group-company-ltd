@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ButtonLoading from '../components/ButtonLoading';
 import { InfoIcon, CheckCircle2 } from 'lucide-react';
+import toast from 'sonner';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
