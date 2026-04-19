@@ -1,7 +1,7 @@
 // src/api/purchaseServices.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/purchases';
+const API_URL = 'https://aido-backend-h6gd.onrender.com/api/purchases';
 
 // Create a new purchase
 export const createPurchase = async (purchaseData) => {

@@ -1,7 +1,7 @@
 // src/api/userServices.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/users';   // change port if needed
+const API_URL = 'https://aido-backend-h6gd.onrender.com/api/users';   // change port if needed
 
 export const login = async (credentials) => {
   try {
