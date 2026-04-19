@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Menu,
   Box,
@@ -43,29 +43,25 @@ import { toast } from "sonner";
 const Settings = () => {
   const context = useOutletContext();
   const user = context?.user;
+
+  // Initialize all state at the top level (before guards)
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [saveSuccess, setSaveSuccess] = useState(false);
-
-  // Guard: Early exit if user is not loaded
-  if (!user) {
-    return <div className="flex items-center justify-center h-screen">Loading user data...</div>;
-  }
-
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [showAddUserForm, setShowAddUserForm] = useState(false);
   const [usersPage, setUsersPage] = useState(1);
-  const [shouldFetchUsers, setShouldFetchUsers] = useState(false);
 
+  // Initialize profile data safely (guard against undefined user)
   const [profileData, setProfileData] = useState({
-    fullName: user.fullName || "",
-    email: user.email || "",
-    phoneNumber: user.phoneNumber || "",
-    dateOfBirth: user.dateOfBirth || "",
-    nationalIdentity: user.nationalIdentity || "",
-    role: user.role || "",
+    fullName: user?.fullName || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    dateOfBirth: user?.dateOfBirth || "",
+    nationalIdentity: user?.nationalIdentity || "",
+    role: user?.role || "",
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -87,9 +83,76 @@ const Settings = () => {
 
   const USERS_PER_PAGE = useMemo(() => 10, []);
 
+  // Guard: Early exit if user is not loaded
+  if (!user) {
+    return <div className="flex items-center justify-center h-screen">Loading user data...</div>;
+  }
+
+  // Update profileData when user context changes
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phoneNumber: user.phoneNumber || "",
+        dateOfBirth: user.dateOfBirth || "",
+        nationalIdentity: user.nationalIdentity || "",
+        role: user.role || "",
+      });
+    }
+  }, [user?.email, user?.fullName]); // Only update on critical user data changes
+
+  // Set page title
   useEffect(() => {
     document.title = "AIDO Group Company Ltd - Settings";
   }, []);
+
+  // Consolidated effect: fetch users when admin tab opens or page changes
+  useEffect(() => {
+    // Only proceed if Boss is viewing admin tab
+    if (user?.role !== "Boss" || activeTab !== "admin") {
+      return;
+    }
+
+    let isMounted = true;
+    const abortController = new AbortController();
+
+    const loadUsers = async () => {
+      setLoadingUsers(true);
+      try {
+        const response = await getAllUsers(usersPage, USERS_PER_PAGE);
+        // Only update state if component is still mounted
+        if (isMounted) {
+          setUsers(response.users || []);
+        }
+      } catch (error) {
+        if (isMounted && error.name !== "AbortError") {
+          console.error("[Settings] Fetch users error:", error);
+          toast.error(error.message || "Failed to fetch users");
+          setUsers([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoadingUsers(false);
+        }
+      }
+    };
+
+    loadUsers();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
+  }, [user?.role, activeTab, usersPage, USERS_PER_PAGE]);
+
+  // Reset page to 1 when switching away from admin tab
+  useEffect(() => {
+    if (activeTab !== "admin" && usersPage !== 1) {
+      setUsersPage(1);
+    }
+  }, [activeTab]);
 
   const handleProfileChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
@@ -169,32 +232,6 @@ const Settings = () => {
     }
   };
 
-  const fetchUsers = useCallback(
-    async (page = 1) => {
-      // Guard: only fetch if user is Boss and user data exists
-      if (!user || user.role !== "Boss") {
-        setUsers([]);
-        setLoadingUsers(false);
-        return;
-      }
-
-      console.log("[Settings] Fetching users for page:", page);
-      setLoadingUsers(true);
-      try {
-        const response = await getAllUsers(page, USERS_PER_PAGE);
-        console.log("[Settings] Users fetched:", response.users?.length || 0);
-        setUsers(response.users || []);
-      } catch (error) {
-        console.error("[Settings] Fetch users error:", error);
-        toast.error(error.message || "Failed to fetch users");
-        setUsers([]);
-      } finally {
-        setLoadingUsers(false);
-      }
-    },
-    [user?.role, USERS_PER_PAGE, user]
-  );
-
   const handleDeleteUser = async (userId) => {
     try {
       await deleteUserById(userId);
@@ -239,25 +276,6 @@ const Settings = () => {
       toast.error(error.message || error.error || "Failed to create user");
     }
   };
-
-  // Separate effect just for fetching users - decoupled from other state
-  useEffect(() => {
-    console.log("[Settings] useEffect triggered - admin tab:", activeTab === "admin", "user role:", user?.role, "shouldFetch:", shouldFetchUsers);
-    
-    if (user?.role === "Boss" && activeTab === "admin" && shouldFetchUsers) {
-      console.log("[Settings] Fetching users...");
-      fetchUsers(usersPage);
-      setShouldFetchUsers(false); // Prevent auto-fetch
-    }
-  }, [activeTab, user?.role]); // Only depend on tab and role changes, NOT usersPage or fetchUsers
-
-  // Separate effect for page changes
-  useEffect(() => {
-    if (user?.role === "Boss" && activeTab === "admin" && usersPage > 0) {
-      console.log("[Settings] Page changed to:", usersPage);
-      fetchUsers(usersPage);
-    }
-  }, [usersPage]);
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
