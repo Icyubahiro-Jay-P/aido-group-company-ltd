@@ -37,7 +37,11 @@ const Home = () => {
   ];
 
   const whatsappNumber = "250780407093";
-  const whatsappURL = `https://wa.me/${whatsappNumber}`;
+  const whatsappURL = `https://wa.me/${ whatsappNumber }`;
+  // change document title on page load
+  React.useEffect(() => {
+    document.title = "Aido Group Company Ltd | Official Website - Kigali, Rwanda";
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
@@ -58,7 +62,7 @@ const Home = () => {
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2">
               <Package className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">AIDO Group Company Ltd</span>
+              <h1 className="text-xl font-bold text-gray-900">AIDO Group Company Ltd</h1>
             </Link>
             <div className="flex gap-4 items-center">
               <Link 

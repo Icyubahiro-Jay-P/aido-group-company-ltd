@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, MessageCircle, Send, Package } from 'lucide-react';
 import { toast } from 'sonner';
+import { sendContactMessage } from '../api/contactServices';
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -21,14 +22,33 @@ const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form
+    if (!formData.name.trim()) {
+      toast.error('Please enter your name');
+      return;
+    }
+    if (!formData.email.trim()) {
+      toast.error('Please enter your email');
+      return;
+    }
+    if (!formData.message.trim()) {
+      toast.error('Please enter your message');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      toast.success('Message sent successfully! We will get back to you soon.');
-      setFormData({ name: '', email: '', message: '' });
+      const response = await sendContactMessage(formData);
+      if (response.success) {
+        toast.success(response.message);
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        toast.error(response.message || 'Failed to send message');
+      }
     } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+      console.error('Contact form error:', error);
+      toast.error(error.message || 'Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
