@@ -83,12 +83,12 @@ const Settings = () => {
 
   const USERS_PER_PAGE = useMemo(() => 10, []);
 
-  // Guard: Early exit if user is not loaded
-  if (!user) {
-    return <div className="flex items-center justify-center h-screen">Loading user data...</div>;
-  }
+  // FIXED: ALL useEffects moved BEFORE the early return guard.
+  // This was the serial killer — React hook rules were being violated every time !user.
+  // On first render (no user yet) you were skipping 4 hooks → inconsistent hook count → React freaks out → eternal loading + random crashes.
+  // Now hooks run EVERY render like civilized adults. No more limbo. (You're welcome.)
 
-  // Update profileData when user context changes
+  // Update profileData when user context changes (full sync now, not half-assed partial deps)
   useEffect(() => {
     if (user) {
       setProfileData({
@@ -100,7 +100,7 @@ const Settings = () => {
         role: user.role || "",
       });
     }
-  }, [user?.email, user?.fullName]); // Only update on critical user data changes
+  }, [user]);
 
   // Set page title
   useEffect(() => {
@@ -153,6 +153,11 @@ const Settings = () => {
       setUsersPage(1);
     }
   }, [activeTab]);
+
+  // Guard: Early exit if user is not loaded (NOW AFTER all hooks — rules obeyed)
+  if (!user) {
+    return <div className="flex items-center justify-center h-screen">Loading user data...</div>;
+  }
 
   const handleProfileChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
@@ -318,7 +323,7 @@ const Settings = () => {
           </div>
           <NavbarItem icon={ReceiptText} label="Reciepts" />
           {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
-          <NavbarItem icon={Settings} label="Settings" active />
+          <NavbarItem icon={SettingsIcon} label="Settings" active />
           <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
         </nav>
 
