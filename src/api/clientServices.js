@@ -1,7 +1,7 @@
 // src/api/clientServices.js
 import axios from 'axios';
 
-const API_URL = 'https://aido-backend-h6gd.onrender.com';
+const API_URL = 'https://aido-backend-h6gd.onrender.com/api/clients';
 
 // Create a new client
 export const createClient = async (clientData) => {
