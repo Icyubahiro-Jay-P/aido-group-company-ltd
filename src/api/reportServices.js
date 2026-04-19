@@ -1,7 +1,7 @@
 // src/api/reportServices.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/reports';
+const API_URL = 'https://aido-backend-h6gd.onrender.com/api/reports';
 
 // ==================== INCOME ====================
 export const getDailyIncome = async () => {
