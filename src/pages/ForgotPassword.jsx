@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setMessage('');
     
     try {
-      const response = await axios.post('http://localhost:5000/api/users/forgot-password', { email });
+      const response = await axios.post('https://aido-backend-h6gd.onrender.com/api/users/forgot-password', { email });
       setMessage(response.data.data || 'Password reset link sent to your email.');
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to send reset link.');
