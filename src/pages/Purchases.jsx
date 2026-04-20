@@ -478,7 +478,7 @@ const Purchases = () => {
                           <div className="bg-gray-100 rounded-lg p-4 w-full md:w-64">
                             <div className="flex justify-between font-bold text-lg">
                               <span>Total Amount:</span>
-                              <span className="text-green-600">${formatCurrency(formData.totalAmount)}</span>
+                              <span className="text-green-600">{formatCurrency(formData.totalAmount)} Frw</span>
                             </div>
                           </div>
                         </div>
@@ -550,7 +550,7 @@ const Purchases = () => {
                             <td className="px-6 py-4 font-semibold">{purchase.supplierName}</td>
                             <td className="px-6 py-4">{purchase.invoiceNumber || '-'}</td>
                             <td className="px-6 py-4 text-center">{purchase.products.length}</td>
-                            <td className="px-6 py-4 text-right font-bold">${formatCurrency(purchase.totalAmount)}</td>
+                            <td className="px-6 py-4 text-right font-bold">{formatCurrency(purchase.totalAmount)} Frw</td>
                             <td className="px-6 py-4 text-center">
                               <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                                 purchase.paymentMethod === 'Cash' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
