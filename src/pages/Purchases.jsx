@@ -503,7 +503,7 @@ const Purchases = () => {
               )}
 
               {/* New Purchase Button */}
-              {!showForm && user.role === "Boss" && (
+              {!showForm && (
                 <button
                   onClick={() => {
                     resetForm();
