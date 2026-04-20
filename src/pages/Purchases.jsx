@@ -292,7 +292,7 @@ const Purchases = () => {
               </div>
 
               {/* Form */}
-              {showForm && user.role === "Boss" && (
+              {showForm && (
                 <div className="bg-white rounded-lg shadow-md p-6 mb-8">
                   <h2 className="text-2xl font-bold mb-6">
                     {editingId ? 'Edit Purchase' : 'New Purchase Order'}
