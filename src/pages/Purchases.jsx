@@ -457,8 +457,8 @@ const Purchases = () => {
                                 <tr key={index} className="border-b hover:bg-gray-50">
                                   <td className="px-4 py-2">{product.productName}</td>
                                   <td className="px-4 py-2 text-center">{product.quantityPurchased}</td>
-                                  <td className="px-4 py-2 text-right">${formatCurrency(product.unitCost)}</td>
-                                  <td className="px-4 py-2 text-right font-semibold">${formatCurrency(product.totalCost)}</td>
+                                  <td className="px-4 py-2 text-right">{formatCurrency(product.unitCost)} Frw</td>
+                                  <td className="px-4 py-2 text-right font-semibold">{formatCurrency(product.totalCost)} Frw</td>
                                   <td className="px-4 py-2 text-center">
                                     <button
                                       type="button"
