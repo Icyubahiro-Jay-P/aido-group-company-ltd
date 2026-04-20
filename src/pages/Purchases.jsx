@@ -81,10 +81,14 @@ const Purchases = () => {
     setShowProductDropdown(false);
   };
 
+  const formatCurrency = (value) => {
+    return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
   const calculateProductTotal = () => {
     const quantity = parseFloat(currentProduct.quantityPurchased) || 0;
     const cost = parseFloat(currentProduct.unitCost) || 0;
-    return (quantity * cost).toFixed(2);
+    return formatCurrency((quantity * cost).toFixed(2));
   };
 
   const addProduct = () => {
@@ -419,7 +423,7 @@ const Purchases = () => {
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">Total</label>
                           <div className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg font-semibold">
-                            ${calculateProductTotal()}
+                            {calculateProductTotal()} Frw
                           </div>
                         </div>
                       </div>
@@ -453,8 +457,8 @@ const Purchases = () => {
                                 <tr key={index} className="border-b hover:bg-gray-50">
                                   <td className="px-4 py-2">{product.productName}</td>
                                   <td className="px-4 py-2 text-center">{product.quantityPurchased}</td>
-                                  <td className="px-4 py-2 text-right">${product.unitCost.toFixed(2)}</td>
-                                  <td className="px-4 py-2 text-right font-semibold">${product.totalCost.toFixed(2)}</td>
+                                  <td className="px-4 py-2 text-right">${formatCurrency(product.unitCost)}</td>
+                                  <td className="px-4 py-2 text-right font-semibold">${formatCurrency(product.totalCost)}</td>
                                   <td className="px-4 py-2 text-center">
                                     <button
                                       type="button"
@@ -474,7 +478,7 @@ const Purchases = () => {
                           <div className="bg-gray-100 rounded-lg p-4 w-full md:w-64">
                             <div className="flex justify-between font-bold text-lg">
                               <span>Total Amount:</span>
-                              <span className="text-green-600">${formData.totalAmount.toFixed(2)}</span>
+                              <span className="text-green-600">${formatCurrency(formData.totalAmount)}</span>
                             </div>
                           </div>
                         </div>
@@ -546,7 +550,7 @@ const Purchases = () => {
                             <td className="px-6 py-4 font-semibold">{purchase.supplierName}</td>
                             <td className="px-6 py-4">{purchase.invoiceNumber || '-'}</td>
                             <td className="px-6 py-4 text-center">{purchase.products.length}</td>
-                            <td className="px-6 py-4 text-right font-bold">${purchase.totalAmount.toFixed(2)}</td>
+                            <td className="px-6 py-4 text-right font-bold">${formatCurrency(purchase.totalAmount)}</td>
                             <td className="px-6 py-4 text-center">
                               <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                                 purchase.paymentMethod === 'Cash' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
