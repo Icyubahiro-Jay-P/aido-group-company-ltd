@@ -115,8 +115,8 @@ const ContactUs = () => {
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Email</h3>
             <p className="text-gray-600 mb-4">Send us an email anytime</p>
-            <a href="mailto:contact@inventorypro.com" className="text-blue-600 font-semibold hover:text-blue-700">
-              contact@inventorypro.com
+            <a href="mailto:aimaniyori03@gmail.com" className="text-blue-600 font-semibold hover:text-blue-700">
+              aimaniyori03@gmail.com
             </a>
           </div>
 
