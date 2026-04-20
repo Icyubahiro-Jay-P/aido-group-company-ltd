@@ -88,7 +88,7 @@ const Purchases = () => {
   const calculateProductTotal = () => {
     const quantity = parseFloat(currentProduct.quantityPurchased) || 0;
     const cost = parseFloat(currentProduct.unitCost) || 0;
-    return formatCurrency((quantity * cost).toFixed(2));
+    return formatCurrency((quantity * cost));
   };
 
   const addProduct = () => {
