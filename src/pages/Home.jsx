@@ -5,7 +5,7 @@ import { Package, MessageCircle, Building, Users, Star, ArrowRight, Hammer } fro
 const Home = () => {
   const facilities = [
     {
-      image: "https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=800&auto=format&fit=crop",
+      image: "lumber.png",
       title: "Premium Lumber Yard",
       description: "High-quality timber and wood products sourced for durability and structural integrity."
     },
