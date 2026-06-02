@@ -413,13 +413,14 @@ const Receipts = () => {
                                     <Eye size={18} className="text-slate-600" />
                                   )}
                                 </button>
-                                <button
-                                  onClick={() => handleDeleteSale(sale._id)}
-                                  className="p-2 hover:bg-red-100 rounded-lg transition-colors"
-                                  title="Delete receipt"
-                                >
-                                  <Trash2 size={18} className="text-red-600" />
-                                </button>
+                                {user.role === "Boss" && (
+                                  <button
+                                    onClick={() => handleDeleteSale(sale._id)}
+                                    className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                                    title="Delete receipt"
+                                  >
+                                    <Trash2 size={18} className="text-red-600" />
+                                  </button>)}
                               </div>
                             </td>
                           </tr>
