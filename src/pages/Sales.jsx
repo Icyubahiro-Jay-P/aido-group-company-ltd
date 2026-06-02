@@ -50,7 +50,7 @@ const Sales = () => {
       productId: "",
       productName: "",
       quantity: 1,
-      unitPrice: 0,
+      unitPrice: "",
       originalPrice: 0,
     },
   ]);
