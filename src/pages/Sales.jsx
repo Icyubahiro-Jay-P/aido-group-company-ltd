@@ -49,7 +49,7 @@ const Sales = () => {
       id: 1,
       productId: "",
       productName: "",
-      quantity: 1,
+      quantity: "",
       unitPrice: "",
       originalPrice: 0,
     },
