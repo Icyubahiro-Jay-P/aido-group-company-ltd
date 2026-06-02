@@ -15,7 +15,7 @@ const Home = () => {
       description: "Heavy-duty steel beams, rebars, and roofing sheets for robust construction projects."
     },
     {
-      image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=800&auto=format&fit=crop",
+      image: "sheets.png",
       title: "Cement & Masonry",
       description: "Top-grade cement, concrete blocks, and bricks ensuring a solid foundation."
     },
