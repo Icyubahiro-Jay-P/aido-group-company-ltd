@@ -10,7 +10,7 @@ const Home = () => {
       description: "High-quality timber and wood products sourced for durability and structural integrity."
     },
     {
-      image: "steel and metal fabric.png",
+      image: "Steel and metal fabric.png",
       title: "Steel & Metal Fabrication",
       description: "Heavy-duty steel beams, rebars, and roofing sheets for robust construction projects."
     },
