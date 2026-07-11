@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import ProtectedRoute from './hooks/ProtectedRoutes.jsx';
 import usePageLoad from './hooks/usePageLoad.js';
 import Loading from './components/Loading';
+import { Analytics } from "@vercel/analytics/react"
 
 const Login = lazy(() => import('./pages/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -39,6 +40,7 @@ const RouteWrapper = ({ children }) => {
 const App = () => {
   return (
     <>
+      <Analytics />
       <Toaster position='top-right' closeButton richColors/>
       <Router>
         <Routes>
