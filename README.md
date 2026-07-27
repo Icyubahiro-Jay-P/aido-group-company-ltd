@@ -1,16 +1,66 @@
-# React + Vite
+# AIDO Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend for **AIDO Group Company Ltd** — an inventory management system built with React and Vite.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** with Vite 8
+- **Tailwind CSS 4**
+- **React Router DOM 7**
+- **Axios** for API requests
+- **Lucide React** for icons
+- **Sonner** for toast notifications
+- **jsPDF** + **html2canvas** for PDF generation
+- **Vercel Analytics**
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- User authentication (login, forgot/reset password)
+- Dashboard with inventory overview
+- Products, purchases, and sales management
+- Client management
+- Reports and receipts (PDF export)
+- Stock-in tracking
+- Contact form
+- Settings
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
+
+# Lint
+npm run lint
+
+# Preview production build
+npm run preview
+```
+
+The dev server runs at `http://localhost:5173` by default.
+
+## Environment
+
+The frontend connects to the backend API. Configure the API base URL in the axios instance under `src/api/`.
+
+## Project Structure
+
+```
+src/
+├── api/          # Axios instance & API helpers
+├── assets/       # Static assets
+├── components/   # Reusable UI components
+├── hooks/        # Custom React hooks
+├── pages/        # Route pages
+└── utils/        # Utility functions
+```
+
+## License
+
+[MIT](./LICENSE)
