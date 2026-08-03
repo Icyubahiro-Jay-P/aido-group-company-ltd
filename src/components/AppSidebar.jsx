@@ -11,8 +11,11 @@ import {
   LogOut,
 } from 'lucide-react';
 import NavbarItem from './NavbarItem';
+import { useBranch, branchLabel } from '../context/BranchContext';
 
 const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
+  const { branch } = useBranch();
+
   return (
     <aside
       className={`
@@ -23,11 +26,16 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
       `}
     >
       <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
-        <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
+        <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
             <Box size={20} />
           </div>
-          {brand}
+          <div className="flex flex-col leading-tight">
+            <span className="font-bold text-xl text-slate-800">{brand}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-blue-700">
+              {branchLabel(branch)}
+            </span>
+          </div>
         </div>
       </div>
 
