@@ -1,28 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import {
-  Menu,
-  Box,
   Save,
   Mail,
   Lock,
   User,
   Phone,
-  MapPin,
-  LayoutDashboard,
-  Package,
-  LayersPlus,
-  BanknoteArrowUp,
-  BanknoteArrowDown,
-  ReceiptText,
-  TrendingUp,
   SettingsIcon,
-  LogOut,
   Users,
   UserPlus,
-  UserMinus,
-  UserPen,
-  UserCheck,
-  UserCog,
   Trash2,
   AlertTriangle,
   Calendar1,
@@ -30,7 +15,10 @@ import {
   UserKey,
 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
-import NavbarItem from "../components/NavbarItem";
+import DashboardLayout from "../components/DashboardLayout";
+import PageBanner from "../components/PageBanner";
+import ConfirmModal from "../components/ConfirmModal";
+import Badge from "../components/Badge";
 import {
   getAllUsers,
   deleteUserById,
@@ -45,7 +33,6 @@ const Settings = () => {
   const user = context?.user;
 
   // Initialize all state at the top level (before guards)
-  const [navbarOpen, setNavbarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [users, setUsers] = useState([]);
@@ -283,98 +270,13 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
-      {navbarOpen && (
-        <div
-          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
-          onClick={() => setNavbarOpen(false)}
-        />
-      )}
-
-      <aside
-        className={`
-        fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-slate-200
-        transform transition-transform duration-200 ease-in-out
-        lg:translate-x-0 lg:static lg:inset-0
-        ${navbarOpen ? "translate-x-0" : "-translate-x-full"}
-      `}
-      >
-        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
-          <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-              <Box size={20} />
-            </div>
-            Settings
-          </div>
-        </div>
-
-        <nav className="p-4 space-y-1">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-4">
-            Main
-          </div>
-          <NavbarItem icon={LayoutDashboard} label="Dashboard" />
-          <NavbarItem icon={Package} label="Inventory" />
-          <NavbarItem icon={LayersPlus} label="Stock in" />
-          <NavbarItem icon={BanknoteArrowDown} label="Purchases" />
-          <NavbarItem icon={BanknoteArrowUp} label="Sales" />
-          
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
-            System
-          </div>
-          <NavbarItem icon={ReceiptText} label="Reciepts" />
-          {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
-          <NavbarItem icon={SettingsIcon} label="Settings" active />
-          <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
-        </nav>
-
-        {/* User Info at Bottom */}
-        <div className="absolute bottom-0 w-full p-4 border-t border-slate-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">
-              {user.fullName
-                ? user.fullName
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                : "JD"}
-            </div>
-            <div>
-              <p className="text-sm font-medium text-slate-900">
-                {user.fullName}
-              </p>
-              <p className="text-xs text-slate-500">{user.role}</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setNavbarOpen(true)}
-              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-md"
-            >
-              <Menu size={20} />
-            </button>
-            <h1 className='text-lg sm:text-xl lg:text-2xl font-bold'>Account Settings</h1>
-          </div>
-        </header>
-
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
-          <div className="mb-8 bg-linear-to-r from-slate-700 to-slate-800 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Account Settings</h1>
-                <p className="text-slate-300">
-                  Manage your profile and account preferences.
-                </p>
-              </div>
-              <div className="text-slate-400">
-                <SettingsIcon size={48} />
-              </div>
-            </div>
-          </div>
+    <DashboardLayout title="Account Settings" brand="Settings" active="Settings">
+          <PageBanner
+            title="Account Settings"
+            subtitle="Manage your profile and account preferences."
+            icon={SettingsIcon}
+            gradient="from-slate-700 to-slate-800"
+          />
 
           {/* Success Message */}
           {saveSuccess && (
@@ -706,15 +608,9 @@ const Settings = () => {
                                 </p>
                               </div>
                               <div className="flex items-center gap-3">
-                                <span
-                                  className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                    u.role === "Boss"
-                                      ? "bg-purple-100 text-purple-700"
-                                      : "bg-blue-100 text-blue-700"
-                                  }`}
-                                >
+                                <Badge variant={u.role === "Boss" ? "purple" : "blue"}>
                                   {u.role}
-                                </span>
+                                </Badge>
                                 <p className="text-xs text-slate-500 whitespace-nowrap hidden sm:block">
                                   {u.phoneNumber}
                                 </p>
@@ -937,51 +833,24 @@ const Settings = () => {
           )}
 
           {/* Delete Confirmation Modal */}
-          {deleteConfirm && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 animate-in">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
-                    <AlertTriangle size={24} className="text-red-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Delete User
-                    </h3>
-                    <p className="text-sm text-slate-500">
-                      This action cannot be undone
-                    </p>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 mb-6">
-                  Are you sure you want to delete{" "}
-                  <span className="font-semibold">
-                    {deleteConfirm.fullName}
-                  </span>
-                  ? All associated data will be removed from the system.
-                </p>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => handleDeleteUser(deleteConfirm._id)}
-                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-                  >
-                    Delete User
-                  </button>
-                  <button
-                    onClick={() => setDeleteConfirm(null)}
-                    className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors font-medium"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+          <ConfirmModal
+            open={!!deleteConfirm}
+            variant="compact"
+            title="Delete User"
+            message={
+              <>
+                Are you sure you want to delete{" "}
+                <span className="font-semibold">{deleteConfirm?.fullName}</span>
+                ? All associated data will be removed from the system.
+              </>
+            }
+            confirmText="Delete User"
+            cancelText="Cancel"
+            icon={AlertTriangle}
+            onConfirm={() => deleteConfirm && handleDeleteUser(deleteConfirm._id)}
+            onCancel={() => setDeleteConfirm(null)}
+          />
+    </DashboardLayout>
   );
 };
 
