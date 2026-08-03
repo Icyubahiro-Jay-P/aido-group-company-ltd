@@ -34,7 +34,6 @@ export default function Dashboard() {
         
         // Fetch inventory summary
         const summaryData = await getInventorySummary();
-        setInventorySummary(summaryData);
 
         // Fetch low stock items
         const lowStockData = await getLowStockItems(10);

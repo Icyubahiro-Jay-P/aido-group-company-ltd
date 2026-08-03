@@ -43,7 +43,6 @@ const Reports = () => {
 
   // Core metrics
   const [income, setIncome] = useState(0);
-  const [expense, setExpense] = useState(0);
   const [profit, setProfit] = useState(0);
   const [loss, setLoss] = useState(0);
   const [clients, setClients] = useState(0);
