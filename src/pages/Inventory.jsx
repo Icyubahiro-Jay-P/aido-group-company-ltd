@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Download, Package } from 'lucide-react';
-import { useOutletContext } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import PageBanner from '../components/PageBanner';
 import { getProducts } from '../api/productServices';
 import { toast } from 'sonner';
 
 const Inventory = () => {
-  const { user } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [inventoryItems, setInventoryItems] = useState([]);
 
