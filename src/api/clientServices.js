@@ -168,7 +168,7 @@ export const updateClient = async (id, clientData) => {
   const offline = async () => {
     await enqueue({ method: 'put', url: `${API_URL}/${id}`, data: clientData, id });
     const existing = (await localGetById(ENTITY, id)) || {};
-    const localDoc = { ...existing, ...clientData, _id: id, pending: true };
+    const localDoc = { ...existing, ...clientData, _id: id, branch: getCurrentBranch(), pending: true };
     await localPut(ENTITY, localDoc);
     return {
       message: 'Saved offline. Will sync when you reconnect.',
