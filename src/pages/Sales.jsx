@@ -4,7 +4,6 @@ import {
   Trash2,
   ShoppingCart,
 } from "lucide-react";
-import { useOutletContext } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 import PageBanner from "../components/PageBanner";
 import { getProducts } from "../api/productServices";
@@ -12,7 +11,6 @@ import { createSale } from "../api/saleServices";
 import { toast } from "sonner";
 
 const Sales = () => {
-  const { user } = useOutletContext();
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [submitting, setSubmitting] = useState(false);
