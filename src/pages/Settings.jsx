@@ -248,7 +248,8 @@ const Settings = () => {
     }
 
     try {
-      const { confirmPassword, ...registerData } = newUserData;
+      const registerData = { ...newUserData };
+      delete registerData.confirmPassword;
       await registerUser(registerData);
       toast.success("User created successfully");
       setNewUserData({
