@@ -581,7 +581,7 @@ const Sales = () => {
                       type="button"
                       onClick={() => {
                         try {
-                          downloadReceiptPdf(lastSale, branch);
+                          downloadReceiptPdf(lastSale, branch, user);
                         } catch (err) {
                           toast.error(err.message);
                         }
