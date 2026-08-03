@@ -1,6 +1,5 @@
 import {
   Box,
-  Building2,
   LayoutDashboard,
   Package,
   LayersPlus,
@@ -37,15 +36,6 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
               {branchLabel(branch)}
             </span>
           </div>
-        </div>
-      </div>
-
-      <div className="px-3 pt-3 pb-2">
-        <div className="flex items-center gap-2 px-1">
-          <Building2 size={16} className="text-blue-600 shrink-0" />
-          <span className="text-xs font-medium text-slate-600 truncate">
-            {branchLabel(branch)}
-          </span>
         </div>
       </div>
 
