@@ -1,5 +1,5 @@
 // src/api/saleServices.js
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/sales`;
@@ -7,7 +7,7 @@ const API_URL = `${API_BASE_URL}/api/sales`;
 // Create a new sale
 export const createSale = async (saleData) => {
   try {
-    const response = await axios.post(`${API_URL}`, saleData, {
+    const response = await axiosClient.post(`${API_URL}`, saleData, {
       withCredentials: true,
     });
     return response.data;
@@ -22,7 +22,7 @@ export const createSale = async (saleData) => {
 // Get all sales
 export const getSales = async () => {
   try {
-    const response = await axios.get(`${API_URL}`, {
+    const response = await axiosClient.get(`${API_URL}`, {
       withCredentials: true,
     });
     return response.data;
@@ -37,7 +37,7 @@ export const getSales = async () => {
 // Get a single sale by ID
 export const getSaleById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`, {
+    const response = await axiosClient.get(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
@@ -52,7 +52,7 @@ export const getSaleById = async (id) => {
 // Update a sale by ID
 export const updateSale = async (id, saleData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, saleData, {
+    const response = await axiosClient.put(`${API_URL}/${id}`, saleData, {
       withCredentials: true,
     });
     return response.data;
@@ -67,7 +67,7 @@ export const updateSale = async (id, saleData) => {
 // Delete a sale by ID
 export const deleteSale = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`, {
+    const response = await axiosClient.delete(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
