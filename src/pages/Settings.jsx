@@ -252,7 +252,7 @@ const Settings = () => {
     }
 
     try {
-      const registerData = { ...newUserData };
+      const registerData = { ...newUserData, branch };
       delete registerData.confirmPassword;
       await registerUser(registerData);
       toast.success("User created successfully");
@@ -847,6 +847,73 @@ const Settings = () => {
                   </form>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Branches Tab (owner / switch-capable only) */}
+          {user?.canSwitchBranches && activeTab === "branches" && (
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-2">
+                Branch Management
+              </h2>
+              <p className="text-sm text-slate-500 mb-6">
+                Switch which branch's data you are viewing. Each branch keeps
+                its own inventory, sales, purchases, clients, and reports.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {BRANCHES.map((b) => {
+                  const isActive = branch === b.value;
+                  return (
+                    <div
+                      key={b.value}
+                      className={`rounded-xl border p-5 flex flex-col gap-4 ${
+                        isActive
+                          ? "border-blue-600 bg-blue-50/50"
+                          : "border-slate-200"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                              isActive
+                                ? "bg-blue-600 text-white"
+                                : "bg-slate-100 text-slate-500"
+                            }`}
+                          >
+                            <Building2 size={20} />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-slate-900">
+                              {b.label}
+                            </p>
+                            <p className="text-xs text-slate-500">
+                              {isActive ? "Currently viewing" : "Inactive"}
+                            </p>
+                          </div>
+                        </div>
+                        {isActive && <Badge variant="blue">Active</Badge>}
+                      </div>
+                      <button
+                        type="button"
+                        disabled={isActive}
+                        onClick={() => switchBranch(b.value)}
+                        className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed bg-blue-600 text-white hover:bg-blue-700"
+                      >
+                        <ArrowRightLeft size={16} />
+                        {isActive ? "Current Branch" : "Switch to this Branch"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                Switching branches reloads the app so every page is refetched
+                with the selected branch. New users you create are assigned to
+                the branch you are currently viewing.
+              </div>
             </div>
           )}
 
