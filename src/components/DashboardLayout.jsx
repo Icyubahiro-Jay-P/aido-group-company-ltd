@@ -32,16 +32,16 @@ const DashboardLayout = ({
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 min-w-0">
             <button
               onClick={() => setNavbarOpen(true)}
-              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-md"
+              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-md shrink-0"
             >
               <Menu size={20} />
             </button>
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold">{title}</h1>
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold truncate">{title}</h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <BranchSwitcher />
             {pending > 0 && (
               <span
@@ -60,7 +60,7 @@ const DashboardLayout = ({
           <div className="bg-amber-500 text-white text-sm px-4 py-2 text-center flex items-center justify-center gap-2">
             <CloudOff size={16} />
             <span>
-              You are offline — showing cached data.
+              You are offline.
               {pending > 0 &&
                 ` ${pending} change${pending === 1 ? '' : 's'} will sync automatically when you reconnect.`}
             </span>
