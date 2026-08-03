@@ -61,13 +61,12 @@ const Reports = () => {
     try {
       // Fetch data based on selected time period
       let incomeData = 0;
-      let expenseData = 0;
       let profitData = 0;
       let lossData = 0;
       let clientData = 0;
 
       if (timePeriod === "daily") {
-        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all(
+        const [incRes, , profRes, lossRes, clientRes] = await Promise.all(
           [
             getDailyIncome(),
             getDailyExpense(),
@@ -77,12 +76,11 @@ const Reports = () => {
           ],
         );
         incomeData = incRes?.data || 0;
-        expenseData = expRes?.data || 0;
         profitData = profRes?.data || 0;
         lossData = lossRes?.data || 0;
         clientData = clientRes?.data || 0;
       } else if (timePeriod === "weekly") {
-        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all(
+        const [incRes, , profRes, lossRes, clientRes] = await Promise.all(
           [
             getWeeklyIncome(),
             getWeeklyExpense(),
@@ -92,12 +90,11 @@ const Reports = () => {
           ],
         );
         incomeData = incRes?.data || 0;
-        expenseData = expRes?.data || 0;
         profitData = profRes?.data || 0;
         lossData = lossRes?.data || 0;
         clientData = clientRes?.data || 0;
       } else if (timePeriod === "monthly") {
-        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all(
+        const [incRes, , profRes, lossRes, clientRes] = await Promise.all(
           [
             getMonthlyIncome(),
             getMonthlyExpense(),
@@ -107,12 +104,11 @@ const Reports = () => {
           ],
         );
         incomeData = incRes?.data || 0;
-        expenseData = expRes?.data || 0;
         profitData = profRes?.data || 0;
         lossData = lossRes?.data || 0;
         clientData = clientRes?.data || 0;
       } else if (timePeriod === "annual") {
-        const [incRes, expRes, profRes, lossRes, clientRes] = await Promise.all(
+        const [incRes, , profRes, lossRes, clientRes] = await Promise.all(
           [
             getAnnualIncome(),
             getAnnualExpense(),
@@ -122,14 +118,12 @@ const Reports = () => {
           ],
         );
         incomeData = incRes?.data || 0;
-        expenseData = expRes?.data || 0;
         profitData = profRes?.data || 0;
         lossData = lossRes?.data || 0;
         clientData = clientRes?.data || 0;
       }
 
       setIncome(incomeData);
-      setExpense(expenseData);
       setProfit(profitData);
       setLoss(lossData);
       setClients(clientData);
