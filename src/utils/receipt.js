@@ -225,6 +225,12 @@ export const downloadReceiptPdf = (sale, branch = 'AIDO_GROUP', user) => {
 
   twoCol('Payment', String(sale?.paymentMethod || 'Cash'));
   twoCol('TOTAL', `${formatMoney(total)} Frw`, true);
+
+  const pb = printedBy(user);
+  if (pb.length) {
+    sep();
+    pb.forEach((l) => center(l));
+  }
   sep(true);
 
   center('Thank you for shopping');
