@@ -313,7 +313,7 @@ const Receipts = () => {
                             <button
                               onClick={() => {
                                 try {
-                                  printReceipt(sale, branch);
+                                  printReceipt(sale, branch, user);
                                 } catch (err) {
                                   toast.error(err.message);
                                 }
@@ -329,7 +329,7 @@ const Receipts = () => {
                             <button
                               onClick={() => {
                                 try {
-                                  downloadReceiptPdf(sale, branch);
+                                  downloadReceiptPdf(sale, branch, user);
                                 } catch (err) {
                                   toast.error(err.message);
                                 }
