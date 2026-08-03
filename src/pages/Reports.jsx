@@ -38,7 +38,6 @@ import { toast } from "sonner";
 import Loading from "../components/Loading";
 
 const Reports = () => {
-  const { user } = useOutletContext();
   const [loading, setLoading] = useState(true);
   const [timePeriod, setTimePeriod] = useState("daily"); // daily, weekly, monthly, annual
 

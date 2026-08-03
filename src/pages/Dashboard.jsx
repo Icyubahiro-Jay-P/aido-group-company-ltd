@@ -6,7 +6,7 @@ import {
   AlertTriangle,
   DollarSign,
 } from 'lucide-react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import PageBanner from '../components/PageBanner';
 import StatCard from '../components/StatCard';
