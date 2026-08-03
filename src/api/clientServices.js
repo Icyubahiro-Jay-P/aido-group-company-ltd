@@ -1,5 +1,5 @@
 // src/api/clientServices.js
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/clients`;
@@ -7,7 +7,7 @@ const API_URL = `${API_BASE_URL}/api/clients`;
 // Create a new client
 export const createClient = async (clientData) => {
   try {
-    const response = await axios.post(`${API_URL}`, clientData, {
+    const response = await axiosClient.post(`${API_URL}`, clientData, {
       withCredentials: true,
     });
     return response.data;
@@ -22,7 +22,7 @@ export const createClient = async (clientData) => {
 // Get all clients
 export const getAllClients = async () => {
   try {
-    const response = await axios.get(`${API_URL}`, {
+    const response = await axiosClient.get(`${API_URL}`, {
       withCredentials: true,
     });
     return response.data;
@@ -37,7 +37,7 @@ export const getAllClients = async () => {
 // Get a single client by ID
 export const getClientById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`, {
+    const response = await axiosClient.get(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
@@ -52,7 +52,7 @@ export const getClientById = async (id) => {
 // Get clients by status
 export const getClientsByStatus = async (status) => {
   try {
-    const response = await axios.get(`${API_URL}?status=${status}`, {
+    const response = await axiosClient.get(`${API_URL}?status=${status}`, {
       withCredentials: true,
     });
     return response.data;
@@ -67,7 +67,7 @@ export const getClientsByStatus = async (status) => {
 // Search clients
 export const searchClients = async (query) => {
   try {
-    const response = await axios.get(`${API_URL}/search?query=${query}`, {
+    const response = await axiosClient.get(`${API_URL}/search?query=${query}`, {
       withCredentials: true,
     });
     return response.data;
@@ -82,7 +82,7 @@ export const searchClients = async (query) => {
 // Update a client
 export const updateClient = async (id, clientData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, clientData, {
+    const response = await axiosClient.put(`${API_URL}/${id}`, clientData, {
       withCredentials: true,
     });
     return response.data;
@@ -97,7 +97,7 @@ export const updateClient = async (id, clientData) => {
 // Delete a client
 export const deleteClient = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`, {
+    const response = await axiosClient.delete(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
@@ -112,7 +112,7 @@ export const deleteClient = async (id) => {
 // Update client purchase stats
 export const updateClientPurchaseStats = async (clientId, amount) => {
   try {
-    const response = await axios.put(`${API_URL}/${clientId}/purchase-stats`, { clientId, amount }, {
+    const response = await axiosClient.put(`${API_URL}/${clientId}/purchase-stats`, { clientId, amount }, {
       withCredentials: true,
     });
     return response.data;
