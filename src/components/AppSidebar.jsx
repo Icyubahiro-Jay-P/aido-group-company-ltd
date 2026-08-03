@@ -61,8 +61,8 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
       </nav>
 
       {/* User Info at Bottom */}
-      <div className="absolute bottom-0 w-full p-2 border-t border-slate-200">
-        <div className="flex items-center gap-2">
+      <div className="absolute bottom-0 w-full p-4 border-t border-slate-200">
+        <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">
             {user.fullName ? user.fullName.split(' ').map((n) => n[0]).join('') : 'JD'}
           </div>
