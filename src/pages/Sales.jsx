@@ -54,7 +54,7 @@ const Sales = () => {
     try {
       const response = await getProducts();
       setProducts(response.products || []);
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch products");
     } finally {
       setLoadingProducts(false);
