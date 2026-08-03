@@ -68,7 +68,7 @@ export const createProduct = async (productData) => {
 export const getProducts = async () => {
   const serveCache = async () => ({
     message: 'Loaded from offline cache',
-    products: await localGetAll(ENTITY),
+    products: await localGetAll(ENTITY, getCurrentBranch()),
   });
   if (isOfflineNow()) return serveCache();
   try {
@@ -113,7 +113,7 @@ export const updateProduct = async (id, updatedData) => {
   const offline = async () => {
     await enqueue({ method: 'put', url: `${API_URL}/${id}`, data: updatedData, id });
     const existing = (await localGetById(ENTITY, id)) || {};
-    const localDoc = { ...existing, ...updatedData, _id: id, pending: true };
+    const localDoc = { ...existing, ...updatedData, _id: id, branch: getCurrentBranch(), pending: true };
     await localPut(ENTITY, localDoc);
     return {
       message: 'Saved offline. Will sync when you reconnect.',
