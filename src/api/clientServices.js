@@ -111,7 +111,7 @@ export const getClientById = async (id) => {
 // Get clients by status
 export const getClientsByStatus = async (status) => {
   const serveCache = async () => {
-    const all = await localGetAll(ENTITY);
+    const all = await localGetAll(ENTITY, getCurrentBranch());
     const filtered = status ? all.filter((c) => c.status === status) : all;
     return { message: 'Loaded from offline cache', clients: filtered };
   };
