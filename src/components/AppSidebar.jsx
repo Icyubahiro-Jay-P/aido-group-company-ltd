@@ -40,6 +40,10 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
         </div>
       </div>
 
+      <div className="px-3 pt-3 pb-2">
+        <BranchSwitcher />
+      </div>
+
       <nav className="p-2 px-4 space-y-1">
         <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-2">
           Main
@@ -57,9 +61,6 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
         {user.role === 'Boss' && (
           <NavbarItem icon={TrendingUp} label="Reports" active={active === 'Reports'} />
         )}
-        <div className="pt-2">
-          <BranchSwitcher variant="sidebar" />
-        </div>
         <NavbarItem icon={Settings} label="Settings" active={active === 'Settings'} />
         <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
       </nav>
