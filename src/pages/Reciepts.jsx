@@ -310,6 +310,38 @@ const Receipts = () => {
                                 <Eye size={18} className="text-slate-600" />
                               )}
                             </button>
+                            <button
+                              onClick={() => {
+                                try {
+                                  printReceipt(sale, branch);
+                                } catch (err) {
+                                  toast.error(err.message);
+                                }
+                              }}
+                              className="p-2 hover:bg-teal-100 rounded-lg transition-colors"
+                              title="Print 80mm receipt"
+                            >
+                              <Printer
+                                size={18}
+                                className="text-teal-600"
+                              />
+                            </button>
+                            <button
+                              onClick={() => {
+                                try {
+                                  downloadReceiptPdf(sale, branch);
+                                } catch (err) {
+                                  toast.error(err.message);
+                                }
+                              }}
+                              className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+                              title="Save receipt as PDF"
+                            >
+                              <FileDown
+                                size={18}
+                                className="text-blue-600"
+                              />
+                            </button>
                             {user.role === "Boss" && (
                               <button
                                 onClick={() => handleDeleteSale(sale._id)}
