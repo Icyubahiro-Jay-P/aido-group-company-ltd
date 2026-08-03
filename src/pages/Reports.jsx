@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
 import {
-  Menu,
-  Box,
   DollarSign,
   ShoppingCart,
   AlertTriangle,
-  LayoutDashboard,
   Package,
-  LayersPlus,
-  BanknoteArrowUp,
-  BanknoteArrowDown,
   ReceiptText,
   TrendingUp,
-  Settings,
-  LogOut,
   TrendingDown,
   User,
 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
-import NavbarItem from "../components/NavbarItem";
+import DashboardLayout from "../components/DashboardLayout";
 import {
   getDailyIncome,
   getWeeklyIncome,

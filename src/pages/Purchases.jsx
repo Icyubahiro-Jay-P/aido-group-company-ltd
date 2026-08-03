@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit2, ChevronDown, X, Box, LayoutDashboard, Package, LayersPlus, BanknoteArrowUp, BanknoteArrowDown, ReceiptText, TrendingUp, Settings, LogOut, Menu, ShoppingCart } from 'lucide-react';
+import { Plus, Trash2, Edit2, ChevronDown, X, ShoppingCart } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
-import NavbarItem from '../components/NavbarItem';
+import DashboardLayout from '../components/DashboardLayout';
 import { createPurchase, getPurchases, deletePurchase, updatePurchase } from '../api/purchaseServices';
 import { getProducts } from '../api/productServices';
 import { toast } from 'sonner';
 
 const Purchases = () => {
   const { user } = useOutletContext();
-  const [navbarOpen, setNavbarOpen] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -211,83 +210,8 @@ const Purchases = () => {
   };
 
   return (
-    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
-      {/* Mobile Navbar Overlay */}
-      {navbarOpen && (
-        <div
-          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
-          onClick={() => setNavbarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-slate-200
-        transform transition-transform duration-200 ease-in-out
-        lg:translate-x-0 lg:static
-        ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
-        <div className="flex items-center justify-start px-4 h-16 border-b border-slate-200">
-          <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-              <Box size={20} />
-            </div>
-            AIDO
-          </div>
-        </div>
-
-        <nav className="p-4 space-y-1">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-4">
-            Main
-          </div>
-          <NavbarItem icon={LayoutDashboard} label="Dashboard" />
-          <NavbarItem icon={Package} label="Inventory" />
-          <NavbarItem icon={LayersPlus} label="Stock in" />
-          <NavbarItem icon={BanknoteArrowDown} label="Purchases" active/>
-          <NavbarItem icon={BanknoteArrowUp} label="Sales" />
-          
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-6">
-            System
-          </div>
-          <NavbarItem icon={ReceiptText} label="Reciepts" />
-          {user.role === "Boss" && <NavbarItem icon={TrendingUp} label="Reports" />}
-          <NavbarItem icon={Settings} label="Settings" />
-          <NavbarItem icon={LogOut} label="Logout" isLogout={true} />
-        </nav>
-
-        {/* User Info */}
-        <div className="absolute bottom-0 w-full p-4 border-t border-slate-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">
-              {user.fullName ? user.fullName.split(' ').map(n => n[0]).join('') : 'JD'}
-            </div>
-            <div>
-              <p className="text-sm font-medium text-slate-900">{user.fullName}</p>
-              <p className="text-xs text-slate-500">{user.role}</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8">
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setNavbarOpen(!navbarOpen)}
-              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-md"
-            >
-              <Menu size={20} />
-            </button>
-            <h1 className="text-lg font-semibold text-slate-900">Purchases</h1>
-          </div>
-        </header>
-
-        {/* Page Content */}
-        <div className="flex-1 overflow-y-auto">
-          <main className="p-4 lg:p-8 bg-slate-50">
-            <div className="max-w-7xl mx-auto">
+    <DashboardLayout title="Purchases" brand="AIDO" active="Purchases">
+      <div className="max-w-7xl mx-auto">
               {/* Header Banner */}
               <div className="mb-8 bg-linear-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white shadow-lg">
                 <div className="flex items-start justify-between">
@@ -586,10 +510,6 @@ const Purchases = () => {
                 )}
               </div>
             </div>
-          </main>
-        </div>
-      </div>
-
       {/* Delete Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -618,7 +538,7 @@ const Purchases = () => {
           </div>
         </div>
       )}
-    </div>
+    </DashboardLayout>
   );
 };
 
