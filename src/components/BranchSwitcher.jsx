@@ -84,9 +84,9 @@ const BranchSwitcher = () => {
               </button>
             );
           })}
-          <div className="mt-1 px-3 py-2 border-t border-slate-100 text-xs text-slate-500">
+          {/* <div className="mt-1 px-3 py-2 border-t border-slate-100 text-xs text-slate-500">
             All pages reload with the selected branch's data.
-          </div>
+          </div> */}
         </div>
       )}
     </div>
