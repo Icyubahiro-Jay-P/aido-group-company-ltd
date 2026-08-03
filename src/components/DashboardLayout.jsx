@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { Menu, CloudOff, RefreshCw } from 'lucide-react';
 import AppSidebar from './AppSidebar';
+import BranchSwitcher from './BranchSwitcher';
 import { useOnlineStatus } from '../offline/useOnlineStatus';
 
 const DashboardLayout = ({
@@ -51,6 +52,7 @@ const DashboardLayout = ({
               </span>
             )}
             {headerActions}
+            <BranchSwitcher />
           </div>
         </header>
 
