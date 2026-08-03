@@ -1,5 +1,5 @@
 // src/api/purchaseServices.js
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/purchases`;
@@ -7,7 +7,7 @@ const API_URL = `${API_BASE_URL}/api/purchases`;
 // Create a new purchase
 export const createPurchase = async (purchaseData) => {
   try {
-    const response = await axios.post(`${API_URL}`, purchaseData, {
+    const response = await axiosClient.post(`${API_URL}`, purchaseData, {
       withCredentials: true,
     });
     return response.data;
@@ -22,7 +22,7 @@ export const createPurchase = async (purchaseData) => {
 // Get all purchases
 export const getPurchases = async () => {
   try {
-    const response = await axios.get(`${API_URL}`, {
+    const response = await axiosClient.get(`${API_URL}`, {
       withCredentials: true,
     });
     return response.data;
@@ -37,7 +37,7 @@ export const getPurchases = async () => {
 // Get a single purchase by ID
 export const getPurchaseById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`, {
+    const response = await axiosClient.get(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
@@ -52,7 +52,7 @@ export const getPurchaseById = async (id) => {
 // Update a purchase by ID
 export const updatePurchase = async (id, purchaseData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, purchaseData, {
+    const response = await axiosClient.put(`${API_URL}/${id}`, purchaseData, {
       withCredentials: true,
     });
     return response.data;
@@ -67,7 +67,7 @@ export const updatePurchase = async (id, purchaseData) => {
 // Delete a purchase by ID
 export const deletePurchase = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`, {
+    const response = await axiosClient.delete(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
