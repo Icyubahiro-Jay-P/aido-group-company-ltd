@@ -283,10 +283,10 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {navbarOpen && (
         <div
-          className="fixed inset-0 bg-white z-20 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
           onClick={() => setNavbarOpen(false)}
         />
       )}
@@ -357,7 +357,7 @@ const Settings = () => {
             >
               <Menu size={20} />
             </button>
-            <h1 className='text-2xl font-bold'>Account Settings</h1>
+            <h1 className='text-lg sm:text-xl lg:text-2xl font-bold'>Account Settings</h1>
           </div>
         </header>
 
@@ -365,7 +365,7 @@ const Settings = () => {
           <div className="mb-8 bg-linear-to-r from-slate-700 to-slate-800 rounded-xl p-6 text-white shadow-lg">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Account Settings</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Account Settings</h1>
                 <p className="text-slate-300">
                   Manage your profile and account preferences.
                 </p>
@@ -385,10 +385,10 @@ const Settings = () => {
           )}
 
           {/* Tabs */}
-          <div className="flex gap-4 mb-8 border-b border-slate-200">
+          <div className="flex gap-4 mb-8 border-b border-slate-200 overflow-x-auto whitespace-nowrap">
             <button
               onClick={() => setActiveTab("profile")}
-              className={`px-4 py-3 font-medium border-b-2 transition-colors ${
+              className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === "profile"
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-slate-500 hover:text-slate-700"
@@ -399,7 +399,7 @@ const Settings = () => {
             </button>
             <button
               onClick={() => setActiveTab("security")}
-              className={`px-4 py-3 font-medium border-b-2 transition-colors ${
+              className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === "security"
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-slate-500 hover:text-slate-700"
@@ -411,7 +411,7 @@ const Settings = () => {
             {user?.role === "Boss" && (
               <button
                 onClick={() => setActiveTab("admin")}
-                className={`px-4 py-3 font-medium border-b-2 transition-colors ${
+                className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
                   activeTab === "admin"
                     ? "border-blue-600 text-blue-600"
                     : "border-transparent text-slate-500 hover:text-slate-700"
@@ -645,10 +645,10 @@ const Settings = () => {
                 User Management
               </h2>
 
-              <div className="flex gap-3 mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <button
                   onClick={() => setShowAddUserForm(false)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                     !showAddUserForm
                       ? "bg-blue-600 text-white"
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -659,7 +659,7 @@ const Settings = () => {
                 </button>
                 <button
                   onClick={() => setShowAddUserForm(true)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                     showAddUserForm
                       ? "bg-blue-600 text-white"
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -686,10 +686,10 @@ const Settings = () => {
                         {users.map((u) => (
                           <div
                             key={u._id}
-                            className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                            className="flex flex-wrap items-center justify-between gap-3 p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
                           >
-                            <div className="flex items-center gap-3 flex-1">
-                              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0">
                                 {u.fullName
                                   ? u.fullName
                                       .split(" ")
@@ -697,11 +697,11 @@ const Settings = () => {
                                       .join("")
                                   : "?"}
                               </div>
-                              <div className="flex-1">
-                                <p className="text-sm font-medium text-slate-900">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-slate-900 truncate">
                                   {u.fullName}
                                 </p>
-                                <p className="text-xs text-slate-500">
+                                <p className="text-xs text-slate-500 truncate">
                                   {u.email}
                                 </p>
                               </div>
@@ -715,7 +715,7 @@ const Settings = () => {
                                 >
                                   {u.role}
                                 </span>
-                                <p className="text-xs text-slate-500 whitespace-nowrap">
+                                <p className="text-xs text-slate-500 whitespace-nowrap hidden sm:block">
                                   {u.phoneNumber}
                                 </p>
                               </div>
@@ -723,7 +723,7 @@ const Settings = () => {
                             {u._id !== user?._id && (
                               <button
                                 onClick={() => setDeleteConfirm(u)}
-                                className="ml-4 p-2 hover:bg-red-100 rounded-lg transition-colors"
+                                className="p-2 hover:bg-red-100 rounded-lg transition-colors"
                                 title="Delete user"
                               >
                                 <Trash2 size={18} className="text-red-600" />

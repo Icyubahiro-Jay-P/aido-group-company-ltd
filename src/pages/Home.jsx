@@ -68,32 +68,32 @@ const Home = () => {
         href={whatsappURL}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-8 right-8 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 hover:scale-110 transition-all duration-300 flex items-center justify-center animate-bounce"
+        className="fixed bottom-5 right-5 sm:bottom-8 sm:right-8 z-50 bg-green-500 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:bg-green-600 hover:scale-110 transition-all duration-300 flex items-center justify-center animate-bounce"
         aria-label="Chat on WhatsApp"
       >
-        <MessageCircle className="w-8 h-8" />
+        <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8" />
       </a>
 
       {/* Navigation Bar */}
       <nav className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 shrink-0">
               <Package className="w-8 h-8 text-blue-600" />
-              <h1 className="text-xl font-bold text-gray-900">
-                AIDO Group Company Ltd
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900 whitespace-nowrap">
+                AIDO<span className="hidden sm:inline"> Group Company Ltd</span>
               </h1>
             </Link>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-2 sm:gap-4 items-center">
               <Link
                 to="/login"
-                className="px-6 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition"
+                className="px-3 sm:px-6 py-2 text-sm sm:text-base text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition whitespace-nowrap"
               >
                 Staff Portal
               </Link>
               <Link
                 to="/contact"
-                className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
+                className="px-3 sm:px-6 py-2 text-sm sm:text-base bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition whitespace-nowrap"
               >
                 Contact Us
               </Link>
@@ -119,12 +119,12 @@ const Home = () => {
               <Hammer className="w-4 h-4" /> Building the Future Together
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
             High-Quality{" "}
             <span className="text-blue-500">Building Materials</span> for Every
             Project
           </h1>
-          <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto font-light drop-shadow">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto font-light drop-shadow">
             From foundation to roof, AIDO Group Company Ltd provides the finest
             construction supplies. Take a tour of our extensive inventory and
             heavy-duty facilities.
@@ -177,7 +177,7 @@ const Home = () => {
       <section id="tour" className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Our Core Offerings
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -219,7 +219,7 @@ const Home = () => {
         <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0b27e69b?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay"></div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <MessageCircle className="w-16 h-16 text-green-400 mx-auto mb-6 drop-shadow-xl" />
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
             Need a Bulk Order Quote?
           </h2>
           <p className="text-xl text-orange-50 mb-10 max-w-2xl mx-auto">

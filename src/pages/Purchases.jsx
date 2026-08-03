@@ -211,7 +211,15 @@ const Purchases = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
+      {/* Mobile Navbar Overlay */}
+      {navbarOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
+          onClick={() => setNavbarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside className={`
         fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-slate-200
@@ -284,7 +292,7 @@ const Purchases = () => {
               <div className="mb-8 bg-linear-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white shadow-lg">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-3xl font-bold mb-2">Purchases</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold mb-2">Purchases</h1>
                     <p className="text-blue-100">
                       Manage supplier purchases and add new stock to your inventory.
                     </p>
@@ -431,7 +439,7 @@ const Purchases = () => {
                       <button
                         type="button"
                         onClick={addProduct}
-                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2"
+                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto"
                       >
                         <Plus size={18} /> Add Product
                       </button>
@@ -513,7 +521,7 @@ const Purchases = () => {
                     resetForm();
                     setShowForm(true);
                   }}
-                  className="mb-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2"
+                  className="mb-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 w-full sm:w-auto"
                 >
                   <Plus size={20} /> New Purchase
                 </button>

@@ -63,20 +63,20 @@ const ContactUs = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 shrink-0">
               <Package className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">AIDO Group Company Ltd</span>
+              <span className="text-lg sm:text-xl font-bold text-gray-900 whitespace-nowrap">AIDO<span className="hidden sm:inline"> Group Company Ltd</span></span>
             </Link>
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               <Link 
                 to="/login" 
-                className="px-6 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition"
+                className="px-3 sm:px-6 py-2 text-sm sm:text-base text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition whitespace-nowrap"
               >
                 Login
               </Link>
               <Link 
                 to="/" 
-                className="px-6 py-2 bg-gray-200 text-gray-900 font-medium rounded-lg hover:bg-gray-300 transition"
+                className="px-3 sm:px-6 py-2 text-sm sm:text-base bg-gray-200 text-gray-900 font-medium rounded-lg hover:bg-gray-300 transition whitespace-nowrap"
               >
                 Back Home
               </Link>
@@ -88,8 +88,8 @@ const ContactUs = () => {
       {/* Header */}
       <section className="bg-linear-to-r from-blue-600 to-indigo-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch With Us</h1>
-          <p className="text-blue-100 text-lg max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Get in Touch With Us</h1>
+          <p className="text-blue-100 text-base sm:text-lg max-w-2xl mx-auto">
             Have questions about AIDO Group Company Limited? We're here to help! Reach out through any of our communication channels.
           </p>
         </div>
@@ -133,7 +133,7 @@ const ContactUs = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
           {/* Contact Form */}
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
@@ -229,7 +229,7 @@ const ContactUs = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Saturday:</span>
-                  <span className="font-semibold text-gray-900">10:00 AM - 4:00 PM</span>
+                  <span className="font-semibold text-gray-900">Closed</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sunday:</span>

@@ -236,10 +236,10 @@ const Sales = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {navbarOpen && (
         <div
-          className="fixed inset-0 bg-white z-20 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
           onClick={() => setNavbarOpen(false)}
         />
       )}
@@ -311,7 +311,7 @@ const Sales = () => {
             >
               <Menu size={20} />
             </button>
-            <h1 className="text-2xl font-bold">Record Sales Transaction</h1>
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold">Record Sales Transaction</h1>
           </div>
         </header>
 
@@ -319,7 +319,7 @@ const Sales = () => {
           <div className="mb-8 bg-linear-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">New Sale</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">New Sale</h1>
                 <p className="text-orange-100">
                   Fill in the customer details and add products to complete the
                   sale.
@@ -452,9 +452,9 @@ const Sales = () => {
                 ) : (
                   <div className="space-y-3">
                     {productRows.map((row, idx) => (
-                      <div key={row.id} className="flex items-end gap-2">
+                      <div key={row.id} className="grid grid-cols-2 gap-3 md:flex md:items-end md:gap-2 border border-slate-200 rounded-lg p-4 md:border-0 md:p-0 md:rounded-none">
                         {/* Professional dropdown - no more fake datalist nonsense */}
-                        <div className="flex-1">
+                        <div className="col-span-2 md:flex-1">
                           <label className="block text-xs font-medium text-slate-700 mb-1">
                             Product Name *
                           </label>
@@ -491,7 +491,7 @@ const Sales = () => {
                           )}
                         </div>
 
-                        <div className="w-24">
+                        <div className="w-full md:w-24">
                           <label className="block text-xs font-medium text-slate-700 mb-1">
                             Qty *
                           </label>
@@ -520,7 +520,7 @@ const Sales = () => {
                         </div>
 
                         {/* NEW: Original price (locked) */}
-                        <div className="w-24">
+                        <div className="w-full md:w-24">
                           <label className="block text-xs font-medium text-slate-700 mb-1">
                             Original
                           </label>
@@ -533,7 +533,7 @@ const Sales = () => {
                         </div>
 
                         {/* Price = unitPrice (editable now) */}
-                        <div className="w-24">
+                        <div className="w-full md:w-24">
                           <label className="block text-xs font-medium text-slate-700 mb-1">
                             Unit Price
                           </label>
@@ -554,13 +554,13 @@ const Sales = () => {
                             }`}
                           />
                           {formErrors[`unitPrice_${idx}`] && (
-                            <p className="text-red-600 text-xs mt-1 whitespace-nowrap">
+                            <p className="text-red-600 text-xs mt-1 whitespace-normal md:whitespace-nowrap">
                               {formErrors[`unitPrice_${idx}`]}
                             </p>
                           )}
                         </div>
 
-                        <div className="w-28">
+                        <div className="w-full md:w-28">
                           <label className="block text-xs font-medium text-slate-700 mb-1">
                             Total
                           </label>
@@ -570,7 +570,7 @@ const Sales = () => {
                         </div>
 
                         {/* Profit Display */}
-                        <div className="w-28">
+                        <div className="w-full md:w-28">
                           <label className="block text-xs font-medium text-green-700 mb-1">
                             Profit
                           </label>
@@ -588,7 +588,7 @@ const Sales = () => {
                         <button
                           type="button"
                           onClick={() => handleRemoveProduct(row.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="col-span-2 flex justify-end p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         >
                           <Trash2 size={18} />
                         </button>

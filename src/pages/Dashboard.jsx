@@ -134,11 +134,11 @@ export default function Dashboard() {
     fetchDashboardData();
   }, []);
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {/* Mobile Navbar Overlay */}
       {navbarOpen && (
         <div 
-          className="fixed inset-0 bg-white z-20 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
           onClick={() => setNavbarOpen(false)}
         />
       )}
@@ -208,7 +208,7 @@ export default function Dashboard() {
             >
               <Menu size={20} />
             </button>
-            <h1 className='text-2xl font-bold'>Inventory Overview</h1>
+            <h1 className='text-lg sm:text-xl lg:text-2xl font-bold'>Inventory Overview</h1>
           </div>
         </header>
 
@@ -218,7 +218,7 @@ export default function Dashboard() {
           <div className="mb-8 bg-linear-to-r from-emerald-600 to-teal-600 rounded-xl p-6 text-white shadow-lg">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Inventory Overview</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Inventory Overview</h1>
                 <p className="text-emerald-100">
                   Real-time stock levels and order status for building materials.
                 </p>

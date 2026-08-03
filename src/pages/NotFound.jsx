@@ -10,7 +10,7 @@ const NotFound = () => {
   }, [])
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {/* Main Content Only */}
       <main className="flex-1 overflow-auto p-6 flex items-center justify-center">
         <div className="max-w-2xl w-full text-center">

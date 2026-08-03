@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import ButtonLoading from '../components/ButtonLoading';
 import { InfoIcon, CheckCircle2 } from 'lucide-react';
-import { toast } from 'sonner';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     setMessage('');
     
     try {
-      const response = await axios.post('https://aido-backend-h6gd.onrender.com/api/users/forgot-password', { email });
+      const response = await axios.post(`${API_BASE_URL}/api/users/forgot-password`, { email });
       setMessage(response.data.data || 'Password reset link sent to your email.');
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to send reset link.');
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4">
-      <div className="w-full max-w-md space-y-8 border border-gray-300 rounded-lg p-8 shadow-lg bg-white">
+      <div className="w-full max-w-md space-y-8 border border-gray-300 rounded-lg p-6 sm:p-8 shadow-lg bg-white">
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
             Forgot Password

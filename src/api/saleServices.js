@@ -1,7 +1,8 @@
 // src/api/saleServices.js
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 
-const API_URL = 'https://aido-backend-h6gd.onrender.com/api/sales';
+const API_URL = `${API_BASE_URL}/api/sales`;
 
 // Create a new sale
 export const createSale = async (saleData) => {

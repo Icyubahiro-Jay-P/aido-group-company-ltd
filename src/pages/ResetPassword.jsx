@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../api/config';
 import ButtonLoading from '../components/ButtonLoading';
 import { Eye, EyeOff, InfoIcon, CheckCircle2 } from 'lucide-react';
 
@@ -22,7 +23,7 @@ const ResetPassword = () => {
     setError('');
     
     try {
-      await axios.post(`https://aido-backend-h6gd.onrender.com/api/users/reset-password/${token}`, { password: formData.password });
+      await axios.post(`${API_BASE_URL}/api/users/reset-password/${token}`, { password: formData.password });
       setSuccess(true);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to change password. The token may be expired.');
@@ -34,7 +35,7 @@ const ResetPassword = () => {
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4">
-        <div className="w-full max-w-md border border-gray-300 rounded-lg p-8 shadow-lg bg-white text-center">
+        <div className="w-full max-w-md border border-gray-300 rounded-lg p-6 sm:p-8 shadow-lg bg-white text-center">
           <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 mb-2">Password Reset Successful</h1>
           <p className="text-zinc-600 mb-8">You can now sign in with your new password.</p>
@@ -48,7 +49,7 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4">
-      <div className="w-full max-w-md space-y-8 border border-gray-300 rounded-lg p-8 shadow-lg bg-white">
+      <div className="w-full max-w-md space-y-8 border border-gray-300 rounded-lg p-6 sm:p-8 shadow-lg bg-white">
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Create New Password</h1>
           <p className="mt-2 text-sm text-zinc-600">Enter a new secure password</p>

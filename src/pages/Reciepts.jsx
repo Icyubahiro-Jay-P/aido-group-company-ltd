@@ -170,10 +170,10 @@ const Receipts = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {navbarOpen && (
         <div
-          className="fixed inset-0 bg-white z-20 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
           onClick={() => setNavbarOpen(false)}
         />
       )}
@@ -241,21 +241,21 @@ const Receipts = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <header className="h-16 bg-white border-b border-slate-200 px-4 lg:px-8 flex items-center justify-between">
+          <div className="flex items-center gap-3 lg:gap-4">
             <button
               onClick={() => setNavbarOpen(!navbarOpen)}
               className="lg:hidden p-2 hover:bg-slate-100 rounded-lg"
             >
               <Menu size={20} />
             </button>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900">
               Sales Receipts
             </h1>
           </div>
           <button
             onClick={() => setShowExportModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
           >
             <Download size={18} />
             Export
@@ -263,11 +263,11 @@ const Receipts = () => {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-4 lg:p-8">
           {/* Enhanced Header */}
           <div className="mb-8 bg-linear-to-r from-teal-600 to-cyan-600 rounded-xl p-6 text-white shadow-lg flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-bold mb-2">Sales Receipts</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">Sales Receipts</h1>
               <p className="text-teal-100">
                 Track and manage all your sales transactions
               </p>

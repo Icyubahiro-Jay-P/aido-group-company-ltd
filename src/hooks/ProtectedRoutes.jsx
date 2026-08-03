@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getUserProfile } from '../api/userServices';
 import Loading from '../components/Loading';
 
 const ProtectedRoute = () => {
@@ -11,13 +11,12 @@ const ProtectedRoute = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const res = await axios.get('https://aido-backend-h6gd.onrender.com/api/users/profile', {
-          withCredentials: true,        // ← This sends the httpOnly cookie
-        });
-
-        setUser(res.data.user || res.data);   // adjust based on your backend response
+        // getUserProfile() already returns response.data, so it is the user
+        // object directly. Handle wrapped shapes defensively too.
+        const profile = await getUserProfile();
+        setUser(profile?.user || profile?.data || profile);
         setIsAuth(true);
-      } catch (err) {
+      } catch {
         // 401 or any error = not authenticated
         setIsAuth(false);
         setUser(null);

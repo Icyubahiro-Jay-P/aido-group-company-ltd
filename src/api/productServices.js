@@ -1,7 +1,8 @@
 // src/api/productServices.js
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 
-const API_URL = 'https://aido-backend-h6gd.onrender.com/api/products';   // change port if needed
+const API_URL = `${API_BASE_URL}/api/products`;
 
 // Create a new product
 export const createProduct = async (productData) => {

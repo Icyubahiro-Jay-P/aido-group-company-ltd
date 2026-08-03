@@ -186,10 +186,10 @@ const Reports = () => {
   }, [timePeriod]);
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {navbarOpen && (
         <div
-          className="fixed inset-0 bg-white z-20 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
           onClick={() => setNavbarOpen(false)}
         />
       )}
@@ -262,7 +262,7 @@ const Reports = () => {
             >
               <Menu size={20} />
             </button>
-            <h1 className="text-2xl font-bold">Business Analytics</h1>
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold">Business Analytics</h1>
           </div>
         </header>
 
@@ -270,7 +270,7 @@ const Reports = () => {
           <div className="mb-8 bg-linear-to-r from-indigo-600 to-blue-600 rounded-xl p-6 text-white shadow-lg">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <h1 className="text-3xl font-bold mb-2">Business Analytics</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Business Analytics</h1>
                 <p className="text-indigo-100">
                   Complete overview of your business performance and metrics.
                 </p>

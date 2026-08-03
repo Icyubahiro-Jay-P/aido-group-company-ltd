@@ -51,10 +51,10 @@ const Inventory = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex h-dvh bg-slate-50 font-sans text-slate-900">
       {navbarOpen && (
         <div 
-          className="fixed inset-0 bg-white z-20 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden"
           onClick={() => setNavbarOpen(false)}
         />
       )}
@@ -122,14 +122,14 @@ const Inventory = () => {
             >
               <Menu size={20} />
             </button>
-          <h1 className='text-2xl font-bold'>Complete Inventory</h1>          </div>
+          <h1 className='text-lg sm:text-xl lg:text-2xl font-bold'>Complete Inventory</h1>          </div>
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-slate-50">
           <div className="mb-8 bg-linear-to-r from-blue-600 to-cyan-600 rounded-xl p-6 text-white shadow-lg">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Complete Inventory</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Complete Inventory</h1>
                 <p className="text-blue-100">View all items currently in stock across all categories.</p>
               </div>
               <div className="text-blue-200">
@@ -165,7 +165,7 @@ const Inventory = () => {
                 </div>
                 <button 
                   onClick={handleExportPDF}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full md:w-auto"
                 >
                   <Download size={18} />
                   Export
