@@ -125,6 +125,7 @@ const buildReceiptHtml = (sale, branch = 'AIDO_GROUP', user) => {
   <div class="sep">${SEP}</div>
   <div class="row"><span>Payment</span><span>${String(sale?.paymentMethod || 'Cash')}</span></div>
   <div class="totals bold row"><span>TOTAL</span><span>${formatMoney(total)} Frw</span></div>
+  ${pbHtml}
   <div class="sep">${SEP_HEAVY}</div>
   <div class="footer">Thank you for shopping with us!</div>
 </body>
