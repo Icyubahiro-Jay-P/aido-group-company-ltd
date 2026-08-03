@@ -13,40 +13,37 @@ import {
 const Home = () => {
   const facilities = [
     {
-      image: "lumber.png",
+      image: "/lumber.png",
       title: "Premium Lumber Yard",
       description:
         "High-quality timber and wood products sourced for durability and structural integrity.",
     },
     {
-      image: "steel.png",
+      image: "/steel.png",
       title: "Steel & Metal Fabrication",
       description:
         "Heavy-duty steel beams, rebars, and roofing sheets for robust construction projects.",
     },
     {
-      image: "sheets.png",
-      title: "Masonry",
+      image: "/sheets.png",
+      title: "Roofing Sheets",
       description:
-        "Top-grade cement, concrete blocks, and bricks ensuring a solid foundation.",
+        "Durable corrugated iron sheets that keep the rain out and the structure tight.",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1581166397057-235af2b3c6dd?q=80&w=800&auto=format&fit=crop",
-      title: "Tools & Hardware",
+      image: "/Imireko.JPG",
+      title: "Structural Steel Beams",
       description:
-        "A comprehensive range of professional-grade tools and essential construction hardware.",
+        "Heavy-duty steel beams ready for strong frames and load-bearing work.",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1589939705882-f8d440692850?q=80&w=800&auto=format&fit=crop",
-      title: "Paint & Finishing Materials",
+      image: "/Amabati.JPG",
+      title: "Steel Plates & Sheets",
       description:
-        "Premium quality paints, varnishes, and protective coatings for both interior and exterior applications.",
+        "Thick flat steel plates for fabrication, flooring, and heavy-duty builds.",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?q=80&w=800&auto=format&fit=crop",
+      image: "/steel.png",
       title: "Plumbing & Electrical Supplies",
       description:
         "Complete range of pipes, fittings, wiring, cables, and electrical fixtures for all installation needs.",
@@ -106,8 +103,8 @@ const Home = () => {
       <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1541888086925-920a0b27e69b?q=80&w=2000&auto=format&fit=crop"
-            alt="AIDO Group Construction Site"
+            src="/Amabati.JPG"
+            alt="AIDO Group Construction Materials"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/60 to-black/80"></div>
@@ -147,7 +144,7 @@ const Home = () => {
       </section>
 
       {/* Business Stats Overlay */}
-      <section className="relative -mt-16 z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-100 border border-gray-100">
           <div className="p-4">
             <Building className="w-10 h-10 text-blue-600 mx-auto mb-3" />
@@ -216,7 +213,6 @@ const Home = () => {
 
       {/* Call to Action via WhatsApp */}
       <section className="bg-linear-to-tr from-blue-600 to-orange-700 py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1541888086925-920a0b27e69b?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay"></div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <MessageCircle className="w-16 h-16 text-green-400 mx-auto mb-6 drop-shadow-xl" />
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
