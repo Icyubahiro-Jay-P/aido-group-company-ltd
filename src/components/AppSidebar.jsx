@@ -1,5 +1,6 @@
 import {
   Box,
+  Building2,
   LayoutDashboard,
   Package,
   LayersPlus,
@@ -11,7 +12,6 @@ import {
   LogOut,
 } from 'lucide-react';
 import NavbarItem from './NavbarItem';
-import BranchSwitcher from './BranchSwitcher';
 import { useBranch, branchLabel } from '../context/branch';
 
 const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
@@ -41,7 +41,12 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
       </div>
 
       <div className="px-3 pt-3 pb-2">
-        <BranchSwitcher />
+        <div className="flex items-center gap-2 px-1">
+          <Building2 size={16} className="text-blue-600 shrink-0" />
+          <span className="text-xs font-medium text-slate-600 truncate">
+            {branchLabel(branch)}
+          </span>
+        </div>
       </div>
 
       <nav className="p-2 px-4 space-y-1">
