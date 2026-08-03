@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 export const sendContactMessage = async (data) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/contact/send`, data);
+    const response = await axiosClient.post(`${API_BASE_URL}/api/contact/send`, data);
     return response.data;
   } catch (error) {
     throw {
