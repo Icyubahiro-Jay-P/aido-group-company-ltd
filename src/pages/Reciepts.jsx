@@ -7,6 +7,8 @@ import {
   Eye,
   ChevronDown,
   X,
+  Printer,
+  FileDown,
 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
@@ -15,10 +17,13 @@ import StatCard from "../components/StatCard";
 import ConfirmModal from "../components/ConfirmModal";
 import { getSales, deleteSale } from "../api/saleServices";
 import { exportReceiptsToPDF } from "../utils/pdfExport";
+import { useBranch } from "../context/branch";
+import { printReceipt, downloadReceiptPdf } from "../utils/receipt";
 import { toast } from "sonner";
 
 const Receipts = () => {
   const { user } = useOutletContext();
+  const { branch } = useBranch();
   const [searchTerm, setSearchTerm] = useState("");
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -250,11 +255,9 @@ const Receipts = () => {
                   <th className="px-6 py-3 text-right text-sm font-semibold text-slate-700">
                     Total Amount
                   </th>
-                  {user.role === "Boss" && (
-                    <th className="px-6 py-3 text-center text-sm font-semibold text-slate-700">
-                      Actions
-                    </th>
-                  )}
+                  <th className="px-6 py-3 text-center text-sm font-semibold text-slate-700">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
