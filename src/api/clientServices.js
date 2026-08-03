@@ -40,7 +40,7 @@ const enqueue = async ({ method, url, data, id }) => {
 export const createClient = async (clientData) => {
   const offline = async () => {
     const localId = await enqueue({ method: 'post', url: `${API_URL}`, data: clientData });
-    const localDoc = { _id: localId, ...clientData, pending: true };
+    const localDoc = { _id: localId, ...clientData, branch: getCurrentBranch(), pending: true };
     await localPut(ENTITY, localDoc);
     return {
       message: 'Saved offline. Will sync when you reconnect.',
@@ -68,7 +68,7 @@ export const createClient = async (clientData) => {
 export const getAllClients = async () => {
   const serveCache = async () => ({
     message: 'Loaded from offline cache',
-    clients: await localGetAll(ENTITY),
+    clients: await localGetAll(ENTITY, getCurrentBranch()),
   });
   if (isOfflineNow()) return serveCache();
   try {
