@@ -1,5 +1,5 @@
 // src/api/productServices.js
-import axiosClient from './axiosClient';
+import axiosClient, { getCurrentBranch } from './axiosClient';
 import { API_BASE_URL } from './config';
 import { isOfflineNow, setOfflineNow } from '../offline/onlineStatus';
 import {
@@ -30,6 +30,7 @@ const enqueue = async ({ method, url, data, id }) => {
     data,
     id: localId,
     clientMutationId,
+    branch: getCurrentBranch(),
     createdAt: Date.now(),
   });
   return localId;
@@ -39,7 +40,7 @@ const enqueue = async ({ method, url, data, id }) => {
 export const createProduct = async (productData) => {
   const offline = async () => {
     const localId = await enqueue({ method: 'post', url: `${API_URL}`, data: productData });
-    const localDoc = { _id: localId, ...productData, pending: true };
+    const localDoc = { _id: localId, ...productData, branch: getCurrentBranch(), pending: true };
     await localPut(ENTITY, localDoc);
     return {
       message: 'Saved offline. Will sync when you reconnect.',
