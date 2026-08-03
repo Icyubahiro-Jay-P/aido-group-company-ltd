@@ -2,10 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown, Building2 } from 'lucide-react';
 import { useBranch, BRANCHES, branchLabel } from '../context/branch';
 
-// Header dropdown that lets a Boss (or any user with canSwitchBranches) switch
-// the branch they are viewing while logged in. Switching persists the choice and
-// reloads the app so every page refetches with the new X-Active-Branch header.
-const BranchSwitcher = () => {
+// Branch switcher for users with canSwitchBranches (Bosses). Two responsive
+// variants:
+//   - "header": a compact pill in the top bar (label from sm+, icon-only on the
+//     smallest screens) with a right-aligned dropdown.
+//   - "sidebar": a full-width, touch-friendly control inside the mobile nav
+//     drawer (and the desktop sidebar) with a dropdown that spans its width.
+// Switching persists the choice and reloads so every page refetches with the
+// new X-Active-Branch header.
+const BranchSwitcher = ({ variant = 'header' }) => {
   const { branch, canSwitchBranches, switchBranch } = useBranch();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -28,28 +33,41 @@ const BranchSwitcher = () => {
 
   if (!canSwitchBranches) return null;
 
+  const isSidebar = variant === 'sidebar';
+
   return (
-    <div className="relative" ref={ref}>
+    <div className={`relative ${isSidebar ? 'w-full' : ''}`} ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-label="Switch branch"
         title="Switch branch"
-        className="flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm font-medium text-slate-700 transition-colors"
+        className={
+          isSidebar
+            ? 'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors'
+            : 'flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm font-medium text-slate-700 transition-colors'
+        }
       >
-        <Building2 size={16} className="text-blue-600" />
-        <span className="hidden sm:inline">{branchLabel(branch)}</span>
+        <Building2 size={16} className="text-blue-600 shrink-0" />
+        <span className={isSidebar ? 'flex-1 text-left truncate' : 'hidden sm:inline'}>
+          {branchLabel(branch)}
+        </span>
         <ChevronDown
           size={14}
-          className={`text-slate-500 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`text-slate-500 transition-transform shrink-0 ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-lg shadow-lg z-50 p-1.5"
+          className={`bg-white border border-slate-200 rounded-lg shadow-lg z-50 p-1.5 ${
+            isSidebar
+              ? 'absolute left-0 right-0 top-full mt-2'
+              : 'absolute right-0 mt-2 w-56 sm:w-64'
+          }`}
         >
           <p className="px-3 py-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">
             Switch branch
