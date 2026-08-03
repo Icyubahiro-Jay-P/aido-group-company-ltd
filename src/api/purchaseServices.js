@@ -1,5 +1,5 @@
 // src/api/purchaseServices.js
-import axiosClient from './axiosClient';
+import axiosClient, { getCurrentBranch } from './axiosClient';
 import { API_BASE_URL } from './config';
 import { isOfflineNow, setOfflineNow } from '../offline/onlineStatus';
 import {
