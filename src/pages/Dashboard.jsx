@@ -16,7 +16,6 @@ import { toast } from 'sonner';
 import Loading from '../components/Loading';
 
 export default function Dashboard() {
-  const { user } = useOutletContext();
   const [loading, setLoading] = useState(true);
   const [inventorySummary, setInventorySummary] = useState(null);
   const [lowStockItems, setLowStockItems] = useState([]);
