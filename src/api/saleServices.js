@@ -1,5 +1,5 @@
 // src/api/saleServices.js
-import axiosClient from './axiosClient';
+import axiosClient, { getCurrentBranch } from './axiosClient';
 import { API_BASE_URL } from './config';
 import { isOfflineNow, setOfflineNow } from '../offline/onlineStatus';
 import {
@@ -31,6 +31,7 @@ const enqueue = async ({ method, url, data, id, includeMutationId = false }) => 
     data: payload,
     id: localId,
     clientMutationId,
+    branch: getCurrentBranch(),
     createdAt: Date.now(),
   });
   return localId;
