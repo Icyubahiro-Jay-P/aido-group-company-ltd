@@ -27,7 +27,6 @@ const RouteWrapper = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    setInitialLoading(true);
     const timer = setTimeout(() => {
       setInitialLoading(false);
     }, 500);
