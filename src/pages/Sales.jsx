@@ -11,7 +11,7 @@ import PageBanner from "../components/PageBanner";
 import { getProducts } from "../api/productServices";
 import { createSale } from "../api/saleServices";
 import { useBranch } from "../context/branch";
-import { printReceipt, downloadReceiptPdf } from "../utils/receipt";
+import { printReceipt, downloadReceiptPdf, receiptTotal } from "../utils/receipt";
 import { toast } from "sonner";
 
 const Sales = () => {
@@ -538,6 +538,60 @@ const Sales = () => {
               >
                 {submitting ? "Processing..." : "Complete Sale"}
               </button>
+
+              {/* Receipt actions after a successful sale */}
+              {lastSale && !submitting && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h4 className="font-bold text-green-800">
+                        Sale Recorded
+                      </h4>
+                      <p className="text-sm text-green-700">
+                        Customer: {lastSale.clientName} -{" "}
+                        {formatCurrency(receiptTotal(lastSale))} Frw
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setLastSale(null)}
+                      className="text-green-700 hover:text-green-900 text-sm font-medium"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        try {
+                          printReceipt(lastSale, branch);
+                        } catch (err) {
+                          toast.error(err.message);
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <Printer size={16} />
+                      Print Receipt
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        try {
+                          downloadReceiptPdf(lastSale, branch);
+                        } catch (err) {
+                          toast.error(err.message);
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-white border border-green-600 text-green-700 rounded-lg hover:bg-green-50 transition-colors"
+                    >
+                      <FileDown size={16} />
+                      Save as PDF
+                    </button>
+                  </div>
+                </div>
+              )}
             </form>
           </div>
     </DashboardLayout>
