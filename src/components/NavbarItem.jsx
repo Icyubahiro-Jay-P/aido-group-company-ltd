@@ -1,9 +1,10 @@
 // src/components/NavbarItem.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
-import { createPortal } from "react-dom";
 import { logout } from "../api/userServices";
+import ConfirmModal from "./ConfirmModal";
+
 const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false }) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -34,13 +35,6 @@ const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false })
     setShowLogoutModal(false);
   };
 
-  // Close modal when clicking the dark backdrop
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      setShowLogoutModal(false);
-    }
-  };
-
   return (
     <>
       <button
@@ -59,51 +53,22 @@ const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false })
         <span className="flex-1 text-left">{label}</span>
       </button>
 
-      {/* FULL-SCREEN CENTERED MODAL USING PORTAL */}
-      {showLogoutModal &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/70 backdrop-blur-md"
-            onClick={handleBackdropClick}
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-lg shadow-2xl w-full max-w-95 mx-4 overflow-hidden"
-            >
-              {/* Modal Icon & Title */}
-              <div className="px-8 pt-10 pb-6 text-center">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-red-100">
-                  <LogOut size={42} className="text-red-600" />
-                </div>
-
-                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                  Sign Out?
-                </h3>
-                <p className="text-slate-600 text-[15px] leading-relaxed px-2">
-                  Are you sure you want to sign out?<br />
-                  You'll need to log in again to access your account.
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="border-t border-slate-100 px-6 py-6 flex gap-3">
-                <button
-                  onClick={handleLogoutCancel}
-                  className="flex-1 py-3.5 text-sm font-semibold text-slate-700 bg-slate-200 hover:bg-slate-300 transition-all rounded-md focus:outline-none cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleLogoutConfirm}
-                  className="flex-1 py-3.5 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-all rounded-md focus:outline-none shadow-sm cursor-pointer"
-                >
-                  Yes, Sign Out
-                </button>
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
+      <ConfirmModal
+        open={showLogoutModal}
+        title="Sign Out?"
+        message={
+          <>
+            Are you sure you want to sign out?
+            <br />
+            You'll need to log in again to access your account.
+          </>
+        }
+        confirmText="Yes, Sign Out"
+        cancelText="Cancel"
+        icon={LogOut}
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+      />
     </>
   );
 };
