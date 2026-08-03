@@ -21,7 +21,7 @@ import DashboardLayout from "../components/DashboardLayout";
 import PageBanner from "../components/PageBanner";
 import ConfirmModal from "../components/ConfirmModal";
 import Badge from "../components/Badge";
-import { useBranch, BRANCHES } from "../context/branch";
+import { useBranch, BRANCHES, branchLabel } from "../context/branch";
 import {
   getAllUsers,
   deleteUserById,
@@ -70,6 +70,7 @@ const Settings = () => {
     nationalIdentity: "",
     dateOfBirth: "",
     role: "Worker",
+    branch,
   });
 
   const USERS_PER_PAGE = useMemo(() => 10, []);
@@ -252,10 +253,12 @@ const Settings = () => {
     }
 
     try {
-      const registerData = { ...newUserData, branch };
+      const registerData = { ...newUserData, branch: newUserData.branch || branch };
       delete registerData.confirmPassword;
       await registerUser(registerData);
-      toast.success("User created successfully");
+      toast.success(
+        `User created successfully and assigned to ${branchLabel(newUserData.branch)}`,
+      );
       setNewUserData({
         fullName: "",
         email: "",
@@ -265,6 +268,7 @@ const Settings = () => {
         nationalIdentity: "",
         dateOfBirth: "",
         role: "Worker",
+        branch,
       });
       setShowAddUserForm(false);
       // Fetch fresh user list with reset to page 1
@@ -629,7 +633,12 @@ const Settings = () => {
                                 <Badge variant={u.role === "Boss" ? "purple" : "blue"}>
                                   {u.role}
                                 </Badge>
-                                <p className="text-xs text-slate-500 whitespace-nowrap hidden sm:block">
+                                <Badge
+                                  variant={u.branch === "AIDO_PAPER_BAGS" ? "orange" : "teal"}
+                                >
+                                  {branchLabel(u.branch)}
+                                </Badge>
+                                <p className="text-xs text-slate-500 whitespace-nowrap hidden md:block">
                                   {u.phoneNumber}
                                 </p>
                               </div>
@@ -787,6 +796,26 @@ const Settings = () => {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
+                          Branch
+                        </label>
+                        <div className="relative">
+                          <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                          <select
+                            name="branch"
+                            value={newUserData.branch}
+                            onChange={handleNewUserChange}
+                            className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                          >
+                            {BRANCHES.map((b) => (
+                              <option key={b.value} value={b.value}>
+                                {b.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">
                           Password
                         </label>
                         <div className="relative">
@@ -911,8 +940,9 @@ const Settings = () => {
 
               <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
                 Switching branches reloads the app so every page is refetched
-                with the selected branch. New users you create are assigned to
-                the branch you are currently viewing.
+                with the selected branch. New users are assigned to the branch
+                you pick in the Add User form (defaults to the branch you are
+                currently viewing).
               </div>
             </div>
           )}
