@@ -63,7 +63,7 @@ export const createSale = async (saleData) => {
       profit: ((p.unitPrice || 0) - (p.purchasePrice || 0)) * (p.quantitySold || 0),
     }));
     const totalProfit = products.reduce((s, p) => s + (p.profit || 0), 0);
-    const localDoc = { _id: localId, ...saleData, products, totalProfit, pending: true };
+    const localDoc = { _id: localId, ...saleData, products, totalProfit, branch: getCurrentBranch(), pending: true };
     await localPut(ENTITY, localDoc);
     await decrementLocalStock(products);
     return { message: 'Sale saved offline. Will sync when you reconnect.', sale: localDoc, offline: true };
