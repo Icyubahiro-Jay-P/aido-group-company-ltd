@@ -34,7 +34,13 @@ const StockIn = () => {
   };
   
   useEffect(() => {
-    fetchProducts();
+    getProducts()
+      .then((response) => {
+        setStockItems(response.products || []);
+      })
+      .catch((error) => {
+        toast.error(error.message || "Failed to fetch stock items. Please try again.");
+      });
   }, []);
 
   useEffect(() => {
