@@ -134,7 +134,7 @@ export const getClientsByStatus = async (status) => {
 // Search clients
 export const searchClients = async (query) => {
   const serveCache = async () => {
-    const all = await localGetAll(ENTITY);
+    const all = await localGetAll(ENTITY, getCurrentBranch());
     const q = (query || '').toLowerCase();
     const filtered = q
       ? all.filter(
