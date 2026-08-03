@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { Menu, CloudOff, RefreshCw } from 'lucide-react';
 import AppSidebar from './AppSidebar';
-import BranchSwitcher from './BranchSwitcher';
 import { useOnlineStatus } from '../offline/useOnlineStatus';
 
 const DashboardLayout = ({
@@ -42,7 +41,6 @@ const DashboardLayout = ({
             <h1 className="text-lg sm:text-xl lg:text-2xl font-bold truncate">{title}</h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <BranchSwitcher />
             {pending > 0 && (
               <span
                 className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-100 border border-amber-200 rounded-full px-3 py-1"
