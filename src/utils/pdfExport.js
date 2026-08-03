@@ -125,7 +125,7 @@ export const exportReceiptsToPDF = async (sales, fileName = 'sales-receipts') =>
         if (sale && sale.saleDate) {
           try {
             date = new Date(sale.saleDate).toLocaleDateString();
-          } catch (e) {
+          } catch {
             date = 'Invalid Date';
           }
         }
