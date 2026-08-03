@@ -37,10 +37,10 @@ const BranchSwitcher = () => {
         aria-expanded={open}
         aria-label="Switch branch"
         title="Switch branch"
-        className="flex items-center gap-2 px-3 py-2 min-h-[40px] rounded-lg bg-slate-100 hover:bg-slate-200 text-sm font-medium text-slate-700 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 min-h-10 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm font-medium text-slate-700 transition-colors"
       >
         <Building2 size={16} className="text-blue-600 shrink-0" />
-        <span className="hidden sm:inline max-w-[120px] sm:max-w-none truncate">
+        <span className="hidden sm:inline max-w-30 sm:max-w-none truncate">
           {branchLabel(branch)}
         </span>
         <ChevronDown
