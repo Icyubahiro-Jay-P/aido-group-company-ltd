@@ -21,7 +21,7 @@ import DashboardLayout from "../components/DashboardLayout";
 import PageBanner from "../components/PageBanner";
 import ConfirmModal from "../components/ConfirmModal";
 import Badge from "../components/Badge";
-import { useBranch, BRANCHES } from "../context/BranchContext";
+import { useBranch, BRANCHES } from "../context/branch";
 import {
   getAllUsers,
   deleteUserById,
@@ -328,7 +328,7 @@ const Settings = () => {
                 User Management
               </button>
             )}
-            {user?.canSwitchBranches && (
+            {canSwitchBranches && (
               <button
                 onClick={() => setActiveTab("branches")}
                 className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
@@ -851,7 +851,7 @@ const Settings = () => {
           )}
 
           {/* Branches Tab (owner / switch-capable only) */}
-          {user?.canSwitchBranches && activeTab === "branches" && (
+          {canSwitchBranches && activeTab === "branches" && (
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-2">
                 Branch Management
