@@ -11,7 +11,7 @@ import {
   LogOut,
 } from 'lucide-react';
 import NavbarItem from './NavbarItem';
-import { useBranch, branchLabel } from '../context/BranchContext';
+import { useBranch, branchLabel } from '../context/branch';
 
 const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
   const { branch } = useBranch();
