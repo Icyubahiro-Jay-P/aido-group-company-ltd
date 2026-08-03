@@ -3,17 +3,23 @@ import {
   Plus,
   Trash2,
   ShoppingCart,
+  Printer,
+  FileDown,
 } from "lucide-react";
 import DashboardLayout from "../components/DashboardLayout";
 import PageBanner from "../components/PageBanner";
 import { getProducts } from "../api/productServices";
 import { createSale } from "../api/saleServices";
+import { useBranch } from "../context/branch";
+import { printReceipt, downloadReceiptPdf } from "../utils/receipt";
 import { toast } from "sonner";
 
 const Sales = () => {
+  const { branch } = useBranch();
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [lastSale, setLastSale] = useState(null);
 
   // Format currency with commas
   const formatCurrency = (amount) => {
