@@ -50,10 +50,22 @@ export const receiptTotal = (sale) => {
 
 const receiptNumber = (sale) => `#${String(sale?._id || '').substring(0, 8).toUpperCase()}`;
 
+// The staff member printing/issuing the receipt: name + phone + email.
+const printedBy = (user) => {
+  const name = user?.fullName || user?.name || '';
+  const phone = user?.phoneNumber || '';
+  const email = user?.email || '';
+  const lines = [];
+  if (name) lines.push(`Sold By: ${name}`);
+  if (phone) lines.push(phone);
+  if (email) lines.push(email);
+  return lines;
+};
+
 const SEP = '--------------------------------';
 const SEP_HEAVY = '================================';
 
-const buildReceiptHtml = (sale, branch = 'AIDO_GROUP') => {
+const buildReceiptHtml = (sale, branch = 'AIDO_GROUP', user) => {
   const profile = getBranchProfile(branch);
   const items = receiptItems(sale);
   const total = receiptTotal(sale);
@@ -65,6 +77,11 @@ const buildReceiptHtml = (sale, branch = 'AIDO_GROUP') => {
       return `<div class="row"><span>${name}</span><span>${formatMoney(i.total)}</span></div>${qtyLine}`;
     })
     .join('<br/>');
+
+  const pb = printedBy(user);
+  const pbHtml = pb.length
+    ? `<div class="sep">${SEP}</div>${pb.map((l) => `<div class="center">${l}</div>`).join('')}`
+    : '';
 
   return `<!DOCTYPE html>
 <html>
