@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
+import PageBanner from "../components/PageBanner";
 import { getProducts } from "../api/productServices";
 import { createSale } from "../api/saleServices";
 import { toast } from "sonner";
@@ -225,28 +226,21 @@ const Sales = () => {
 
   return (
     <DashboardLayout title="Record Sales Transaction" brand="Sales" active="Sales">
-      <div className="mb-8 bg-linear-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">New Sale</h1>
-                <p className="text-orange-100">
-                  Fill in the customer details and add products to complete the
-                  sale.
-                </p>
-              </div>
-              <div className="text-orange-200">
-                <ShoppingCart size={48} />
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg w-fit">
-                <p className="text-xs text-orange-100">Total Items Selected</p>
-                <p className="text-2xl font-bold">
-                  {productRows.filter((r) => r.productName).length}
-                </p>
-              </div>
-            </div>
+      <PageBanner
+        title="New Sale"
+        subtitle="Fill in the customer details and add products to complete the sale."
+        icon={ShoppingCart}
+        gradient="from-orange-500 to-red-600"
+      >
+        <div className="mt-4">
+          <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg w-fit">
+            <p className="text-xs opacity-90">Total Items Selected</p>
+            <p className="text-2xl font-bold">
+              {productRows.filter((r) => r.productName).length}
+            </p>
           </div>
+        </div>
+      </PageBanner>
           <div className="max-w-4xl mx-auto">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Customer Details Section - email & notes gone, less clutter more cash */}

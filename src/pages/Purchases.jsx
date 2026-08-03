@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit2, ChevronDown, X, ShoppingCart } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
+import PageBanner from '../components/PageBanner';
+import ConfirmModal from '../components/ConfirmModal';
+import Badge from '../components/Badge';
 import { createPurchase, getPurchases, deletePurchase, updatePurchase } from '../api/purchaseServices';
 import { getProducts } from '../api/productServices';
 import { toast } from 'sonner';
@@ -213,19 +216,12 @@ const Purchases = () => {
     <DashboardLayout title="Purchases" brand="AIDO" active="Purchases">
       <div className="max-w-7xl mx-auto">
               {/* Header Banner */}
-              <div className="mb-8 bg-linear-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold mb-2">Purchases</h1>
-                    <p className="text-blue-100">
-                      Manage supplier purchases and add new stock to your inventory.
-                    </p>
-                  </div>
-                  <div className="text-blue-200">
-                    <ShoppingCart size={48} />
-                  </div>
-                </div>
-              </div>
+              <PageBanner
+                title="Purchases"
+                subtitle="Manage supplier purchases and add new stock to your inventory."
+                icon={ShoppingCart}
+                gradient="from-blue-600 to-blue-700"
+              />
 
               {/* Form */}
               {showForm && (
@@ -484,11 +480,9 @@ const Purchases = () => {
                             <td className="px-6 py-4 text-center">{purchase.products.length}</td>
                             <td className="px-6 py-4 text-right font-bold">{formatCurrency(purchase.totalAmount)} Frw</td>
                             <td className="px-6 py-4 text-center">
-                              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                purchase.paymentMethod === 'Cash' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-                              }`}>
+                              <Badge variant={purchase.paymentMethod === 'Cash' ? 'green' : 'blue'} className="px-3 py-1">
                                 {purchase.paymentMethod}
-                              </span>
+                              </Badge>
                             </td>
                             {user.role === "Boss" && (
                               <td className="px-6 py-4 text-center">
@@ -511,33 +505,20 @@ const Purchases = () => {
               </div>
             </div>
       {/* Delete Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-            <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
-            <p className="text-gray-600 mb-6">
-              Delete this purchase? Stock will be reduced too. No take-backs.
-            </p>
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  setShowDeleteModal(false);
-                  setDeleteItemId(null);
-                }}
-                className="flex-1 bg-gray-300 hover:bg-gray-400 py-2 rounded-lg font-bold"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteConfirm}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-bold"
-              >
-                Yes, Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        open={showDeleteModal}
+        variant="compact"
+        title="Confirm Delete"
+        message="Delete this purchase? Stock will be reduced too. No take-backs."
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        icon={Trash2}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => {
+          setShowDeleteModal(false);
+          setDeleteItemId(null);
+        }}
+      />
     </DashboardLayout>
   );
 };

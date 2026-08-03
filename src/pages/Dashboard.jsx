@@ -1,46 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  LayoutDashboard, 
-  Box, 
-  ShoppingCart, 
-  Users, 
-  Search, 
+import {
+  LayoutDashboard,
+  Box,
+  ShoppingCart,
   AlertTriangle,
   DollarSign,
-  Clock
 } from 'lucide-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
+import PageBanner from '../components/PageBanner';
+import StatCard from '../components/StatCard';
 import { getInventorySummary, getLowStockItems } from '../api/reportServices';
 import { getSales } from '../api/saleServices';
-import { getProducts } from '../api/productServices';
 import { toast } from 'sonner';
 import Loading from '../components/Loading';
-
-const StatusBadge = ({ status }) => {
-  const getStyles = (status) => {
-    switch (status) {
-      case 'Processing':
-        return 'bg-orange-100 text-orange-700 border-orange-200';
-      case 'Shipped':
-        return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'Delivered':
-        return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      case 'Cancelled':
-        return 'bg-red-100 text-red-700 border-red-200';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
-
-  return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStyles(status)}`}>
-      {status}
-    </span>
-  );
-};
-
-
 
 export default function Dashboard() {
   const { user } = useOutletContext();
@@ -126,19 +99,12 @@ export default function Dashboard() {
   return (
     <DashboardLayout title="Inventory Overview" brand="Dashboard" active="Dashboard">
           
-          <div className="mb-8 bg-linear-to-r from-emerald-600 to-teal-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Inventory Overview</h1>
-                <p className="text-emerald-100">
-                  Real-time stock levels and order status for building materials.
-                </p>
-              </div>
-              <div className="text-emerald-200">
-                <LayoutDashboard size={48} />
-              </div>
-            </div>
-          </div>
+          <PageBanner
+            title="Inventory Overview"
+            subtitle="Real-time stock levels and order status for building materials."
+            icon={LayoutDashboard}
+            gradient="from-emerald-600 to-teal-600"
+          />
 
           {loading ? (
             <div className="flex items-center justify-center h-96">
@@ -149,18 +115,14 @@ export default function Dashboard() {
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {stats.map((stat, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-lg ${stat.bg}`}>
-                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                      </div>
-                    </div>
-                    <h3 className="text-slate-500 text-sm font-medium">{stat.title}</h3>
-                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-                  </div>
+                  <StatCard
+                    key={index}
+                    title={stat.title}
+                    value={stat.value}
+                    icon={stat.icon}
+                    iconBg={stat.bg}
+                    iconColor={stat.color}
+                  />
                 ))}
               </div>
 

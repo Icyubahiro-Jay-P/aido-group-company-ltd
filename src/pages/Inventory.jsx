@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Download, Package } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
+import PageBanner from '../components/PageBanner';
 import { getProducts } from '../api/productServices';
 import { toast } from 'sonner';
 
@@ -51,27 +52,23 @@ const Inventory = () => {
 
   return (
     <DashboardLayout title="Complete Inventory" brand="Inventory" active="Inventory">
-      <div className="mb-8 bg-linear-to-r from-blue-600 to-cyan-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Complete Inventory</h1>
-                <p className="text-blue-100">View all items currently in stock across all categories.</p>
-              </div>
-              <div className="text-blue-200">
-                <Package size={48} />
-              </div>
-            </div>
-            <div className="mt-4 flex gap-4 flex-wrap">
-              <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
-                <p className="text-xs text-blue-100">Total Items</p>
-                <p className="text-xl font-bold">{inventoryItems.length}</p>
-              </div>
-              <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
-                <p className="text-xs text-blue-100">Total Value</p>
-                <p className="text-xl font-bold">{formatCurrency(totalValue)} Frw</p>
-              </div>
-            </div>
+      <PageBanner
+        title="Complete Inventory"
+        subtitle="View all items currently in stock across all categories."
+        icon={Package}
+        gradient="from-blue-600 to-cyan-600"
+      >
+        <div className="mt-4 flex gap-4 flex-wrap">
+          <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+            <p className="text-xs opacity-90">Total Items</p>
+            <p className="text-xl font-bold">{inventoryItems.length}</p>
           </div>
+          <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+            <p className="text-xs opacity-90">Total Value</p>
+            <p className="text-xl font-bold">{formatCurrency(totalValue)} Frw</p>
+          </div>
+        </div>
+      </PageBanner>
 
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-slate-200">

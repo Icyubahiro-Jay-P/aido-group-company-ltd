@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit2, LayersPlus } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
+import PageBanner from '../components/PageBanner';
+import ConfirmModal from '../components/ConfirmModal';
 import { createProduct, getProducts, deleteProduct, updateProduct } from '../api/productServices';
 import { toast } from 'sonner';
 
@@ -98,12 +100,6 @@ const StockIn = () => {
     setDeleteItemId(null);
   };
 
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      setShowDeleteModal(false);
-    }
-  };
-
   const handleCancelEdit = () => {
     setEditingId(null);
     setFormData({ productName: '', sku: '', quantity: '', unitPrice: '', purchasePrice: '' });
@@ -111,17 +107,12 @@ const StockIn = () => {
 
   return (
     <DashboardLayout title="Add Stock" brand="Stock In" active="Stock in">
-      <div className="mb-8 bg-linear-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">Add Stock</h1>
-                <p className="text-purple-100">Add new products to the inventory and manage stock levels.</p>
-              </div>
-              <div className="text-purple-200">
-                <LayersPlus size={48} />
-              </div>
-            </div>
-          </div>
+      <PageBanner
+        title="Add Stock"
+        subtitle="Add new products to the inventory and manage stock levels."
+        icon={LayersPlus}
+        gradient="from-purple-600 to-pink-600"
+      />
 
           {/* Form */}
 
@@ -290,50 +281,22 @@ const StockIn = () => {
           </div>
 
       {/* DELETE CONFIRMATION MODAL */}
-      {showDeleteModal &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/70 backdrop-blur-md"
-            onClick={handleBackdropClick}
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4 overflow-hidden"
-            >
-              {/* Modal Icon & Title */}
-              <div className="px-8 pt-10 pb-6 text-center">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-red-100">
-                  <Trash2 size={42} className="text-red-600" />
-                </div>
-
-                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                  Delete Stock Item?
-                </h3>
-                <p className="text-slate-600 text-[15px] leading-relaxed px-2">
-                  Are you sure you want to delete this stock item?<br />
-                  This action cannot be undone.
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="border-t border-slate-100 px-6 py-6 flex gap-3">
-                <button
-                  onClick={handleDeleteCancel}
-                  className="flex-1 py-3.5 text-sm font-semibold text-slate-700 bg-slate-200 hover:bg-slate-300 transition-all rounded-md focus:outline-none cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleDeleteConfirm}
-                  className="flex-1 py-3.5 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-all rounded-md focus:outline-none shadow-sm cursor-pointer"
-                >
-                  Yes, Delete
-                </button>
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
+      <ConfirmModal
+        open={showDeleteModal}
+        title="Delete Stock Item?"
+        message={
+          <>
+            Are you sure you want to delete this stock item?
+            <br />
+            This action cannot be undone.
+          </>
+        }
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        icon={Trash2}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+      />
     </DashboardLayout>
   );
 };
