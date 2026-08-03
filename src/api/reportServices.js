@@ -1,5 +1,5 @@
 // src/api/reportServices.js
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/reports`;
@@ -7,7 +7,7 @@ const API_URL = `${API_BASE_URL}/api/reports`;
 // ==================== INCOME ====================
 export const getDailyIncome = async () => {
   try {
-    const response = await axios.get(`${API_URL}/income/daily`, {
+    const response = await axiosClient.get(`${API_URL}/income/daily`, {
       withCredentials: true,
     });
     return response.data;
@@ -21,7 +21,7 @@ export const getDailyIncome = async () => {
 
 export const getWeeklyIncome = async () => {
   try {
-    const response = await axios.get(`${API_URL}/income/weekly`, {
+    const response = await axiosClient.get(`${API_URL}/income/weekly`, {
       withCredentials: true,
     });
     return response.data;
@@ -35,7 +35,7 @@ export const getWeeklyIncome = async () => {
 
 export const getMonthlyIncome = async () => {
   try {
-    const response = await axios.get(`${API_URL}/income/monthly`, {
+    const response = await axiosClient.get(`${API_URL}/income/monthly`, {
       withCredentials: true,
     });
     return response.data;
@@ -49,7 +49,7 @@ export const getMonthlyIncome = async () => {
 
 export const getAnnualIncome = async () => {
   try {
-    const response = await axios.get(`${API_URL}/income/annual`, {
+    const response = await axiosClient.get(`${API_URL}/income/annual`, {
       withCredentials: true,
     });
     return response.data;
@@ -64,7 +64,7 @@ export const getAnnualIncome = async () => {
 // ==================== EXPENSE ====================
 export const getDailyExpense = async () => {
   try {
-    const response = await axios.get(`${API_URL}/expense/daily`, {
+    const response = await axiosClient.get(`${API_URL}/expense/daily`, {
       withCredentials: true,
     });
     return response.data;
@@ -78,7 +78,7 @@ export const getDailyExpense = async () => {
 
 export const getWeeklyExpense = async () => {
   try {
-    const response = await axios.get(`${API_URL}/expense/weekly`, {
+    const response = await axiosClient.get(`${API_URL}/expense/weekly`, {
       withCredentials: true,
     });
     return response.data;
@@ -92,7 +92,7 @@ export const getWeeklyExpense = async () => {
 
 export const getMonthlyExpense = async () => {
   try {
-    const response = await axios.get(`${API_URL}/expense/monthly`, {
+    const response = await axiosClient.get(`${API_URL}/expense/monthly`, {
       withCredentials: true,
     });
     return response.data;
@@ -106,7 +106,7 @@ export const getMonthlyExpense = async () => {
 
 export const getAnnualExpense = async () => {
   try {
-    const response = await axios.get(`${API_URL}/expense/annual`, {
+    const response = await axiosClient.get(`${API_URL}/expense/annual`, {
       withCredentials: true,
     });
     return response.data;
@@ -121,7 +121,7 @@ export const getAnnualExpense = async () => {
 // ==================== PROFIT ====================
 export const getDailyProfit = async () => {
   try {
-    const response = await axios.get(`${API_URL}/profit/daily`, {
+    const response = await axiosClient.get(`${API_URL}/profit/daily`, {
       withCredentials: true,
     });
     return response.data;
@@ -135,7 +135,7 @@ export const getDailyProfit = async () => {
 
 export const getWeeklyProfit = async () => {
   try {
-    const response = await axios.get(`${API_URL}/profit/weekly`, {
+    const response = await axiosClient.get(`${API_URL}/profit/weekly`, {
       withCredentials: true,
     });
     return response.data;
@@ -149,7 +149,7 @@ export const getWeeklyProfit = async () => {
 
 export const getMonthlyProfit = async () => {
   try {
-    const response = await axios.get(`${API_URL}/profit/monthly`, {
+    const response = await axiosClient.get(`${API_URL}/profit/monthly`, {
       withCredentials: true,
     });
     return response.data;
@@ -163,7 +163,7 @@ export const getMonthlyProfit = async () => {
 
 export const getAnnualProfit = async () => {
   try {
-    const response = await axios.get(`${API_URL}/profit/annual`, {
+    const response = await axiosClient.get(`${API_URL}/profit/annual`, {
       withCredentials: true,
     });
     return response.data;
@@ -178,7 +178,7 @@ export const getAnnualProfit = async () => {
 // ==================== LOSS ====================
 export const getDailyLoss = async () => {
   try {
-    const response = await axios.get(`${API_URL}/loss/daily`, {
+    const response = await axiosClient.get(`${API_URL}/loss/daily`, {
       withCredentials: true,
     });
     return response.data;
@@ -192,7 +192,7 @@ export const getDailyLoss = async () => {
 
 export const getWeeklyLoss = async () => {
   try {
-    const response = await axios.get(`${API_URL}/loss/weekly`, {
+    const response = await axiosClient.get(`${API_URL}/loss/weekly`, {
       withCredentials: true,
     });
     return response.data;
@@ -206,7 +206,7 @@ export const getWeeklyLoss = async () => {
 
 export const getMonthlyLoss = async () => {
   try {
-    const response = await axios.get(`${API_URL}/loss/monthly`, {
+    const response = await axiosClient.get(`${API_URL}/loss/monthly`, {
       withCredentials: true,
     });
     return response.data;
@@ -220,7 +220,7 @@ export const getMonthlyLoss = async () => {
 
 export const getAnnualLoss = async () => {
   try {
-    const response = await axios.get(`${API_URL}/loss/annual`, {
+    const response = await axiosClient.get(`${API_URL}/loss/annual`, {
       withCredentials: true,
     });
     return response.data;
@@ -235,7 +235,7 @@ export const getAnnualLoss = async () => {
 // ==================== CLIENTS ====================
 export const getDailyClients = async () => {
   try {
-    const response = await axios.get(`${API_URL}/clients/daily`, {
+    const response = await axiosClient.get(`${API_URL}/clients/daily`, {
       withCredentials: true,
     });
     return response.data;
@@ -249,7 +249,7 @@ export const getDailyClients = async () => {
 
 export const getWeeklyClients = async () => {
   try {
-    const response = await axios.get(`${API_URL}/clients/weekly`, {
+    const response = await axiosClient.get(`${API_URL}/clients/weekly`, {
       withCredentials: true,
     });
     return response.data;
@@ -264,7 +264,7 @@ export const getWeeklyClients = async () => {
 // ==================== INVENTORY & STOCK ====================
 export const getLowStockItems = async (threshold = 10) => {
   try {
-    const response = await axios.get(`${API_URL}/low-stock?threshold=${threshold}`, {
+    const response = await axiosClient.get(`${API_URL}/low-stock?threshold=${threshold}`, {
       withCredentials: true,
     });
     return response.data;
@@ -278,7 +278,7 @@ export const getLowStockItems = async (threshold = 10) => {
 
 export const getInventorySummary = async () => {
   try {
-    const response = await axios.get(`${API_URL}/inventory-summary`, {
+    const response = await axiosClient.get(`${API_URL}/inventory-summary`, {
       withCredentials: true,
     });
     return response.data;
@@ -293,7 +293,7 @@ export const getInventorySummary = async () => {
 // ==================== TRANSACTIONS ====================
 export const getRecentTransactions = async () => {
   try {
-    const response = await axios.get(`${API_URL}/recent-transactions`, {
+    const response = await axiosClient.get(`${API_URL}/recent-transactions`, {
       withCredentials: true,
     });
     return response.data;
