@@ -301,38 +301,45 @@ const Settings = () => {
               onClick={() => setActiveTab("profile")}
               aria-label="Profile Settings"
               title="Profile Settings"
-              className={`p-3 rounded-lg transition-colors ${
+              className={`flex items-center gap-2 px-3 py-2.5 rounded-lg transition-colors ${
                 activeTab === "profile"
                   ? "bg-blue-600 text-white"
                   : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
               }`}
             >
               <User className="w-5 h-5" />
+              <span className="hidden sm:inline font-medium text-sm">
+                Profile Settings
+              </span>
             </button>
             <button
               onClick={() => setActiveTab("security")}
               aria-label="Security"
               title="Security"
-              className={`p-3 rounded-lg transition-colors ${
+              className={`flex items-center gap-2 px-3 py-2.5 rounded-lg transition-colors ${
                 activeTab === "security"
                   ? "bg-blue-600 text-white"
                   : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
               }`}
             >
               <Lock className="w-5 h-5" />
+              <span className="hidden sm:inline font-medium text-sm">Security</span>
             </button>
             {user?.role === "Boss" && (
               <button
                 onClick={() => setActiveTab("admin")}
                 aria-label="User Management"
                 title="User Management"
-                className={`p-3 rounded-lg transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg transition-colors ${
                   activeTab === "admin"
                     ? "bg-blue-600 text-white"
                     : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
                 }`}
               >
                 <Users className="w-5 h-5" />
+                <span className="hidden sm:inline font-medium text-sm">
+                  User Management
+                </span>
               </button>
             )}
             {canSwitchBranches && (
@@ -340,13 +347,16 @@ const Settings = () => {
                 onClick={() => setActiveTab("branches")}
                 aria-label="Branches"
                 title="Branches"
-                className={`p-3 rounded-lg transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg transition-colors ${
                   activeTab === "branches"
                     ? "bg-blue-600 text-white"
                     : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
                 }`}
               >
                 <Building2 className="w-5 h-5" />
+                <span className="hidden sm:inline font-medium text-sm">
+                  Branches
+                </span>
               </button>
             )}
           </div>
