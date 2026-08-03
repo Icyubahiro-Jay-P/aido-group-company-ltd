@@ -1,5 +1,5 @@
 // src/api/productServices.js
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/products`;
@@ -7,7 +7,7 @@ const API_URL = `${API_BASE_URL}/api/products`;
 // Create a new product
 export const createProduct = async (productData) => {
   try {
-    const response = await axios.post(`${API_URL}`, productData, {
+    const response = await axiosClient.post(`${API_URL}`, productData, {
       withCredentials: true,
     });
     return response.data;
@@ -25,7 +25,7 @@ export const createProduct = async (productData) => {
 // Get all products
 export const getProducts = async () => {
   try {
-    const response = await axios.get(`${API_URL}`, {
+    const response = await axiosClient.get(`${API_URL}`, {
       withCredentials: true,
     });
     return response.data;
@@ -43,7 +43,7 @@ export const getProducts = async () => {
 // Get a single product by ID
 export const getProductById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`, {
+    const response = await axiosClient.get(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
@@ -61,7 +61,7 @@ export const getProductById = async (id) => {
 // Update a product by ID
 export const updateProduct = async (id, updatedData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, updatedData, {
+    const response = await axiosClient.put(`${API_URL}/${id}`, updatedData, {
       withCredentials: true,
     });
     return response.data;
@@ -79,7 +79,7 @@ export const updateProduct = async (id, updatedData) => {
 // Delete a product by ID
 export const deleteProduct = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`, {
+    const response = await axiosClient.delete(`${API_URL}/${id}`, {
       withCredentials: true,
     });
     return response.data;
