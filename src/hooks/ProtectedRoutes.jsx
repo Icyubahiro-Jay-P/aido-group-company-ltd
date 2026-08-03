@@ -2,6 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUserProfile } from '../api/userServices';
 import Loading from '../components/Loading';
+import { BranchProvider } from '../context/BranchContext';
 
 const ProtectedRoute = () => {
   const [isAuth, setIsAuth] = useState(null);   // null = still checking
@@ -35,7 +36,11 @@ const ProtectedRoute = () => {
   }
 
   // You can also pass the user data down if needed
-  return <Outlet context={{ user }} />;
+  return (
+    <BranchProvider user={user}>
+      <Outlet context={{ user }} />
+    </BranchProvider>
+  );
 };
 
 export default ProtectedRoute;
