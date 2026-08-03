@@ -38,8 +38,9 @@ export const setStoredActiveBranch = (userId, branch) => {
 // Single axios instance shared by every API service. It carries the cookie
 // (withCredentials) and stamps the X-Active-Branch header on every request so
 // the backend can resolve the branch context. The request interceptor is also
-// the hook point for the offline queue (Feature 1).
-const axiosClient = axios.create({ withCredentials: true });
+// the hook point for the offline queue (Feature 1). A short default timeout
+// makes offline failures surface quickly so the app falls back to the cache.
+const axiosClient = axios.create({ withCredentials: true, timeout: 10000 });
 
 axiosClient.interceptors.request.use((config) => {
   const branch = getCurrentBranch();
