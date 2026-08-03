@@ -296,53 +296,57 @@ const Settings = () => {
           )}
 
           {/* Tabs */}
-          <div className="flex gap-4 mb-8 border-b border-slate-200 overflow-x-auto whitespace-nowrap">
+          <div className="flex gap-2 mb-8">
             <button
               onClick={() => setActiveTab("profile")}
-              className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
+              aria-label="Profile Settings"
+              title="Profile Settings"
+              className={`p-3 rounded-lg transition-colors ${
                 activeTab === "profile"
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
               }`}
             >
-              <User className="w-4 h-4 inline mr-2" />
-              Profile Settings
+              <User className="w-5 h-5" />
             </button>
             <button
               onClick={() => setActiveTab("security")}
-              className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
+              aria-label="Security"
+              title="Security"
+              className={`p-3 rounded-lg transition-colors ${
                 activeTab === "security"
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
               }`}
             >
-              <Lock className="w-4 h-4 inline mr-2" />
-              Security
+              <Lock className="w-5 h-5" />
             </button>
             {user?.role === "Boss" && (
               <button
                 onClick={() => setActiveTab("admin")}
-                className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
+                aria-label="User Management"
+                title="User Management"
+                className={`p-3 rounded-lg transition-colors ${
                   activeTab === "admin"
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-slate-500 hover:text-slate-700"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
                 }`}
               >
-                <Users className="w-4 h-4 inline mr-2" />
-                User Management
+                <Users className="w-5 h-5" />
               </button>
             )}
             {canSwitchBranches && (
               <button
                 onClick={() => setActiveTab("branches")}
-                className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
+                aria-label="Branches"
+                title="Branches"
+                className={`p-3 rounded-lg transition-colors ${
                   activeTab === "branches"
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-slate-500 hover:text-slate-700"
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200"
                 }`}
               >
-                <Building2 className="w-4 h-4 inline mr-2" />
-                Branches
+                <Building2 className="w-5 h-5" />
               </button>
             )}
           </div>
@@ -936,13 +940,6 @@ const Settings = () => {
                     </div>
                   );
                 })}
-              </div>
-
-              <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-                Switching branches reloads the app so every page is refetched
-                with the selected branch. New users are assigned to the branch
-                you pick in the Add User form (defaults to the branch you are
-                currently viewing).
               </div>
             </div>
           )}
