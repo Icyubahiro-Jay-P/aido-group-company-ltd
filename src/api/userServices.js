@@ -1,12 +1,12 @@
 // src/api/userServices.js
-import axios from 'axios';
+import axiosClient from './axiosClient';
 import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/users`;
 
 export const login = async (credentials) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, credentials, {
+    const response = await axiosClient.post(`${API_URL}/login`, credentials, {
       withCredentials: true,   // important for cookies
     });
     
@@ -27,7 +27,7 @@ export const login = async (credentials) => {
 // Register a new user
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${ API_URL }/register`, userData);
+    const response = await axiosClient.post(`${ API_URL }/register`, userData);
     return response.data;
   } catch (error) {
     throw error.response.data;
@@ -38,7 +38,7 @@ export const registerUser = async (userData) => {
 // Get user profile
 export const getUserProfile = async () => {
   try {
-    const response = await axios.get(`${ API_URL }/profile`, {
+    const response = await axiosClient.get(`${ API_URL }/profile`, {
       withCredentials: true,
     });
     return response.data;
@@ -51,7 +51,7 @@ export const getUserProfile = async () => {
 
 export const updateUserProfile = async (updatedData) => {
   try {
-    const response = await axios.put(`${ API_URL }/profile`, updatedData, {
+    const response = await axiosClient.put(`${ API_URL }/profile`, updatedData, {
       withCredentials: true,
     });
     return response.data;
@@ -63,7 +63,7 @@ export const updateUserProfile = async (updatedData) => {
 // Change user password
 export const changeUserPassword = async (passwordData) => {
   try {
-    const response = await axios.put(`${ API_URL }/change-password`, passwordData, {
+    const response = await axiosClient.put(`${ API_URL }/change-password`, passwordData, {
       withCredentials: true,
     });
     return response.data;
@@ -81,7 +81,7 @@ export const changeUserPassword = async (passwordData) => {
 // Delete user account
 export const deleteUserAccount = async (userId) => {
   try {
-    const response = await axios.delete(`${ API_URL }/user/${userId}`, {
+    const response = await axiosClient.delete(`${ API_URL }/user/${userId}`, {
       withCredentials: true,
     });
     return response.data;
@@ -93,7 +93,7 @@ export const deleteUserAccount = async (userId) => {
 // Logout user
 export const logout = async () => {
   try {
-    const response = await axios.post(`${ API_URL }/logout`, {}, {
+    const response = await axiosClient.post(`${ API_URL }/logout`, {}, {
       withCredentials: true,
     });
     return response.data;
@@ -116,7 +116,7 @@ export const logout = async () => {
 // Get all users (admin only)
 export const getAllUsers = async (page = 1, limit = 10) => {
   try {
-    const response = await axios.get(`${ API_URL }?page=${page}&limit=${limit}`, {
+    const response = await axiosClient.get(`${ API_URL }?page=${page}&limit=${limit}`, {
       withCredentials: true,
     });
     return response.data;
@@ -134,7 +134,7 @@ export const getAllUsers = async (page = 1, limit = 10) => {
 // Delete user by ID (admin only)
 export const deleteUserById = async (userId) => {
   try {
-    const response = await axios.delete(`${ API_URL }/user/${userId}`, {
+    const response = await axiosClient.delete(`${ API_URL }/user/${userId}`, {
       withCredentials: true,
     });
     return response.data;
