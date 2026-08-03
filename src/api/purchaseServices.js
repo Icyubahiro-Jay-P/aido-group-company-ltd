@@ -31,6 +31,7 @@ const enqueue = async ({ method, url, data, id, includeMutationId = false }) => 
     data: payload,
     id: localId,
     clientMutationId,
+    branch: getCurrentBranch(),
     createdAt: Date.now(),
   });
   return localId;
@@ -57,7 +58,7 @@ export const createPurchase = async (purchaseData) => {
       data: purchaseData,
       includeMutationId: true,
     });
-    const localDoc = { _id: localId, ...purchaseData, pending: true };
+    const localDoc = { _id: localId, ...purchaseData, branch: getCurrentBranch(), pending: true };
     await localPut(ENTITY, localDoc);
     await incrementLocalStock(purchaseData.products);
     return {
