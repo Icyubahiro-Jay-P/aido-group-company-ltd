@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { logout } from "../api/userServices";
+import { setCurrentBranch } from "../api/axiosClient";
 import ConfirmModal from "./ConfirmModal";
 
 const NavbarItem = ({ icon: Icon, label, active = false, isLogout = false }) => {
@@ -24,6 +25,7 @@ const NavbarItem = ({ icon: Icon, label, active = false, isLogout = false }) => 
       // Even if logout fails on server, proceed with clearing frontend
       console.error('Logout error:', error);
     } finally {
+      setCurrentBranch(null);  // Clear in-memory branch so the next login starts clean
       localStorage.clear();  // Clear any local storage data
       sessionStorage.clear();  // Clear session storage too
       setShowLogoutModal(false);
