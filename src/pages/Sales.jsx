@@ -16,6 +16,7 @@ import { printReceipt, downloadReceiptPdf, receiptTotal } from "../utils/receipt
 import { toast } from "sonner";
 
 const Sales = () => {
+  const { user } = useOutletContext();
   const { branch } = useBranch();
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
@@ -566,7 +567,7 @@ const Sales = () => {
                       type="button"
                       onClick={() => {
                         try {
-                          printReceipt(lastSale, branch);
+                          printReceipt(lastSale, branch, user);
                         } catch (err) {
                           toast.error(err.message);
                         }
