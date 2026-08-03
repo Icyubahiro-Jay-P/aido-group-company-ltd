@@ -95,6 +95,7 @@ export const updateUserProfile = async (updatedData) => {
     const response = await axiosClient.put(`${ API_URL }/profile`, updatedData, {
       withCredentials: true,
     });
+    cacheProfile(response.data);
     return response.data;
   } catch (error) {
     throw error.response.data;
