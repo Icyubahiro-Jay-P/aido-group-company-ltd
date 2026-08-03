@@ -5,7 +5,7 @@ import { LogOut } from "lucide-react";
 import { logout } from "../api/userServices";
 import ConfirmModal from "./ConfirmModal";
 
-const NavbarItem = ({ icon: Icon, label, active = false, to, isLogout = false }) => {
+const NavbarItem = ({ icon: Icon, label, active = false, isLogout = false }) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
