@@ -4,6 +4,37 @@ import { API_BASE_URL } from './config';
 
 const API_URL = `${API_BASE_URL}/api/users`;
 
+// Cached profile so the app can render offline (no internet) after a successful
+// login: once the profile has been fetched, it lives in localStorage and is
+// served on network failure. A real 401 (server says logged out) clears it.
+const CACHED_PROFILE_KEY = "aido_user_profile";
+
+export const getCachedProfile = () => {
+  try {
+    return JSON.parse(localStorage.getItem(CACHED_PROFILE_KEY)) || null;
+  } catch {
+    return null;
+  }
+};
+
+const cacheProfile = (profile) => {
+  try {
+    if (profile) {
+      localStorage.setItem(CACHED_PROFILE_KEY, JSON.stringify(profile));
+    }
+  } catch {
+    // localStorage unavailable - ignore
+  }
+};
+
+const clearCachedProfile = () => {
+  try {
+    localStorage.removeItem(CACHED_PROFILE_KEY);
+  } catch {
+    // ignore
+  }
+};
+
 export const login = async (credentials) => {
   try {
     const response = await axiosClient.post(`${API_URL}/login`, credentials, {
@@ -41,8 +72,18 @@ export const getUserProfile = async () => {
     const response = await axiosClient.get(`${ API_URL }/profile`, {
       withCredentials: true,
     });
+    cacheProfile(response.data);
     return response.data;
   } catch (error) {
+    // No response = network unreachable. Serve the cached profile so the app
+    // keeps rendering with zero internet after a successful login.
+    if (!error.response) {
+      const cached = getCachedProfile();
+      if (cached) return cached;
+      throw new Error("Offline and no saved session. Please reconnect and log in.");
+    }
+    // Real server rejection (401/404): the session is gone, drop the cached copy.
+    clearCachedProfile();
     throw error.response.data;
   }
 };
