@@ -40,7 +40,7 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
         </div>
       </div>
 
-      <nav className="p-1 space-y-1">
+      <nav className="p-2 px-4 space-y-1">
         <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-2">
           Main
         </div>
