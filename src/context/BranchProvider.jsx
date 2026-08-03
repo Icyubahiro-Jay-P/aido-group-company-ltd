@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BranchContext, BRANCHES } from './branch';
 import {
   getStoredActiveBranch,
@@ -15,20 +15,17 @@ export const BranchProvider = ({ user, children }) => {
   const userId = user?._id;
 
   // Resolve the branch once: a stored choice for this user wins, otherwise the
-  // server's activeBranch (or the user's fixed home branch) is used. The branch
-  // never changes in-place; switching triggers a reload which remounts this
-  // provider and re-resolves from the freshly persisted value.
+  // server's activeBranch (or the user's fixed home branch) is used. currentBranch
+  // and the per-user localStorage copy are set synchronously here (not in an
+  // effect) so the axios header and offline-cache reads are branch-correct from
+  // the very first render/page fetch. The branch never changes in-place;
+  // switching triggers a reload which remounts this provider and re-resolves.
   const [branch] = useState(() => {
-    const stored = getStoredActiveBranch(userId);
-    return stored || user?.activeBranch || homeBranch;
+    const resolved = getStoredActiveBranch(userId) || user?.activeBranch || homeBranch;
+    setCurrentBranch(resolved);
+    setStoredActiveBranch(userId, resolved);
+    return resolved;
   });
-
-  // Keep the in-memory branch (read by the axios interceptor) and the per-user
-  // localStorage copy in sync with the resolved branch.
-  useEffect(() => {
-    setCurrentBranch(branch);
-    setStoredActiveBranch(userId, branch);
-  }, [userId, branch]);
 
   // Switching branches forces a full remount (reload) so every page refetches
   // its data with the new X-Active-Branch header. Persist synchronously so the
