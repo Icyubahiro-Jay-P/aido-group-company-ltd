@@ -14,6 +14,23 @@ db.version(1).stores({
   syncLog: '++id, syncedAt',
 });
 
+// v2: branch-scope the cache so a Boss switching branches never sees the other
+// branch's cached rows offline. Old rows are dropped (they predate the branch
+// field) and repopulate per-branch on the next fetch. The write queue and sync
+// log are preserved.
+db.version(2).stores({
+  products: '_id, branch, sku, productName, updatedAt',
+  sales: '_id, branch, saleDate, clientName',
+  purchases: '_id, branch, purchaseDate, supplierName',
+  clients: '_id, branch, email, fullName',
+  queue: '++id, entity, method, createdAt',
+  syncLog: '++id, syncedAt',
+}).upgrade((tx) =>
+  Promise.all(
+    ['products', 'sales', 'purchases', 'clients'].map((t) => tx.table(t).clear()),
+  ),
+);
+
 const TABLES = {
   product: () => db.products,
   sale: () => db.sales,
@@ -29,8 +46,10 @@ const SORTERS = {
 
 export const generateMutationId = () => uuidv4();
 
-export const localGetAll = async (entity) => {
-  const rows = await TABLES[entity]().toArray();
+export const localGetAll = async (entity, branch) => {
+  const rows = branch
+    ? await TABLES[entity]().where('branch').equals(branch).toArray()
+    : await TABLES[entity]().toArray();
   const sorter = SORTERS[entity];
   return sorter ? rows.sort(sorter) : rows;
 };
