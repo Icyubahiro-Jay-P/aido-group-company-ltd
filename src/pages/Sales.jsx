@@ -201,9 +201,10 @@ const Sales = () => {
         saleDate: new Date(),
       };
 
-      await createSale(saleData);
+      const responseData = await createSale(saleData);
       toast.success("Sale recorded successfully");
 
+      setLastSale(responseData?.sale || { ...saleData });
       // Reset form
       setFormData({
         customerName: "",
