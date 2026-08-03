@@ -13,12 +13,15 @@ import {
   Calendar1,
   Hash,
   UserKey,
+  Building2,
+  ArrowRightLeft,
 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 import PageBanner from "../components/PageBanner";
 import ConfirmModal from "../components/ConfirmModal";
 import Badge from "../components/Badge";
+import { useBranch, BRANCHES } from "../context/BranchContext";
 import {
   getAllUsers,
   deleteUserById,
@@ -31,6 +34,7 @@ import { toast } from "sonner";
 const Settings = () => {
   const context = useOutletContext();
   const user = context?.user;
+  const { branch, canSwitchBranches, switchBranch } = useBranch();
 
   // Initialize all state at the top level (before guards)
   const [activeTab, setActiveTab] = useState("profile");
@@ -322,6 +326,19 @@ const Settings = () => {
               >
                 <Users className="w-4 h-4 inline mr-2" />
                 User Management
+              </button>
+            )}
+            {user?.canSwitchBranches && (
+              <button
+                onClick={() => setActiveTab("branches")}
+                className={`px-4 py-3 font-medium border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === "branches"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                <Building2 className="w-4 h-4 inline mr-2" />
+                Branches
               </button>
             )}
           </div>
