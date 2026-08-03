@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUserProfile } from '../api/userServices';
 import Loading from '../components/Loading';
-import { BranchProvider } from '../context/BranchContext';
+import { BranchProvider } from '../context/BranchProvider';
 
 const ProtectedRoute = () => {
   const [isAuth, setIsAuth] = useState(null);   // null = still checking
