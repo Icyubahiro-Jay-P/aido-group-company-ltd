@@ -7,7 +7,6 @@ import {
   TrendingUp,
   User,
 } from "lucide-react";
-import { useOutletContext } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 import PageBanner from "../components/PageBanner";
 import StatCard from "../components/StatCard";
