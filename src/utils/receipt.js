@@ -134,8 +134,8 @@ const buildReceiptHtml = (sale, branch = 'AIDO_GROUP', user) => {
 
 // Opens a print window sized for 80mm paper and triggers the browser print
 // dialog (thermal printer if installed).
-export const printReceipt = (sale, branch = 'AIDO_GROUP') => {
-  const html = buildReceiptHtml(sale, branch);
+export const printReceipt = (sale, branch = 'AIDO_GROUP', user) => {
+  const html = buildReceiptHtml(sale, branch, user);
   const win = window.open('', '_blank', 'width=420,height=700,resizable=yes');
   if (!win) {
     throw new Error('Popup blocked. Allow popups to print receipts.');
@@ -151,7 +151,7 @@ export const printReceipt = (sale, branch = 'AIDO_GROUP') => {
 };
 
 // Generates an 80mm-wide PDF receipt (courier monospace) and saves it.
-export const downloadReceiptPdf = (sale, branch = 'AIDO_GROUP') => {
+export const downloadReceiptPdf = (sale, branch = 'AIDO_GROUP', user) => {
   const profile = getBranchProfile(branch);
   const items = receiptItems(sale);
   const total = receiptTotal(sale);
