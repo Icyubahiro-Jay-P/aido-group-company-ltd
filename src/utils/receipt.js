@@ -1,6 +1,6 @@
 // 80mm thermal receipt generation: print (HTML) and save-as-PDF (jsPDF).
 // AIDO Paper Bags uses the same contact details as AIDO Group.
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 
 const BRANCH_PROFILES = {
   AIDO_GROUP: {
