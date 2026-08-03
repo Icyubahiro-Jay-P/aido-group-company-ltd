@@ -17,7 +17,6 @@ import Loading from '../components/Loading';
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
-  const [inventorySummary, setInventorySummary] = useState(null);
   const [lowStockItems, setLowStockItems] = useState([]);
   const [recentSales, setRecentSales] = useState([]);
   const [stats, setStats] = useState([]);
