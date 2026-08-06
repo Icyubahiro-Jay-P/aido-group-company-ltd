@@ -45,8 +45,12 @@ const AppSidebar = ({ brand = 'AIDO', active, user, navbarOpen = false }) => {
         </div>
         <NavbarItem icon={LayoutDashboard} label="Dashboard" active={active === 'Dashboard'} />
         <NavbarItem icon={Package} label="Inventory" active={active === 'Inventory'} />
-        <NavbarItem icon={LayersPlus} label="Stock in" active={active === 'Stock in'} />
-        <NavbarItem icon={BanknoteArrowDown} label="Purchases" active={active === 'Purchases'} />
+        {user.role === 'Boss' && (
+          <NavbarItem icon={LayersPlus} label="Stock in" active={active === 'Stock in'} />
+        )}
+         {user.role === 'Boss' && (
+          <NavbarItem icon={BanknoteArrowDown} label="Purchases" active={active === 'Purchases'} />
+        )}
         <NavbarItem icon={BanknoteArrowUp} label="Sales" active={active === 'Sales'} />
 
         <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4 mt-4">
